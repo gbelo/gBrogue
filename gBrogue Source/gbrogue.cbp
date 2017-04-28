@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="gBrogue" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="../gBrogue" prefix_auto="1" extension_auto="1" />
+				<Option working_dir=".." />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-fomit-frame-pointer" />
+					<Add option="-O2" />
+					<Add option="-DBROGUE_TCOD" />
+					<Add directory="gBrogueCode" />
+					<Add directory="PlatformCode" />
+					<Add directory="libtcod-1.5.1/include" />
+					<Add directory="SDL-1.2.14/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="libtcod-1.5.1/lib/libtcod-mingw.a" />
+					<Add library="SDL-1.2.14/lib/libSDL.dll.a" />
+					<Add library="SDL-1.2.14/lib/libSDL_mixer.a" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-march=i386" />
+			<Add option="-fomit-frame-pointer" />
+			<Add option="-O2" />
+		</Compiler>
+		<Linker>
+			<Add option="-s" />
+		</Linker>
+		<Unit filename="PlatformCode/PlatformDefines.h" />
+		<Unit filename="PlatformCode/curses-platform.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PlatformCode/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PlatformCode/platform.h" />
+		<Unit filename="PlatformCode/platformdependent.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PlatformCode/tcod-platform.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PlatformCode/term.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PlatformCode/term.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_active.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_audio.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_byteorder.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_cdrom.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_config.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_copying.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_cpuinfo.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_endian.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_error.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_events.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_getenv.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_joystick.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_keyboard.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_keysym.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_loadso.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_main.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_mixer.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_mouse.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_mutex.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_name.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_opengl.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_platform.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_quit.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_rwops.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_stdinc.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_syswm.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_thread.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_timer.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_types.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_version.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/SDL_video.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/begin_code.h" />
+		<Unit filename="SDL-1.2.14/include/SDL/close_code.h" />
+		<Unit filename="gBrogueCode/Architect.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/Buttons.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/Combat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/Dijkstra.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/Globals.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/Grid.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/IO.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/IncludeGlobals.h" />
+		<Unit filename="gBrogueCode/Items.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/Light.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/MainMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/Monsters.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/Movement.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/Random.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/Recordings.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/Rogue.h" />
+		<Unit filename="gBrogueCode/RogueMain.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gBrogueCode/Time.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="icon.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="libtcod-1.5.1/include/bresenham.h" />
+		<Unit filename="libtcod-1.5.1/include/bresenham.hpp" />
+		<Unit filename="libtcod-1.5.1/include/bsp.h" />
+		<Unit filename="libtcod-1.5.1/include/bsp.hpp" />
+		<Unit filename="libtcod-1.5.1/include/color.h" />
+		<Unit filename="libtcod-1.5.1/include/color.hpp" />
+		<Unit filename="libtcod-1.5.1/include/console.h" />
+		<Unit filename="libtcod-1.5.1/include/console.hpp" />
+		<Unit filename="libtcod-1.5.1/include/console_types.h" />
+		<Unit filename="libtcod-1.5.1/include/fov.h" />
+		<Unit filename="libtcod-1.5.1/include/fov.hpp" />
+		<Unit filename="libtcod-1.5.1/include/fov_types.h" />
+		<Unit filename="libtcod-1.5.1/include/gui/button.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/container.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/flatlist.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/gui.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/hbox.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/image.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/label.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/radiobutton.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/slider.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/statusbar.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/textbox.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/togglebutton.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/toolbar.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/vbox.hpp" />
+		<Unit filename="libtcod-1.5.1/include/gui/widget.hpp" />
+		<Unit filename="libtcod-1.5.1/include/heightmap.h" />
+		<Unit filename="libtcod-1.5.1/include/heightmap.hpp" />
+		<Unit filename="libtcod-1.5.1/include/howto.hpp" />
+		<Unit filename="libtcod-1.5.1/include/image.h" />
+		<Unit filename="libtcod-1.5.1/include/image.hpp" />
+		<Unit filename="libtcod-1.5.1/include/lex.h" />
+		<Unit filename="libtcod-1.5.1/include/lex.hpp" />
+		<Unit filename="libtcod-1.5.1/include/libtcod.h" />
+		<Unit filename="libtcod-1.5.1/include/libtcod.hpp" />
+		<Unit filename="libtcod-1.5.1/include/libtcod_int.h" />
+		<Unit filename="libtcod-1.5.1/include/list.h" />
+		<Unit filename="libtcod-1.5.1/include/list.hpp" />
+		<Unit filename="libtcod-1.5.1/include/mersenne.h" />
+		<Unit filename="libtcod-1.5.1/include/mersenne.hpp" />
+		<Unit filename="libtcod-1.5.1/include/mersenne_types.h" />
+		<Unit filename="libtcod-1.5.1/include/mouse.h" />
+		<Unit filename="libtcod-1.5.1/include/mouse.hpp" />
+		<Unit filename="libtcod-1.5.1/include/mouse_types.h" />
+		<Unit filename="libtcod-1.5.1/include/namegen.h" />
+		<Unit filename="libtcod-1.5.1/include/namegen.hpp" />
+		<Unit filename="libtcod-1.5.1/include/noise.h" />
+		<Unit filename="libtcod-1.5.1/include/noise.hpp" />
+		<Unit filename="libtcod-1.5.1/include/noise_defaults.h" />
+		<Unit filename="libtcod-1.5.1/include/parser.h" />
+		<Unit filename="libtcod-1.5.1/include/parser.hpp" />
+		<Unit filename="libtcod-1.5.1/include/path.h" />
+		<Unit filename="libtcod-1.5.1/include/path.hpp" />
+		<Unit filename="libtcod-1.5.1/include/sys.h" />
+		<Unit filename="libtcod-1.5.1/include/sys.hpp" />
+		<Unit filename="libtcod-1.5.1/include/tree.h" />
+		<Unit filename="libtcod-1.5.1/include/tree.hpp" />
+		<Unit filename="libtcod-1.5.1/include/txtfield.h" />
+		<Unit filename="libtcod-1.5.1/include/txtfield.hpp" />
+		<Unit filename="libtcod-1.5.1/include/wrappers.h" />
+		<Unit filename="libtcod-1.5.1/include/zip.h" />
+		<Unit filename="libtcod-1.5.1/include/zip.hpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

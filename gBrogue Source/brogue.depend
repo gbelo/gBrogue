@@ -1,0 +1,379 @@
+# depslib dependency file v1.0
+1490721640 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\architect.c
+	"Rogue.h"
+	"IncludeGlobals.h"
+
+1490798860 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\rogue.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"PlatformDefines.h"
+	<assert.h>
+
+1360122128 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\platformcode\platformdefines.h
+
+1466440994 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\includeglobals.h
+
+1466440994 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\buttons.c
+	"Rogue.h"
+	"IncludeGlobals.h"
+	<math.h>
+	<time.h>
+
+1490128868 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\combat.c
+	<math.h>
+	"Rogue.h"
+	"IncludeGlobals.h"
+
+1466440994 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\dijkstra.c
+	"Rogue.h"
+	"IncludeGlobals.h"
+
+1490815684 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\globals.c
+	"Rogue.h"
+
+1466440994 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\grid.c
+	"Rogue.h"
+	"IncludeGlobals.h"
+
+1490154901 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\io.c
+	<math.h>
+	<time.h>
+	"Rogue.h"
+	"IncludeGlobals.h"
+
+1490815683 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\items.c
+	"Rogue.h"
+	"IncludeGlobals.h"
+	<math.h>
+
+1466440994 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\light.c
+	<math.h>
+	"Rogue.h"
+	"IncludeGlobals.h"
+
+1489590050 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\mainmenu.c
+	"Rogue.h"
+	"IncludeGlobals.h"
+	<math.h>
+	<time.h>
+	<limits.h>
+
+1490730438 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\monsters.c
+	<math.h>
+	"Rogue.h"
+	"IncludeGlobals.h"
+
+1490121787 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\movement.c
+	"Rogue.h"
+	"IncludeGlobals.h"
+	<math.h>
+
+1466440995 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\random.c
+	<math.h>
+	<time.h>
+	<limits.h>
+	<stdint.h>
+	"Rogue.h"
+	"IncludeGlobals.h"
+
+1489686482 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\recordings.c
+	<math.h>
+	<time.h>
+	<limits.h>
+	"Rogue.h"
+	"IncludeGlobals.h"
+
+1490802670 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\roguemain.c
+	"Rogue.h"
+	"IncludeGlobals.h"
+	<math.h>
+	<time.h>
+
+1490729222 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\broguecode\time.c
+	"Rogue.h"
+	"IncludeGlobals.h"
+	<math.h>
+
+1466440994 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\icon.rc
+
+1489642618 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\platformcode\main.c
+	"platform.h"
+	"libtcod.h"
+
+1360122128 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\platformcode\platform.h
+	"Rogue.h"
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\libtcod.h
+	<wchar.h>
+	"SDL/SDL.h"
+	"list.h"
+	"color.h"
+	"console.h"
+	"image.h"
+	"mouse.h"
+	"sys.h"
+	"mersenne.h"
+	"bresenham.h"
+	"noise.h"
+	"fov.h"
+	"path.h"
+	"lex.h"
+	"parser.h"
+	"tree.h"
+	"bsp.h"
+	"heightmap.h"
+	"zip.h"
+	"namegen.h"
+	"txtfield.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_audio.h"
+	"SDL_cdrom.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_loadso.h"
+	"SDL_mutex.h"
+	"SDL_rwops.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_video.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441002 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<iconv.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_config.h
+	"SDL_platform.h"
+	<stdarg.h>
+
+1466441002 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_platform.h
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\begin_code.h
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\close_code.h
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_endian.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441002 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441002 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1466441002 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_cdrom.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_active.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_quit.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_active.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keysym.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_keysym.h
+
+1466441002 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441002 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441002 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1466441001 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441002 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466441002 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\sdl-1.2.14\include\sdl\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\list.h
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\color.h
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\console.h
+	"console_types.h"
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\console_types.h
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\image.h
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\mouse.h
+	"mouse_types.h"
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\mouse_types.h
+
+1466440996 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\sys.h
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\mersenne.h
+	"mersenne_types.h"
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\mersenne_types.h
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\bresenham.h
+
+1466440996 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\noise.h
+	"noise_defaults.h"
+
+1466440996 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\noise_defaults.h
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\fov.h
+	"fov_types.h"
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\fov_types.h
+
+1466440996 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\path.h
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\lex.h
+
+1466440996 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\parser.h
+
+1466440996 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\tree.h
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\bsp.h
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\heightmap.h
+
+1466440996 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\zip.h
+
+1466440995 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\namegen.h
+
+1466440996 c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\libtcod-1.5.1\include\txtfield.h
+
+1360866272 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\platformcode\platformdependent.c
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<dirent.h>
+	"platform.h"
+
+1489690181 source:c:\users\greed\drive\personal\game\grogue\gbrogue\gbrogue\brogue source\platformcode\tcod-platform.c
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<SDL/SDL.h>
+	"libtcod.h"
+	"platform.h"
+

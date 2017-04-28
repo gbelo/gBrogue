@@ -1,0 +1,34 @@
+COMPILING BROGUE
+----------------
+
+You need libtcod-1.5.1 and SDL 1.2 to compile Brogue yourself.
+
+Find the appropriate version of libtcod at:
+http://doryen.eptalys.net/libtcod/download/
+
+Or download directly:
+ * for mingw: http://doryen.eptalys.net/?file_id=27
+ * for Visual Studio: http://doryen.eptalys.net/?file_id=29
+
+Get SDL from http://www.libsdl.org/download-1.2.php -- you want the
+Development Library for Win32; the direct link is
+http://www.libsdl.org/release/SDL-devel-1.2.14-mingw32.tar.gz
+(and if you can't extract a .tar.gz, do yourself a favor and get 7zip.)
+
+
+USING THE PROJECT FILE (brogue.cbp)
+-----------------------------------
+
+Get the mingw version of libtcod-1.5.1 and the mingw version of SDL.
+
+If you do not have Code::Blocks, go to
+ * http://www.codeblocks.org/downloads/26#windows
+and get the version that includes mingw.
+
+You must unzip and put libtcod-1.5.1 and SDL-1.2.14 in "Brogue Source"
+(alongside "BrogueCode" and "PlatformCode") for the project to work unchanged.
+
+You MAY use version 1.5.2, but you must rename the folder "libtcod-1.5.1" to
+use the project file unchanged, or you may modify the project file.
+
+Happy hacking.

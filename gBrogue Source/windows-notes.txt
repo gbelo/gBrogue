@@ -1,0 +1,44 @@
+This document describes functionality specific to the Windows build.
+
+Be sure to read Readme.rtf, too!
+
+---
+
+Brogue now supports remapped keys.  The remapping engine is quite limited
+and is described in the file named 'keymap'.  It has no extension, but it's
+just a text file you can open with notepad.
+
+Press F12 or alt-enter to toggle fullscreen mode.
+
+Press -/+ or pgdn/pgup to adjust the font size
+
+--
+
+The following switches are accepted.  To use them, just make a shortcut to
+brogue.exe, edit the shortcut's properties, and add them (separated by
+spaces) to the Target text field.
+
+-n                         start a new game, skipping the menu
+-s seed                    start a new game with the specified numerical seed
+-o filename[.broguesave]   open a recording (extension may be omitted)
+-v recording[.broguerec]   view a recording (extension may be omitted)
+-M                         same as --no-menu
+
+--size N                   starts the game with font size N (1 to 13)
+--no-menu                  never display the menu (automatically pick new game)
+--scores                   dump scores to standard output and exit immediately
+--noteye-hack              ignore SDL-specific application state checks
+
+
+--SDL	force libtcod mode with an SDL renderer (default)
+-gl	force libtcod mode with an OpenGL renderer (faster, when it works)
+
+
+---
+
+It should be possible to open a save by dragging it onto Brogue.exe, but that
+only seems to work when the save is in the same path as the executable, for now.
+
+---
+
+To build Brogue for yourself, dive into the "Brogue Source" folder and read how-to-build.txt
