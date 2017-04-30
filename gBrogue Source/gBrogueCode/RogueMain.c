@@ -954,6 +954,10 @@ void startLevel(short oldLevelNumber, short stairDirection) {
 	flushBufferToFile();
     deleteAllFlares(); // So discovering something on the same turn that you fall down a level doesn't flash stuff on the previous level.
     hideCursor();
+
+    // Note player's position -- just a useful thing -- gsr
+    createFlare(player.xLoc, player.yLoc, GENERIC_FLASH_LIGHT);
+    animateFlares(rogue.flares, rogue.flareCount);
 }
 
 void freeGlobalDynamicGrid(short ***grid) {

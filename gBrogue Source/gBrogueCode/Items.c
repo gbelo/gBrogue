@@ -523,11 +523,11 @@ void populateItems(short upstairsX, short upstairsY) {
 		rogue.vitalityPotionFrequency += 25; // gsr
 		rogue.enchantScrollFrequency += 30;
 		numberOfItems = 3;
-		while (rand_percent(50)) {//while (rand_percent(60)) {
+		while (rand_percent(40)) {//(60)) {
 			numberOfItems++;
 		}
 		if (rogue.depthLevel <= 2) {
-			numberOfItems += 3; // extra items to kickstart your career as a rogue
+			numberOfItems += 1;//3; // extra items to kickstart your career as a rogue
 		} else if (rogue.depthLevel <= 4) {
 			numberOfItems++; // and more here
 		} else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL - 1)
@@ -878,9 +878,9 @@ void stackItems(item *newItem, item *oldItem) {
 item *addItemToPack(item *theItem) {
 	item *previousItem, *tempItem;
 	char itemLetter;
-
 	// Can the item stack with another in the inventory?
-	if (theItem->category & (FOOD|POTION|SCROLL|GEM)) {
+//	if (theItem->category & (FOOD|POTION|SCROLL|GEM)) { // lumenstones handled below -- gsr
+    if (theItem->category & (FOOD|POTION|SCROLL)) {
 		for (tempItem = packItems->nextItem; tempItem != NULL; tempItem = tempItem->nextItem) {
 			if (theItem->category == tempItem->category && theItem->kind == tempItem->kind) {
 				// We found a match!
@@ -890,7 +890,22 @@ item *addItemToPack(item *theItem) {
 				return tempItem;
 			}
 		}
-	} else if (theItem->category & WEAPON && theItem->quiverNumber > 0) {
+    }
+    // Make same-floor lumenstones stack -- gsr
+    else if (theItem->category & GEM) {
+		for (tempItem = packItems->nextItem; tempItem != NULL; tempItem = tempItem->nextItem) {
+			if (theItem->originDepth == tempItem->originDepth) {
+				// We found a match!
+                stackItems(tempItem, theItem);
+
+				// Pass back the incremented (old) item. No need to add it to the pack since it's already there.
+				return tempItem;
+			}
+		}
+	}
+
+
+	else if (theItem->category & WEAPON && theItem->quiverNumber > 0) {
 		for (tempItem = packItems->nextItem; tempItem != NULL; tempItem = tempItem->nextItem) {
 			if (theItem->category == tempItem->category && theItem->kind == tempItem->kind
 				&& theItem->quiverNumber == tempItem->quiverNumber) {
@@ -1570,7 +1585,14 @@ void itemName(item *theItem, char *root, boolean includeDetails, boolean include
 			sprintf(root, "%sAmulet%s of Yendor%s", yellowEscapeSequence, pluralization, baseEscapeSequence);
 			break;
 		case GEM:
+		    // Stack lumenstones from separate floors separately -- gsr
+            if (includeDetails && theItem->originDepth > 0)
+                sprintf(root, "%slumenstone%s%s%s from depth %i", yellowEscapeSequence, pluralization, baseEscapeSequence, grayEscapeSequence, theItem->originDepth);
+			else
+			    sprintf(root, "%slumenstone%s%s", yellowEscapeSequence, pluralization, baseEscapeSequence);
+		    /*
 			sprintf(root, "%slumenstone%s%s", yellowEscapeSequence, pluralization, baseEscapeSequence);
+			*/
 			break;
 		case KEY:
 			if (includeDetails && theItem->originDepth > 0 && theItem->originDepth != rogue.depthLevel) {
@@ -1593,7 +1615,7 @@ void itemName(item *theItem, char *root, boolean includeDetails, boolean include
 
 	if (includeArticle) {
 
-        // Darts and some other items stack. -- gsr
+        // Darts and some other items stack. This gets across that they don't all consume inventory slots. -- gsr
         if (theItem->quiverNumber != 0 && theItem->quantity > 1)
         {
             //sprintf(buf, "bundle of %s", root);

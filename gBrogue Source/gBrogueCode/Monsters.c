@@ -1138,6 +1138,10 @@ void teleport(creature *monst, short x, short y, boolean respectTerrainAvoidance
 		chooseNewWanderDestination(monst);
 	}
 	refreshDungeonCell(monst->xLoc, monst->yLoc);
+
+    // Note new position -- just a useful thing -- gsr
+    createFlare(monst->xLoc, monst->yLoc, GENERIC_FLASH_LIGHT);
+
 }
 
 boolean isValidWanderDestination(creature *monst, short wpIndex) {

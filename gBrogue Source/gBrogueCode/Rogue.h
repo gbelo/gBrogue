@@ -41,11 +41,11 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "17.4.20"
+#define BROGUE_VERSION_STRING "17.04.28"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
-#define DEBUGGING						1
+#define DEBUGGING						0
 
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.
@@ -1288,7 +1288,7 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 #define staffDamage(enchant)				(randClumpedRange(staffDamageLow(enchant), staffDamageHigh(enchant), 1 + (enchant) / 3))
 #define staffPoison(enchant)				((int) (5 * pow(1.3, (double) (enchant) - 2) + FLOAT_FUDGE))
 #define staffBlinkDistance(enchant)			((int) ((enchant) * 2 + 2 + FLOAT_FUDGE))
-#define staffTunnelDistance(enchant)		((int) ((enchant) * 2 + 2 + FLOAT_FUDGE))
+#define staffTunnelDistance(enchant)		((int) ((enchant) * 1 + 3 + FLOAT_FUDGE))
 #define staffHasteDuration(enchant)			((int) (2 + (enchant) * 4 + FLOAT_FUDGE))
 #define staffBladeCount(enchant)			((int) ((enchant) * 3 / 2 + FLOAT_FUDGE))
 #define staffDiscordDuration(enchant)		((int) ((enchant) * 4 + FLOAT_FUDGE))
