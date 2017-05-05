@@ -2,74 +2,29 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
-	<File name="PlatformCode\term.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="PlatformCode\curses-platform.c" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1007" topLine="30" />
+			<Cursor1 position="1361" topLine="38" />
+		</Cursor>
+	</File>
+	<File name="libtcod-1.5.1\include\parser.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3158" topLine="55" />
+		</Cursor>
+	</File>
+	<File name="PlatformCode\tcod-platform.c" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="855" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="gBrogueCode\Architect.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="55155" topLine="1459" />
 		</Cursor>
 	</File>
 	<File name="SDL-1.2.14\include\SDL\SDL_opengl.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="227242" topLine="4670" />
-		</Cursor>
-	</File>
-	<File name="gBrogueCode\Monsters.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="136812" topLine="3697" />
-		</Cursor>
-	</File>
-	<File name="SDL-1.2.14\include\SDL\SDL_platform.h" open="0" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2023" topLine="61" />
-		</Cursor>
-	</File>
-	<File name="gBrogueCode\Globals.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="268072" topLine="2609" />
-		</Cursor>
-	</File>
-	<File name="SDL-1.2.14\include\SDL\SDL_audio.h" open="0" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2699" topLine="64" />
-		</Cursor>
-	</File>
-	<File name="gBrogueCode\Architect.c" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="85016" topLine="2237" />
-		</Cursor>
-	</File>
-	<File name="gBrogueCode\Grid.c" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="11682" topLine="372" />
-		</Cursor>
-	</File>
-	<File name="gBrogueCode\IO.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="130939" topLine="3812" />
-		</Cursor>
-	</File>
-	<File name="gBrogueCode\Rogue.h" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="77619" topLine="2454" />
-		</Cursor>
-	</File>
-	<File name="SDL-1.2.14\include\SDL\SDL_keysym.h" open="0" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1864" topLine="33" />
-		</Cursor>
-	</File>
-	<File name="SDL-1.2.14\include\SDL\SDL_stdinc.h" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2030" topLine="65" />
-		</Cursor>
-	</File>
-	<File name="SDL-1.2.14\include\SDL\SDL_mixer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="578" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="SDL-1.2.14\include\SDL\SDL_syswm.h" open="0" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4111" topLine="124" />
+			<Cursor1 position="12352" topLine="274" />
 		</Cursor>
 	</File>
 	<File name="SDL-1.2.14\include\SDL\SDL_config.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -77,24 +32,114 @@
 			<Cursor1 position="4425" topLine="150" />
 		</Cursor>
 	</File>
-	<File name="PlatformCode\platformdependent.c" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="gBrogueCode\MainMenu.c" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="21863" topLine="622" />
+		</Cursor>
+	</File>
+	<File name="SDL-1.2.14\include\SDL\SDL_keysym.h" open="0" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1864" topLine="33" />
+		</Cursor>
+	</File>
+	<File name="gBrogueCode\Light.c" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6943" topLine="232" />
+		</Cursor>
+	</File>
+	<File name="gBrogueCode\RogueMain.c" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="44697" topLine="1333" />
+		</Cursor>
+	</File>
+	<File name="gBrogueCode\Items.c" open="1" top="1" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="56178" topLine="1562" />
+		</Cursor>
+	</File>
+	<File name="SDL-1.2.14\include\SDL\SDL_endian.h" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5013" topLine="159" />
+		</Cursor>
+	</File>
+	<File name="gBrogueCode\IO.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="88545" topLine="2462" />
+		</Cursor>
+	</File>
+	<File name="gBrogueCode\Time.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="35631" topLine="973" />
+		</Cursor>
+	</File>
+	<File name="gBrogueCode\Monsters.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="91672" topLine="2663" />
+		</Cursor>
+	</File>
+	<File name="gBrogueCode\Globals.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="264930" topLine="2594" />
+		</Cursor>
+	</File>
+	<File name="gBrogueCode\Movement.c" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="67859" topLine="2055" />
+		</Cursor>
+	</File>
+	<File name="gBrogueCode\Grid.c" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="11682" topLine="372" />
+		</Cursor>
+	</File>
+	<File name="SDL-1.2.14\include\SDL\SDL_mixer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="578" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="PlatformCode\platformdependent.c" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="6487" topLine="232" />
 		</Cursor>
 	</File>
-	<File name="gBrogueCode\Combat.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="SDL-1.2.14\include\SDL\SDL_platform.h" open="0" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="59534" topLine="1608" />
+			<Cursor1 position="2023" topLine="61" />
 		</Cursor>
 	</File>
-	<File name="PlatformCode\curses-platform.c" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="gBrogueCode\Recordings.c" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1361" topLine="38" />
+			<Cursor1 position="16440" topLine="624" />
 		</Cursor>
 	</File>
-	<File name="gBrogueCode\Light.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="SDL-1.2.14\include\SDL\SDL_stdinc.h" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="6943" topLine="232" />
+			<Cursor1 position="2030" topLine="65" />
+		</Cursor>
+	</File>
+	<File name="gBrogueCode\Rogue.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1527" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="SDL-1.2.14\include\SDL\SDL_syswm.h" open="0" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4111" topLine="124" />
+		</Cursor>
+	</File>
+	<File name="PlatformCode\term.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1007" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="SDL-1.2.14\include\SDL\SDL_audio.h" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4651" topLine="109" />
+		</Cursor>
+	</File>
+	<File name="gBrogueCode\Combat.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6893" topLine="182" />
 		</Cursor>
 	</File>
 	<File name="PlatformCode\PlatformDefines.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -102,34 +147,9 @@
 			<Cursor1 position="125" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="gBrogueCode\Movement.c" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5927" topLine="183" />
-		</Cursor>
-	</File>
-	<File name="gBrogueCode\Items.c" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="27951" topLine="792" />
-		</Cursor>
-	</File>
 	<File name="SDL-1.2.14\include\SDL\SDL_video.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="16283" topLine="420" />
-		</Cursor>
-	</File>
-	<File name="gBrogueCode\Recordings.c" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="16440" topLine="624" />
-		</Cursor>
-	</File>
-	<File name="gBrogueCode\RogueMain.c" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="18585" topLine="639" />
-		</Cursor>
-	</File>
-	<File name="gBrogueCode\Time.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="46577" topLine="1298" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

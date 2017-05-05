@@ -1272,7 +1272,7 @@ void victory(boolean superVictory, boolean hasAmulet) {
 	printString(buf, mapToWindowX(60), mapToWindowY(1), &itemMessageColor, &black, dbuf);
 	totalValue += rogue.gold;
 
-	for (i = 4, theItem = packItems->nextItem; theItem != NULL; theItem = theItem->nextItem) {
+	for (i = 6, theItem = packItems->nextItem; theItem != NULL; theItem = theItem->nextItem) {
 		if (theItem->category & GEM) {
 			gemCount += theItem->quantity;
 		}

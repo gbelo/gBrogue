@@ -526,6 +526,9 @@ void populateItems(short upstairsX, short upstairsY) {
 		while (rand_percent(40)) {//(60)) {
 			numberOfItems++;
 		}
+		if (rogue.depthLevel == 1) {
+			numberOfItems += 3;
+		}
 		if (rogue.depthLevel <= 2) {
 			numberOfItems += 1;//3; // extra items to kickstart your career as a rogue
 		} else if (rogue.depthLevel <= 4) {
@@ -879,8 +882,7 @@ item *addItemToPack(item *theItem) {
 	item *previousItem, *tempItem;
 	char itemLetter;
 	// Can the item stack with another in the inventory?
-//	if (theItem->category & (FOOD|POTION|SCROLL|GEM)) { // lumenstones handled below -- gsr
-    if (theItem->category & (FOOD|POTION|SCROLL)) {
+	if (theItem->category & (FOOD|POTION|SCROLL|GEM)) {
 		for (tempItem = packItems->nextItem; tempItem != NULL; tempItem = tempItem->nextItem) {
 			if (theItem->category == tempItem->category && theItem->kind == tempItem->kind) {
 				// We found a match!
@@ -891,18 +893,6 @@ item *addItemToPack(item *theItem) {
 			}
 		}
     }
-    // Make same-floor lumenstones stack -- gsr
-    else if (theItem->category & GEM) {
-		for (tempItem = packItems->nextItem; tempItem != NULL; tempItem = tempItem->nextItem) {
-			if (theItem->originDepth == tempItem->originDepth) {
-				// We found a match!
-                stackItems(tempItem, theItem);
-
-				// Pass back the incremented (old) item. No need to add it to the pack since it's already there.
-				return tempItem;
-			}
-		}
-	}
 
 
 	else if (theItem->category & WEAPON && theItem->quiverNumber > 0) {
@@ -1585,14 +1575,8 @@ void itemName(item *theItem, char *root, boolean includeDetails, boolean include
 			sprintf(root, "%sAmulet%s of Yendor%s", yellowEscapeSequence, pluralization, baseEscapeSequence);
 			break;
 		case GEM:
-		    // Stack lumenstones from separate floors separately -- gsr
-            if (includeDetails && theItem->originDepth > 0)
-                sprintf(root, "%slumenstone%s%s%s from depth %i", yellowEscapeSequence, pluralization, baseEscapeSequence, grayEscapeSequence, theItem->originDepth);
-			else
-			    sprintf(root, "%slumenstone%s%s", yellowEscapeSequence, pluralization, baseEscapeSequence);
-		    /*
 			sprintf(root, "%slumenstone%s%s", yellowEscapeSequence, pluralization, baseEscapeSequence);
-			*/
+
 			break;
 		case KEY:
 			if (includeDetails && theItem->originDepth > 0 && theItem->originDepth != rogue.depthLevel) {
@@ -1738,6 +1722,7 @@ short charmEffectDuration(short charmKind, short enchant) {
         10, // Levitation
         0,  // Shattering
         18, // Guardian
+        0,  // Fear
         0,  // Teleportation
 //        0,  // Recharging
 //        0,  // Negation
@@ -1755,6 +1740,7 @@ short charmEffectDuration(short charmKind, short enchant) {
         25, // Levitation
         0,  // Shattering
         0,  // Guardian
+        0,  // Fear
         0,  // Teleportation
 //        0,  // Recharging
         0,  // Negation
@@ -1777,8 +1763,9 @@ short charmRechargeDelay(short charmKind, short enchant) {
         800,    // Levitation
         2500,   // Shattering
         700,    // Guardian
+        3000,   // Fear
         1000,   // Teleportation
-//        10000,  // Recharging
+        10000,  // Recharging
 //        2500,   // Negation
 
         900,   // Identify
@@ -1794,8 +1781,9 @@ short charmRechargeDelay(short charmKind, short enchant) {
         35, // Levitation
         40, // Shattering
         30, // Guardian
+        30, // Fear
         45, // Teleportation
-//        45, // Recharging
+        45, // Recharging
 //        40, // Negation
 
         40,   // Identify
@@ -2733,6 +2721,14 @@ void itemDetails(char *buf, item *theItem) {
                             charmEffectDuration(theItem->kind, theItem->enchant1 + 1),
                             charmRechargeDelay(theItem->kind, theItem->enchant1 + 1));
                     break;
+
+                // Lifted directly from UnBrogue
+                case CHARM_FEAR:
+                    sprintf(buf2, "\n\nWhen used, the charm will terrify all visible creatures and recharge in %i turns. (If the charm is enchanted, it will recharge in %i turns.)",
+                            charmRechargeDelay(theItem->kind, enchant),
+                            charmRechargeDelay(theItem->kind, enchant + 1));
+                    break;
+
                 case CHARM_SHATTERING:
                     sprintf(buf2, "\n\nWhen used, the charm will dissolve the nearby walls and recharge in %i turns. (If the charm is enchanted, it will recharge in %i turns.)",
                             charmRechargeDelay(theItem->kind, theItem->enchant1),
@@ -4968,7 +4964,7 @@ boolean zap(short originLoc[2], short targetLoc[2], bolt *theBolt, boolean hideD
 			if (cellHasTerrainFlag(x2, y2, (T_OBSTRUCTS_VISION | T_OBSTRUCTS_PASSABILITY))
                 && (projectileReflects(shootingMonst, NULL)
                     || cellHasTMFlag(x2, y2, TM_REFLECTS_BOLTS)
-                    || theBolt->boltEffect == BE_DAMAGE && !alreadyReflected // lightning reflects once now!
+                    || (theBolt->boltEffect == BE_DAMAGE && !alreadyReflected && !cellHasTMFlag(x2, y2, TM_PROMOTES_ON_ELECTRICITY) ) // lightning reflects once now! -- gsr
                     || (theBolt->boltEffect == BE_TUNNELING && (pmap[x2][y2].flags & IMPREGNABLE)))
                 && i < MAX_BOLT_LENGTH - max(DCOLS, DROWS)) {
 
@@ -6474,6 +6470,9 @@ void useCharm(item *theItem) {
         case CHARM_HASTE:
             haste(&player, charmEffectDuration(theItem->kind, theItem->enchant1));
             break;
+        case CHARM_FEAR:
+            causeFear("your charm", false, false);
+        break;
         case CHARM_FIRE_IMMUNITY:
             player.status[STATUS_IMMUNE_TO_FIRE] = player.maxStatus[STATUS_IMMUNE_TO_FIRE] = charmEffectDuration(theItem->kind, theItem->enchant1);
             if (player.status[STATUS_BURNING]) {
@@ -8049,6 +8048,40 @@ unsigned long itemValue(item *theItem) {
 	}
 }
 
+// Directly lifted from UnBrogue by Andrew Doull.
+void causeFear(const char *emitterName, boolean throughWalls, boolean ignoreAllies) {
+    creature *monst;
+    short numberOfMonsters = 0;
+    char buf[DCOLS*3], mName[DCOLS];
+
+    for (monst = monsters->nextCreature; monst != NULL; monst = monst->nextCreature) {
+		if (ignoreAllies && monst->creatureState == MONSTER_ALLY) {
+			continue;
+		}
+        if ((throughWalls || pmap[monst->xLoc][monst->yLoc].flags & IN_FIELD_OF_VIEW)
+            && monst->creatureState != MONSTER_FLEEING
+            && !(monst->info.flags & MONST_INANIMATE)) {
+
+            monst->status[STATUS_MAGICAL_FEAR] = monst->maxStatus[STATUS_MAGICAL_FEAR] = rand_range(150, 225);
+            monst->creatureState = MONSTER_FLEEING;
+            chooseNewWanderDestination(monst);
+            if (canSeeMonster(monst)) {
+                numberOfMonsters++;
+                monsterName(mName, monst, true);
+            }
+        }
+    }
+    if (numberOfMonsters > 1) {
+        sprintf(buf, "%s emits a brilliant flash of red light, and the monsters flee!", emitterName);
+    } else if (numberOfMonsters == 1) {
+        sprintf(buf, "%s emits a brilliant flash of red light, and %s flees!", emitterName, mName);
+    } else {
+        sprintf(buf, "%s emits a brilliant flash of red light!", emitterName);
+    }
+    message(buf, false);
+    colorFlash(&darkRed, 0, IN_FIELD_OF_VIEW, 15, DCOLS, player.xLoc, player.yLoc);
+}
+
 
 // Additional debug functions -- gsr
 // Take a string from the player and try to make an item out of it
@@ -8238,4 +8271,5 @@ void debugWish(char *wishText)
 	}
 	else
         confirmMessages();
+    updateVision(true);
 }

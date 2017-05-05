@@ -41,7 +41,7 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "17.04.28"
+#define BROGUE_VERSION_STRING "17.05.05"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
@@ -925,6 +925,7 @@ enum charmKind {
     CHARM_LEVITATION,
     CHARM_SHATTERING,
     CHARM_GUARDIAN,
+    CHARM_FEAR,
     CHARM_TELEPORTATION,
     CHARM_RECHARGING,
 //    CHARM_NEGATION,
