@@ -871,6 +871,13 @@ boolean playerMoves(short direction) {
 					}
 				}
 
+				// weapon hit effects; TODO -- gsr
+/*
+				if (anyAttackHit)
+                    if (rogue.weapon->flags |= ITEM_ATTACKS_ALL_ADJACENT)
+                        colorFlash(&white, NULL, NULL, 2, 2, player.xLoc, player.yLoc);
+*/
+
                 playerRecoversFromAttacking(anyAttackHit);
 				moveEntrancedMonsters(direction);
 				playerTurnEnded();

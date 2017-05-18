@@ -3728,7 +3728,7 @@ void printInstructionsScreen() {
 		"    ****wandering or sleeping monsters won't notice you. If you stay",
 		"    ****hidden, you can limit combat or shake off creatures pursuing you.",
         "",
-		"  - ****Potions of vitality increase your strength and health, which also",
+		"  - ****Potions of empowerment increase your strength and health, which also",
 		"    ****allows you to wear and wield heavier items without being encumbered",
 		"    ****by them. Scrolls of enchanting will enhance many items, but they",
 		"    ****should be allocated wisely.",
@@ -4236,6 +4236,7 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
         "Invisible",
         "", // STATUS_AGGRAVATING
         "Eating", // gsr
+        "Respirated",
 	};
 
 	if (y >= ROWS - 1) {

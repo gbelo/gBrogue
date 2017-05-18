@@ -1015,11 +1015,13 @@ void populateMonsters() {
         monst->yLoc = loc[1];
         rogue.moloch = monst;
     }
-
+    // Generate a fellow adventurer -- gsr
+    if ((rogue.depthLevel > 10 && rand_percent(2)) || rogue.depthLevel == GUARANTEED_ADVENTURER_LEVEL)
+        generateFellowAdventurer();
 
 
 	for (i=0; i<numberOfMonsters; i++) {
-		spawnHorde(0, -1, -1, (HORDE_IS_SUMMONED | HORDE_MACHINE_ONLY | HORDE_GUARANTEED_FOUND_CAPTIVE), 0); // random horde type, random location
+		spawnHorde(0, -1, -1, (HORDE_IS_SUMMONED | HORDE_MACHINE_ONLY), 0); // random horde type, random location
 	}
 }
 
@@ -1622,6 +1624,12 @@ boolean awareOfTarget(creature *observer, creature *target) {
 	} else if (perceivedDistance <= awareness) {
         // within range but currently unaware
         retval = rand_percent(25);
+
+        // Flash monsters on awareness -- gsr
+        // Modified from https://github.com/sulai/Brogue/commit/b32b97b7edcafe431c3dc64ff0dbdec74335a6bc
+        if (retval && !(observer->creatureState & (MONSTER_ALLY | MONSTER_FLEEING)))
+           flashMonster(observer, &pink, 1000);//flashMonster(observer, &red, 100);
+
     } else {
         retval = false;
     }
@@ -4428,4 +4436,66 @@ void makeIdle(creature *monst) {
             return;
         }
     }
+}
+
+// gsr
+void generateFellowAdventurer()
+{
+    itemTable *theEntry;
+    item *tempItem = initializeItem();
+    short itemKind, i, j, k;
+    creature *monst;
+    short loc[2];
+
+    // Generate near downstairs
+    monst = generateMonster(MK_ADVENTURER, false, false);
+    getQualifyingLocNear(loc, rogue.downLoc[0], rogue.downLoc[1], false, 0,
+                         (T_PATHING_BLOCKER),
+                         (HAS_MONSTER | HAS_ITEM | HAS_UP_STAIRS | HAS_DOWN_STAIRS | IS_IN_MACHINE), false, false);
+    monst->xLoc = loc[0];
+    monst->yLoc = loc[1];
+
+    // He gonna help you out
+    monst->creatureState = MONSTER_ALLY;
+
+    // Let's equip it!
+        // Weapon
+			itemKind = chooseKind(weaponTable, NUMBER_WEAPON_KINDS);
+			theEntry = &weaponTable[itemKind];
+			tempItem->damage = weaponTable[itemKind].range;
+
+			monst->info.damage.lowerBound = tempItem->damage.lowerBound;
+			monst->info.damage.upperBound = tempItem->damage.upperBound;
+			monst->info.damage.clumpFactor = tempItem->damage.clumpFactor;
+
+        // Armor
+			itemKind = chooseKind(armorTable, NUMBER_ARMOR_KINDS);
+			monst->info.defense = randClump(armorTable[itemKind].range);
+
+        // Potions of vitality
+            for (i = 0; i < rogue.depthLevel; i++)
+            {
+                // Found a potion of vitality on this floor...
+                if (rand_percent(75))
+                {
+                    monst->info.maxHP += 10;
+                    monst->info.damage.lowerBound += 1;
+                    monst->info.damage.upperBound += 1;
+                }
+            }
+        // A few "staffs" we've "found"
+            for (i = 0; i < rand_range(0, rogue.depthLevel * 1.5); i++)
+            {
+                j = rand_range(BOLT_LIGHTNING, BOLT_DISCORD);
+                for (k = 0; k <= i; k++)
+                {
+                    if (monst->info.bolts[k] == j)
+                        break;
+                    else
+                        monst->info.bolts[i] = j;
+                }
+            }
+
+    // How beat up are we?
+        monst->currentHP = min(monst->info.maxHP, rand_range(0, 200) * monst->info.maxHP / 100);
 }

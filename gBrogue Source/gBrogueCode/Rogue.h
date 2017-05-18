@@ -41,11 +41,11 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "17.05.05"
+#define BROGUE_VERSION_STRING "17.05.19"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
-#define DEBUGGING						0
+#define DEBUGGING						1
 
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.
@@ -142,6 +142,7 @@
 #define NARROW_LEVEL            13         // special levels -- gsr
 #define BIG_LEVEL               6
 #define MOLOCH_LAIR_LEVEL       DEEPEST_LEVEL - 1
+#define GUARANTEED_ADVENTURER_LEVEL 22
 
 //#define MACHINES_FACTOR         1.0         // use this to adjust machine frequency
 #define MACHINES_FACTOR         1.75         // use this to adjust machine frequency // --gsr
@@ -297,6 +298,8 @@
 #define TOTEM_CHAR		'0'
 #define TURRET_CHAR		'*'
 #define UNICORN_CHAR    'U'
+#define PET_DOG_CHAR    'd' // gsr
+#define MOLOCH_CHAR     '&' // gsr
 #define KEY_CHAR		'-'
 #define ELECTRIC_CRYSTAL_CHAR '$'
 
@@ -624,6 +627,11 @@ enum tileType {
     MUD_WALL,
     MUD_DOORWAY,
 
+    OGRE_FLOOR,
+    OGRE_WALL,
+    OGRE_DOORWAY,
+    TABLE,
+
 	NUMBER_TILETYPES,
 };
 
@@ -825,6 +833,8 @@ enum armorEnchants {
 	A_REFLECTION,
     A_RESPIRATION,
     A_DAMPENING,
+
+	A_FORCE,
 	A_BURDEN,
 	NUMBER_GOOD_ARMOR_ENCHANT_KINDS = A_BURDEN,
 	A_VULNERABILITY,
@@ -917,7 +927,7 @@ enum ringKind {
 
 enum charmKind {
 	CHARM_HEALTH,
-//    CHARM_PROTECTION,
+    CHARM_PROTECTION,
     CHARM_HASTE,
     CHARM_FIRE_IMMUNITY,
     CHARM_INVISIBILITY,
@@ -960,6 +970,8 @@ enum scrollKind {
 enum monsterTypes {
 	MK_YOU,
 	MK_PET_DOG,
+	MK_ADVENTURER,
+
 	MK_RAT,
 	MK_KOBOLD,
 	MK_JACKAL,
@@ -983,6 +995,7 @@ enum monsterTypes {
 	MK_CENTIPEDE,
 	MK_OGRE,
 	MK_LEPRECHAUN,
+	MK_INK_EEL,
 	MK_BOG_MONSTER,
 	MK_OGRE_TOTEM,
 	MK_SPIDER,
@@ -1298,8 +1311,8 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 
 #define ringWisdomMultiplier(enchant)       (int) (10 * pow(1.3, min(27, (enchant))) + FLOAT_FUDGE)
 #define ringPropulsionBonus(enchant)        ((int) (5 * (enchant)))
-#define ringSpeedBonus(enchant)             ((int) (2 * (enchant)))
-
+#define ringSpeedBonus(enchant)             ((int) (1 * (enchant)))
+#define ringStealthBonus(enchant)           ((int) ((enchant)))
 
 #define charmHealing(enchant)               ((int) (clamp(20 * (enchant), 0, 100) + FLOAT_FUDGE))
 #define charmProtection(enchant)			((int) (150 * pow(1.35, (double) (enchant) - 1) + FLOAT_FUDGE))
@@ -1311,7 +1324,8 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 //#define wandDominate(monst)					(((monst)->currentHP * 5 < (monst)->info.maxHP) ? 100 : \
 //											max(0, 100 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP))
 // gsr
-#define wandDominate(monst)					max(0, 50 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP)
+#define wandDominate(monst)					max(0, 90 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP)
+#define armorForceDistance(enchant)		    (max(1, (((int) (enchant + FLOAT_FUDGE)) + 1))) // Depends on definition of staffBlinkDistance() above.
 
 
 
@@ -1780,6 +1794,7 @@ enum dungeonProfileTypes {
 
     DP_GOBLIN_WARREN,
     DP_SENTINEL_SANCTUARY,
+    DP_OGRE_ARMORY, // gsr
 
     NUMBER_DUNGEON_PROFILES,
 };
@@ -1836,6 +1851,7 @@ enum boltEffects {
     BE_HEALING,
     BE_HASTE,
     BE_SHIELDING,
+    BE_VOID, // gsr
 };
 
 enum boltFlags {
@@ -2025,7 +2041,6 @@ enum hordeFlags {
     HORDE_NEVER_OOD                 = Fl(15),   // Horde cannot be generated out of depth
     HORDE_MACHINE_THIEF             = Fl(16),   // monsters that can be generated in the key thief area machines
     HORDE_MACHINE_GOBLIN_WARREN     = Fl(17),   // can spawn in goblin warrens
-    HORDE_GUARANTEED_FOUND_CAPTIVE  = Fl(18),   // captive on first level; should be unique -- gsr
 
 
 	HORDE_MACHINE_ONLY				= (HORDE_MACHINE_BOSS | HORDE_MACHINE_WATER_MONSTER
@@ -2096,8 +2111,9 @@ enum monsterAbilityFlags {
     MA_ATTACKS_ALL_ADJACENT         = Fl(13),   // monster attacks penetrate one layer of enemies, like a spear
     MA_ATTACKS_EXTEND               = Fl(14),   // monster attacks from a distance in a cardinal direction, like a whip
     MA_AVOID_CORRIDORS              = Fl(15),   // monster will avoid corridors when hunting
+    MA_HIT_BLINDS       			= Fl(16),	// monster blinds (darkness) character
 
-	SPECIAL_HIT						= (MA_HIT_HALLUCINATE | MA_HIT_STEAL_FLEE | MA_HIT_DEGRADE_ARMOR | MA_POISONS | MA_TRANSFERENCE | MA_CAUSES_WEAKNESS),
+	SPECIAL_HIT						= (MA_HIT_HALLUCINATE | MA_HIT_STEAL_FLEE | MA_HIT_DEGRADE_ARMOR | MA_HIT_BLINDS | MA_POISONS | MA_TRANSFERENCE | MA_CAUSES_WEAKNESS),
 	LEARNABLE_ABILITIES				= (MA_TRANSFERENCE | MA_CAUSES_WEAKNESS),
 
     MA_NON_NEGATABLE_ABILITIES      = (MA_ATTACKS_PENETRATE | MA_ATTACKS_ALL_ADJACENT),
@@ -2551,6 +2567,7 @@ enum machineTypes {
 	MT_REWARD_ASTRAL_PORTAL,
     MT_REWARD_GOBLIN_WARREN,
     MT_REWARD_SENTINEL_SANCTUARY,
+    MT_REWARD_OGRE_TOTEM,
 
     // Amulet holder:
     MT_AMULET_AREA,
