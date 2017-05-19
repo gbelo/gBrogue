@@ -321,8 +321,6 @@ void applyInstantTileEffectsToCreature(creature *monst) {
 		}
 	}
 
-
-
     // Toxic gases!
     // If it's the player, and he's wearing armor of respiration, then no effect from toxic gases.
     if (monst == &player
@@ -334,8 +332,7 @@ void applyInstantTileEffectsToCreature(creature *monst) {
             message("Your armor trembles and a pocket of clean air swirls around you.", false);
             autoIdentify(rogue.armor);
         }
-    }
-    else {
+    } else {
 
         // zombie gas
         if (cellHasTerrainFlag(*x, *y, T_CAUSES_NAUSEA)
@@ -2398,13 +2395,6 @@ void playerTurnEnded() {
 								playerCanDirectlySee(monst->xLoc, monst->yLoc) ? "see" : "sense",
 								(isVowelish(buf2) ? "n" : ""),
 								buf2);
-
-
-                        // Flash monsters on awareness -- gsr
-                        // Modified from https://github.com/sulai/Brogue/commit/b32b97b7edcafe431c3dc64ff0dbdec74335a6bc
-                        flashMonster(monst, &pink, 1000);//flashMonster(observer, &red, 100);
-                        //colorFlash(&magicMapFlashColor, 0, 0, 1, 1, monst->xLoc, monst->yLoc);
-
 						if (rogue.cautiousMode) {
 							strcat(buf, ".");
 							message(buf, true);

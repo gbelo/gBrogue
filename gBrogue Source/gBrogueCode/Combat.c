@@ -389,17 +389,6 @@ void specialHit(creature *attacker, creature *defender, short damage) {
 			player.status[STATUS_HALLUCINATING] += 20;
 			player.maxStatus[STATUS_HALLUCINATING] = max(player.maxStatus[STATUS_HALLUCINATING], player.status[STATUS_HALLUCINATING]);
 		}
-		// gsr
-		if (attacker->info.abilityFlags & MA_HIT_BLINDS) {
-			if (!player.status[STATUS_DARKNESS]) {
-				combatMessage("you are blinded", 0);
-			}
-			if (!player.status[STATUS_DARKNESS]) {
-				player.maxStatus[STATUS_DARKNESS] = 0;
-			}
-			player.status[STATUS_DARKNESS] += 20;
-			player.maxStatus[STATUS_DARKNESS] = max(player.maxStatus[STATUS_DARKNESS], player.status[STATUS_DARKNESS]);
-		}
 
 		if (attacker->info.abilityFlags & MA_HIT_STEAL_FLEE
 			&& !(attacker->carriedItem)
@@ -525,7 +514,6 @@ short runicWeaponChance(item *theItem, boolean customEnchantLevel, float enchant
 	return chance;
 }
 
-//boolean forceWeaponHit(creature *defender, item *theItem) {
 boolean forceWeaponHit(creature *defender, item *theItem) {
 	short oldLoc[2], newLoc[2], forceDamage;
 	char buf[DCOLS*3], buf2[COLS], monstName[DCOLS];
@@ -542,21 +530,17 @@ boolean forceWeaponHit(creature *defender, item *theItem) {
     if (canDirectlySeeMonster(defender)
         && !cellHasTerrainFlag(newLoc[0], newLoc[1], T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION)
         && !(pmap[newLoc[0]][newLoc[1]].flags & (HAS_MONSTER | HAS_PLAYER))) {
-//        sprintf(buf, "you launch %s backward with the force of your blow", monstName);
-        sprintf(buf, "%s is launched backward upon impact", monstName); // don't discriminate against armor of force -- gsr
+        sprintf(buf, "you launch %s backward with the force of your blow", monstName);
         buf[DCOLS] = '\0';
         combatMessage(buf, messageColorFromVictim(defender));
         autoID = true;
     }
     theBolt = boltCatalog[BOLT_BLINKING];
-    theBolt.magnitude = netEnchant(theItem) + FLOAT_FUDGE;
+    theBolt.magnitude = max(1, netEnchant(theItem) + FLOAT_FUDGE);
     zap(oldLoc, newLoc, &theBolt, false);
     if (!(defender->bookkeepingFlags & MB_IS_DYING)
         && distanceBetween(oldLoc[0], oldLoc[1], defender->xLoc, defender->yLoc) > 0
-        &&
-            (((theItem->category & WEAPON) && distanceBetween(oldLoc[0], oldLoc[1], defender->xLoc, defender->yLoc) < weaponForceDistance(netEnchant(theItem))) ||
-            ((theItem->category & ARMOR) && distanceBetween(oldLoc[0], oldLoc[1], defender->xLoc, defender->yLoc) < armorForceDistance(netEnchant(theItem))))
-        ) {
+        && distanceBetween(oldLoc[0], oldLoc[1], defender->xLoc, defender->yLoc) < weaponForceDistance(netEnchant(theItem))) {
 
         if (pmap[defender->xLoc + newLoc[0] - oldLoc[0]][defender->yLoc + newLoc[1] - oldLoc[1]].flags & (HAS_MONSTER | HAS_PLAYER)) {
             otherMonster = monsterAtLoc(defender->xLoc + newLoc[0] - oldLoc[0], defender->yLoc + newLoc[1] - oldLoc[1]);
@@ -989,10 +973,6 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
 				}
 			}
 			break;
-        case A_FORCE:
-            if (rand_percent(armorReprisalPercent(enchant)))
-                runicDiscovered = forceWeaponHit(attacker, rogue.armor);
-            break;
 		case A_IMMUNITY:
 			if (monsterIsInClass(attacker, rogue.armor->vorpalEnemy)) {
 				*damage = 0;
@@ -1142,11 +1122,11 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
                 damage *= 3; // Treble damage for general sneak attacks.
             }
 		}
-/* moved below -- gsr
+
 		if (defender == &player && rogue.armor && (rogue.armor->flags & ITEM_RUNIC)) {
 			applyArmorRunicEffect(armorRunicString, attacker, &damage, true);
 		}
-*/
+
         if (attacker == &player
             && rogue.reaping
             && !(defender->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE))) {
@@ -1240,11 +1220,6 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
 					strengthCheck(rogue.armor);
 				}
 			}
-		}
-
-        // moved from above -- gsr
-		if (defender == &player && rogue.armor && (rogue.armor->flags & ITEM_RUNIC)) {
-			applyArmorRunicEffect(armorRunicString, attacker, &damage, true);
 		}
 
 		moralAttack(attacker, defender);

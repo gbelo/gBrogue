@@ -2084,10 +2084,10 @@ void designCustomChunkyRoom(short **grid, short minChunkCount, short maxChunkCou
     short chunkCount = rand_range(minChunkCount, maxChunkCount);
     fillGrid(grid, 0);
     drawCircleOnGrid(grid, DCOLS/2, DROWS/2, radius, 1);
-    minX = DCOLS/2 - radius + 2;
-    maxX = DCOLS/2 + radius - 2;
-    minY = DROWS/2 - radius + 2;
-    maxY = DROWS/2 + radius - 2;
+    minX = DCOLS/2 - radius/2;
+    maxX = DCOLS/2 + radius/2;
+    minY = DROWS/2 - radius/5;
+    maxY = DROWS/2 + radius/5;
 
     for (i=0; i<chunkCount;) {
         x = rand_range(minX, maxX);

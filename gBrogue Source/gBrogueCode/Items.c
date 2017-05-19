@@ -183,7 +183,7 @@ item *makeItemInto(item *theItem, unsigned long itemCategory, short itemKind) {
 					if (rand_percent(33)) { // give it a bad runic
 						theItem->enchant2 = rand_range(NUMBER_GOOD_WEAPON_ENCHANT_KINDS, NUMBER_WEAPON_RUNIC_KINDS - 1);
 						theItem->flags |= ITEM_RUNIC;
-					theItem->flags |= ITEM_RUNIC_HINTED; // we know when items have runics, but not which runic.. -- gsr
+						theItem->flags |= ITEM_RUNIC_HINTED; // GSR -- we know when items have runics, but not which runic..
 					}
 				} else if (rand_range(3, 10)
                            * ((theItem->flags & ITEM_ATTACKS_HIT_SLOWLY) ? 2 : 1)
@@ -192,7 +192,7 @@ item *makeItemInto(item *theItem, unsigned long itemCategory, short itemKind) {
 					// give it a good runic; lower damage items are more likely to be runic
 					theItem->enchant2 = rand_range(0, NUMBER_GOOD_WEAPON_ENCHANT_KINDS - 1);
 					theItem->flags |= ITEM_RUNIC;
-					theItem->flags |= ITEM_RUNIC_HINTED; // we know when items have runics, but not which runic.. -- gsr
+					theItem->flags |= ITEM_RUNIC_HINTED; // GSR -- we know when items have runics, but not which runic..
 					if (theItem->enchant2 == W_SLAYING) {
 						theItem->vorpalEnemy = chooseVorpalEnemy();
 					}
@@ -233,12 +233,10 @@ item *makeItemInto(item *theItem, unsigned long itemCategory, short itemKind) {
 					if (rand_percent(33)) { // give it a bad runic
 						theItem->enchant2 = rand_range(NUMBER_GOOD_ARMOR_ENCHANT_KINDS, NUMBER_ARMOR_ENCHANT_KINDS - 1);
 						theItem->flags |= ITEM_RUNIC;
-                        theItem->flags |= ITEM_RUNIC_HINTED; // we know when items have runics, but not which runic.. -- gsr
 					}
 				} else if (rand_range(0, 95) > theItem->armor) { // give it a good runic
 					theItem->enchant2 = rand_range(0, NUMBER_GOOD_ARMOR_ENCHANT_KINDS - 1);
 					theItem->flags |= ITEM_RUNIC;
-                    theItem->flags |= ITEM_RUNIC_HINTED; // we know when items have runics, but not which runic.. -- gsr
 					if (theItem->enchant2 == A_IMMUNITY) {
 						theItem->vorpalEnemy = chooseVorpalEnemy();
 					}
@@ -1874,8 +1872,8 @@ void itemDetails(char *buf, item *theItem) {
 		"the enemy will die instantly",
 		"the enemy will be paralyzed",
 		"[multiplicity]", // never used
-//		"the enemy will be slowed",
-//		"the enemy will be confused",
+		"the enemy will be slowed",
+		"the enemy will be confused",
         "the enemy will be flung",
 		"[slaying]", // never used
 		"the enemy will be healed",
@@ -2327,21 +2325,6 @@ void itemDetails(char *buf, item *theItem) {
                                     strcpy(buf2, "It will reduce the damage of inbound attacks by a random amount determined by its enchantment level. ");
                                 }
 								break;
-                            case A_FORCE:
-                                if (theItem->flags & ITEM_IDENTIFIED) {
-
-                                    sprintf(buf2, "Any enemy that strikes you will have a %i%% chance to be launched up to %i spaces backward. If the enemy hits an obstruction, it (and any monster it hits) will take damage in proportion to the distance it flew. (If the %s is enchanted, it will have a %i%% chance to be launched up to %i spaces.)",
-                                            armorReprisalPercent(enchant),
-                                            weaponForceDistance(enchant),
-                                            theName,
-                                            armorReprisalPercent((float) (enchant + enchantIncrement(theItem))),
-                                            weaponForceDistance((float) (enchant + enchantIncrement(theItem)))
-                                            );
-                                } else {
-                                    strcpy(buf2, "Any enemy that strikes you will have a chance to be launched backward. If the enemy hits an obstruction, it (and any monster it hits) will take damage in proportion to the distance it flew.");
-                                }
-
-                                break;
 							case A_REPRISAL:
                                 if (theItem->flags & ITEM_IDENTIFIED) {
                                     sprintf(buf2, "Any enemy that attacks you will itself be wounded by %i%% of the damage that it inflicts. (If the %s is enchanted, this percentage will increase to %i%%.) ",
@@ -2606,18 +2589,6 @@ void itemDetails(char *buf, item *theItem) {
                             }
                             strcat(buf, buf2);
                             break;
-                        case RING_STEALTH:
-                            if (theItem->enchant1 > 0) {
-                                sprintf(buf2, "\n\nThis ring will %s your stealth range by %i, %smaking it %s for creatures to detect you. (If the ring is enchanted, it will instead be %s by %i.)",
-                                    (theItem->enchant1 >= 0 ? "decrease" : "increase"),
-                                    ringStealthBonus(abs(theItem->enchant1)),
-                                    (theItem->enchant1 >= 0 ? "to a minimum of 2, " : ""),
-                                    (theItem->enchant1 >= 0 ? "more difficult" : "easier"),
-                                    (theItem->enchant1 >= 0 ? "decreased" : "increased"),
-                                    ringStealthBonus(abs(theItem->enchant1 + 1)) );
-                            }
-                            strcat(buf, buf2);
-                            break;
                         case RING_REGENERATION:
                             sprintf(buf2, "\n\nWith this ring equipped, you will regenerate all of your health in %li turns (instead of %li). (If the ring is enchanted, this will decrease to %li turns.)",
                                     (long) (turnsForFullRegen(theItem->enchant1) / 1000),
@@ -2708,13 +2679,13 @@ void itemDetails(char *buf, item *theItem) {
                             charmHealing(theItem->enchant1 + 1),
                             charmRechargeDelay(theItem->kind, theItem->enchant1 + 1));
                     break;
-                case CHARM_PROTECTION:
+/*                case CHARM_PROTECTION:
                     sprintf(buf2, "\n\nWhen used, the charm will shield you for up to 20 turns against up to %i damage and recharge in %i turns. (If the charm is enchanted, it will block up to %i damage and recharge in %i turns.)",
                             charmProtection(theItem->enchant1) / 10,
                             charmRechargeDelay(theItem->kind, theItem->enchant1),
                             charmProtection(theItem->enchant1 + 1) / 10,
                             charmRechargeDelay(theItem->kind, theItem->enchant1 + 1));
-                    break;
+                    break;*/
                 case CHARM_HASTE:
                     sprintf(buf2, "\n\nWhen used, the charm will haste you for %i turns and recharge in %i turns. (If the charm is enchanted, the haste will last %i turns and it will recharge in %i turns.)",
                             charmEffectDuration(theItem->kind, theItem->enchant1),
@@ -4115,28 +4086,22 @@ void discordBlast(const char *emitterName, const short distance) {
     }
 }
 
-//void crystalize(short radius) {
-// Arguments are obvious, except for immediateErase. If that's set to true, then we're blowing a hole rather than shattering.
-void crystalize(short x, short y, short radius, boolean immediateErase) { // gsr
+void crystalize(short radius) {
 	extern color forceFieldColor;
 	short i, j;
 	creature *monst;
 
 	for (i=0; i<DCOLS; i++) {
 		for (j=0; j < DROWS; j++) {
-			//if ((player.xLoc - i) * (player.xLoc - i) + (player.yLoc - j) * (player.yLoc - j) <= radius * radius
-            if ((x - i) * (x - i) + (y - j) * (y - j) <= radius * radius // gsr
+			if ((player.xLoc - i) * (player.xLoc - i) + (player.yLoc - j) * (player.yLoc - j) <= radius * radius
 				&& !(pmap[i][j].flags & IMPREGNABLE)) {
 
 				if (i == 0 || i == DCOLS - 1 || j == 0 || j == DROWS - 1) {
 					pmap[i][j].layers[DUNGEON] = CRYSTAL_WALL; // don't dissolve the boundary walls
 				} else if (tileCatalog[pmap[i][j].layers[DUNGEON]].flags & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION)) {
 
-                    if (!immediateErase)
-                        pmap[i][j].layers[DUNGEON] = FORCEFIELD;
-                    else
-                        pmap[i][j].layers[DUNGEON] = NOTHING;
-                    //spawnDungeonFeature(i, j, &dungeonFeatureCatalog[DF_SHATTERING_SPELL], true, false);
+					pmap[i][j].layers[DUNGEON] = FORCEFIELD;
+                    spawnDungeonFeature(i, j, &dungeonFeatureCatalog[DF_SHATTERING_SPELL], true, false);
 
 					if (pmap[i][j].flags & HAS_MONSTER) {
 						monst = monsterAtLoc(i, j);
@@ -4151,8 +4116,7 @@ void crystalize(short x, short y, short radius, boolean immediateErase) { // gsr
 		}
 	}
 	updateVision(false);
-	//colorFlash(&forceFieldColor, 0, 0, radius, radius, player.xLoc, player.yLoc);
-	colorFlash(&forceFieldColor, 0, 0, radius, radius, x, y);
+	colorFlash(&forceFieldColor, 0, 0, radius, radius, player.xLoc, player.yLoc);
 	displayLevel();
 	refreshSideBar(-1, -1, false);
 }
@@ -4995,8 +4959,6 @@ boolean zap(short originLoc[2], short targetLoc[2], bolt *theBolt, boolean hideD
 		if (i + 1 < numCells
             && !(theBolt->flags & BF_NEVER_REFLECTS)) {
 
-            autoID = true; // Only lightning reflects...
-
             x2 = listOfCoordinates[i+1][0];
             y2 = listOfCoordinates[i+1][1];
 			if (cellHasTerrainFlag(x2, y2, (T_OBSTRUCTS_VISION | T_OBSTRUCTS_PASSABILITY))
@@ -5767,7 +5729,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 	uchar displayChar;
 	color foreColor, backColor, multColor;
 	short dropLoc[2];
-	boolean hitSomethingSolid = false, fastForward = false, hadEffect = false, hitMonsterAtSpot = false;
+	boolean hitSomethingSolid = false, fastForward = false, hadEffect = false;
     enum dungeonLayers layer;
 
     bolt theBolt; // gsr
@@ -5777,7 +5739,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
     char monstName[DCOLS];
 
     short dx, dy;
-    short telepathyRadius = 10;
+    short telepathyRadius = 6;
     short lavaRetractRadius = 3;
 
 
@@ -5917,13 +5879,6 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 
 	if ((theItem->category & POTION) && (hitSomethingSolid || !cellHasTerrainFlag(x, y, T_AUTO_DESCENT))) {
 		if (1) { // Lots of potions do something when thrown now -- gsr
-
-            // C makes us jump through hoops to assign a variable (monst) and compare it to something -- gsr
-            if (monst = monsterAtLoc(x, y))
-                if (monst != &player)
-                    hitMonsterAtSpot = true;
-
-
 			switch (theItem->kind) {
 				case POTION_PARALYSIS:
 					strcpy(buf, "the flask shatters and a cloud of paralytic gas billows out!");
@@ -5932,20 +5887,13 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 					hadEffect = true;
 					break;
                 case POTION_HASTE_SELF:
-				    if (hitMonsterAtSpot)
+				    if (monst = monsterAtLoc(x, y))
                     {
                         flashMonster(monst, boltCatalog[BOLT_HASTE].backColor, 100);
                         monsterName(monstName, monst, true);
                         sprintf(buf, "the flask shatters and %s seems to speed up!", monstName);
                         message(buf, false);
-                        haste(monst, 100);
-                        hadEffect = true;
-                    }
-                    else
-                    {
-                        strcpy(buf, "the flask shatters and produces a tiny ember.");
-                        message(buf, false);
-                        spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_DART_EXPLOSION], true, false);
+                        haste(monst, 50);
                         hadEffect = true;
                     }
 					break;
@@ -5956,7 +5904,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 					hadEffect = true;
 					break;
 				case POTION_INVISIBILITY:
-				    if (hitMonsterAtSpot)
+				    if (monst = monsterAtLoc(x, y))
                     {
                         monsterName(monstName, monst, true);
                         imbueInvisibility(monst, 150);
@@ -5972,7 +5920,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                     }
 					break;
                 case POTION_LEVITATION:
-				    if (hitMonsterAtSpot)
+				    if (monst = monsterAtLoc(x, y))
                     {
                         flashMonster(monst, boltCatalog[BOLT_BLINKING].backColor, 100);
                         monsterName(monstName, monst, true);
@@ -5982,14 +5930,14 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                             sprintf(buf, "the flask shatters and %s floats in the air!", monstName);
                         }
                         else
-                            sprintf(buf, "the flask shatters and %s is lifted upward for a brief moment.", monstName);
+                            sprintf(buf, "the flask shatters and %s is pushed upward for a brief moment.", monstName);
                         monst->bookkeepingFlags &= ~MB_SEIZED; // break free of holding monsters
                         message(buf, false);
                         hadEffect = true;
                     }
                     break;
                 case POTION_FIRE_IMMUNITY:
-				    if (hitMonsterAtSpot)
+				    if (monst = monsterAtLoc(x, y))
                     {
                         flashMonster(monst, boltCatalog[BOLT_FIRE].backColor, 100);
                         monsterName(monstName, monst, true);
@@ -6032,7 +5980,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                         spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_BLOODFLOWER_POD_BURST], true, false);
                     }*/
                 case POTION_VITALITY:
-				    if (hitMonsterAtSpot)
+				    if (monst = monsterAtLoc(x, y))
                     {
                         flashMonster(monst, boltCatalog[BOLT_EMPOWERMENT].backColor, 100);
                         monsterName(monstName, monst, true);
@@ -6042,48 +5990,20 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                     }
                     break;
                 case POTION_TELEPATHY:
-				    if (hitMonsterAtSpot)
+				    if (monst = monsterAtLoc(x, y))
                     {
                         monsterName(monstName, monst, true);
-                        if (! (monst->bookkeepingFlags & MB_TELEPATHICALLY_REVEALED))
-                        {
-                            monst->bookkeepingFlags |= MB_TELEPATHICALLY_REVEALED;
-                            sprintf(buf, "you have telepathically tapped into the mind of %s.", monstName);
-                        }
-                        else
-                            sprintf(buf, "%s glows in a telepathic light.", monstName);
-
+                        sprintf(buf, "you have telepathically tapped into the mind of %s.", monstName);
                         message(buf, false);
+                        monst->bookkeepingFlags |= MB_TELEPATHICALLY_REVEALED;
 
-                        flashMonster(monst, &telepathyMultiplier, 100);
+                        colorFlash(&telepathyMultiplier, 0, 0, 3, 2, x, y);
                         updateVision(true);
-                        hadEffect = true;
-                    }
-                    else
-                    {
-                        // Around a certain radius, magically reveal part of the map
-                        for (i=0; i<DCOLS; i++) {
-                            for (j=0; j<DROWS; j++) {
-                                if (!(pmap[i][j].flags & DISCOVERED) && pmap[i][j].layers[DUNGEON] != GRANITE)
-                                {
-                                    if ((x - i) * (x - i) + (y - j) * (y - j) < telepathyRadius * telepathyRadius) // gsr
-                                    {
-                                        magicMapCell(i, j);
-                                        hadEffect = true;
-                                        pmap[i][j].flags |= TELEPATHIC_VISIBLE;
-                                    }
-                                }
-                            }
-                        }
-                        colorFlash(&telepathyMultiplier, 0, 0, 3, telepathyRadius, x, y);
-                        strcpy(buf, "the flask shatters, and you receive an incomplete yet powerful vision.");
-
-                        message(buf, false);
                         hadEffect = true;
                     }
                     break;
 				case POTION_HEALING:
-				    if (hitMonsterAtSpot)
+				    if (monst = monsterAtLoc(x, y))
                     {
                         flashMonster(monst, boltCatalog[BOLT_HEALING].backColor, 100);
                         monsterName(monstName, monst, true);
@@ -6100,7 +6020,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                     hadEffect = true;
 					break;
 				case POTION_CHAOS:
-				    if (hitMonsterAtSpot)
+				    if (monst = monsterAtLoc(x, y))
                     {
                         if (polymorph(monst))
                         {
@@ -6156,10 +6076,6 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
             alertMonster(monst);
 
         refreshDungeonCell(x, y);
-
-        // Broken glass -- gsr
-        spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_DEWAR_GLASS], true, false);
-
 		return; // potions disappear when they break
 	}
 	if ((theItem->category & WEAPON) && theItem->kind == INCENDIARY_DART) {
@@ -6541,7 +6457,7 @@ void useCharm(item *theItem) {
             heal(&player, charmHealing(theItem->enchant1), false);
             message("You feel much healthier.", false);
             break;
-        case CHARM_PROTECTION:
+/*        case CHARM_PROTECTION:
             if (charmProtection(theItem->enchant1) > player.status[STATUS_SHIELDED]) {
                 player.status[STATUS_SHIELDED] = charmProtection(theItem->enchant1);
             }
@@ -6550,7 +6466,7 @@ void useCharm(item *theItem) {
                 flashMonster(&player, boltCatalog[BOLT_SHIELDING].backColor, 100);
             }
             message("A shimmering shield coalesces around you.", false);
-            break;
+            break;*/
         case CHARM_HASTE:
             haste(&player, charmEffectDuration(theItem->kind, theItem->enchant1));
             break;
@@ -6578,8 +6494,7 @@ void useCharm(item *theItem) {
             break;
         case CHARM_SHATTERING:
             messageWithColor("your charm emits a wave of turquoise light that pierces the nearby walls!", &itemMessageColor, false);
-//            crystalize(charmShattering(theItem->enchant1));
-            crystalize(player.xLoc, player.yLoc, charmShattering(theItem->enchant1), false);
+            crystalize(charmShattering(theItem->enchant1));
             break;
         case CHARM_GUARDIAN:
             messageWithColor("your charm flashes and the form of a mythical guardian coalesces!", &itemMessageColor, false);
@@ -7220,7 +7135,7 @@ void readScroll(item *theItem) {
 			break;
 		case SCROLL_SHATTERING:
 			messageWithColor("the scroll emits a wave of turquoise light that pierces the nearby walls!", &itemMessageColor, false);
-			crystalize(player.xLoc, player.yLoc, 9, false);
+			crystalize(9);
 			break;
         case SCROLL_DISCORD:
             discordBlast("the scroll", DCOLS);
@@ -7868,7 +7783,7 @@ void updateRingBonuses() {
 					rogue.clairvoyance += effectiveRingEnchant(rings[i]);
 					break;
 				case RING_STEALTH:
-					rogue.stealthBonus += ringStealthBonus(effectiveRingEnchant(rings[i]));
+					rogue.stealthBonus += effectiveRingEnchant(rings[i]);
 					break;
 				case RING_REGENERATION:
 					rogue.regenerationBonus += effectiveRingEnchant(rings[i]);
@@ -8062,7 +7977,6 @@ unsigned long itemValue(item *theItem) {
 		900,	//A_REFLECTION,
         750,    //A_RESPIRATION
         500,    //A_DAMPENING
-        600,    //A_FORCE
 		-1000,	//A_BURDEN,
 		-1000,	//A_VULNERABILITY,
         -1000,  //A_IMMOLATION,
@@ -8173,7 +8087,8 @@ void causeFear(const char *emitterName, boolean throughWalls, boolean ignoreAlli
 // Take a string from the player and try to make an item out of it
 void debugWish(char *wishText)
 {
-    item *theItem; int i = 0, j = 0; int quantity = 1; short dropLoc[2];
+
+    item *theItem; int i = 0; int quantity = 1; short dropLoc[2];
     boolean success = false;
     short *enchantment = 0;
 
@@ -8261,15 +8176,6 @@ void debugWish(char *wishText)
                 {
                     theItem = generateItem(WEAPON, i);
                     success = true;
-                    // Let's be fancy and throw in runics
-                    for (j = 0; j < NUMBER_WEAPON_RUNIC_KINDS; j++)
-                    {
-                        if (strstr(buf, weaponRunicNames[j]))
-                        {
-                            theItem->enchant2 = j;
-                            break;
-                        }
-                    }
                 }
             }
             // Couldn't find the weapon, so let's try armors
@@ -8280,17 +8186,8 @@ void debugWish(char *wishText)
                     {
                         theItem = generateItem(ARMOR, i);
                         success = true;
-
-                        // Let's be fancy and throw in runics
-                        for (j = 0; j < NUMBER_ARMOR_ENCHANT_KINDS; j++)
-                        {
-                            if (strstr(buf, armorRunicNames[j]))
-                            {
-                                theItem->enchant2 = j;
-                                break;
-                            }
-                        }
                     }
+
                 }
         }
         // Check for other properties of the wished item
