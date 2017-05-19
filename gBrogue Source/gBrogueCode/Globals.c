@@ -249,6 +249,12 @@ const color ifritColor =			{50,	10,		100,	75,		0,			20,			0,		true};
 const color phoenixColor =			{100,	0,		0,		0,		100,		0,			0,		true};
 const color apparitionColor =		{40,	10,		55,		5,		5,			5,			10,		true};
 
+const color arrowTurretColor =      {50,	40,		0,		40,		40,			5,			20,		true};
+const color sparkTurretColor =      {50,	50,		50,		50,		50,			50,			20,		true};
+const color flameTurretColor =      {50,	25,		0,		100,	50,			0,			20,		true};
+const color dartTurretColor =       {50,	0,		25,		100,	0,			50,			20,		true};
+const color acidTurretColor =       {5,	    75,		5,		100,	5,			50,			20,		true};
+
 // light colors
 color minersLightColor;
 const color minersLightStartColor =	{180,	180,	180,	0,		0,			0,			0,		false};
@@ -556,10 +562,12 @@ const floorTileType tileCatalog[NUMBER_TILETYPES] = {
 	{LIQUID_CHAR,	&fireForeColor,			&lavaBackColor,			40,	0,	DF_OBSIDIAN,	0,			DF_OBSIDIAN_WITH_STEAM,	-1500,	LAVA_LIGHT,		(T_LAVA_INSTA_DEATH), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_ALLOWS_SUBMERGING),		"cooling lava",         "searing heat rises from the lava."},
 
 
-	{FLOOR_CHAR,	&floorForeColor,		&floorBackColor,		90,	0,	DF_PLAIN_FIRE,	0,			0,				0,				SUN_LIGHT,		(0), (TM_STAND_IN_TILE),																			"a patch of sunlight",	"sunlight streams through cracks in the ceiling."},
-	{FLOOR_CHAR,	&floorForeColor,		&floorBackColor,		90,	0,	DF_PLAIN_FIRE,	0,			0,				0,				DARKNESS_PATCH_LIGHT,	(0), 0,																						"a patch of shadows",	"this area happens to be cloaked in shadows -- perhaps a safe place to hide."},
-//	{FLOOR_CHAR,	&white,         		&floorBackColor,		90,	0,	DF_PLAIN_FIRE,	0,			0,				0,				SUN_LIGHT,		(0), (TM_STAND_IN_TILE),																			"a patch of sunlight",	"sunlight streams through cracks in the ceiling."},
-//	{FLOOR_CHAR,	&veryDarkGray,		    &black,         		90,	0,	DF_PLAIN_FIRE,	0,			0,				0,				DARKNESS_PATCH_LIGHT,	(0), 0,																						"a patch of shadows",	"this area happens to be cloaked in shadows -- perhaps a safe place to hide."},
+//	{FLOOR_CHAR,	&floorForeColor,		&floorBackColor,		90,	0,	DF_PLAIN_FIRE,	0,			0,				0,				SUN_LIGHT,		(0), (TM_STAND_IN_TILE),																			"a patch of sunlight",	"sunlight streams through cracks in the ceiling."},
+//	{FLOOR_CHAR,	&floorForeColor,		&floorBackColor,		90,	0,	DF_PLAIN_FIRE,	0,			0,				0,				DARKNESS_PATCH_LIGHT,	(0), 0,																						"a patch of shadows",	"this area happens to be cloaked in shadows -- perhaps a safe place to hide."},
+
+// gsr
+	{FLOOR_CHAR,	&torchLightColor,         		&floorBackColor,		90,	0,	DF_PLAIN_FIRE,	0,			0,				0,				SUN_LIGHT,		(0), (TM_STAND_IN_TILE),																			"a patch of sunlight",	"sunlight streams through cracks in the ceiling."},
+	{FLOOR_CHAR,	&floorForeColor,		        &black,        90,	0,	DF_PLAIN_FIRE,	0,			0,				0,				DARKNESS_PATCH_LIGHT,	(0), 0,																						"a patch of shadows",	"this area happens to be cloaked in shadows -- perhaps a safe place to hide."},
 
 	{ASH_CHAR,		&brimstoneForeColor,	&brimstoneBackColor,	40, 100,DF_INERT_BRIMSTONE,	0,		DF_INERT_BRIMSTONE,	10,			NO_LIGHT,		(T_IS_FLAMMABLE | T_SPONTANEOUSLY_IGNITES), 0,                                                      "hissing brimstone",	"the jagged brimstone hisses and spits ominously as it crunches under your feet."},
 	{ASH_CHAR,		&brimstoneForeColor,	&brimstoneBackColor,	40, 0,	DF_INERT_BRIMSTONE,	0,		DF_ACTIVE_BRIMSTONE, 800,		NO_LIGHT,		(T_SPONTANEOUSLY_IGNITES), 0,                                                                       "hissing brimstone",	"the jagged brimstone hisses and spits ominously as it crunches under your feet."},
@@ -703,6 +711,13 @@ const floorTileType tileCatalog[NUMBER_TILETYPES] = {
     {FLOOR_CHAR,    &mudBackColor,          &refuseBackColor,       85,	0,	DF_STENCH_SMOLDER,0,		0,				0,				NO_LIGHT,		(T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                                     "the mud floor",		"Rotting animal matter has been ground into the mud floor; the stench is awful."},
     {WALL_CHAR,		&mudWallForeColor,		&mudWallBackColor,		0,	0,	DF_PLAIN_FIRE,	0,			0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a mud-covered wall",	"A malodorous layer of clay and fecal matter coats the wall."},
     {OMEGA_CHAR,	&mudWallForeColor,      &refuseBackColor,		25,	50,	DF_EMBERS,		0,			0,              0,				NO_LIGHT,		(T_OBSTRUCTS_VISION | T_OBSTRUCTS_GAS | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VISUALLY_DISTINCT), "hanging animal skins",	"you push through the animal skins that hang across the threshold."},
+
+    // new stuff -- gsr
+    {FLOOR_CHAR,    &wallBackColor,          &graniteBackColor,       85,	0,	0,0,		0,				0,				NO_LIGHT,		0, 0,                                                     "the hideout floor",		""},
+	{WALL_CHAR,		&darkGray,			&wallBackColor,		0,	0,	DF_PLAIN_FIRE,	0,			0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a gritty stone wall",	"Chunks of rock have been haphazardly chipped away."},
+    {OMEGA_CHAR,	&wallBackColor,      &graniteBackColor,		25,	50,	DF_EMBERS,		0,			0,              0,				NO_LIGHT,		(T_OBSTRUCTS_VISION | T_OBSTRUCTS_GAS), (TM_STAND_IN_TILE | TM_VISUALLY_DISTINCT), "a bead-adorned archway",	"you push through strings of stone beads hanging from above."},
+	{ALTAR_CHAR,	&doorForeColor,		&doorBackColor,		0, 0,	0,				0,			0,				0,				NO_LIGHT,	(T_OBSTRUCTS_SURFACE_EFFECTS), (TM_VISUALLY_DISTINCT),							"a wooden table",	"an uninviting, ill-crafted table rests here."},
+
 };
 
 #pragma mark Dungeon Feature definitions
@@ -1048,6 +1063,7 @@ dungeonProfile dungeonProfileCatalog[NUMBER_DUNGEON_PROFILES] = {
 
     {{0,    0,  1,  0,  0,  0,  0,  0}, 0},     // Goblin warrens
     {{0,    5,  0,  1,  0,  0,  0,  0}, 0},     // Sentinel sanctuaries
+    {{0,    0,  0,  0,  1,  1,  0,  0}, 0},     // Ogre armories
 };
 
 #pragma mark Lights
@@ -1132,7 +1148,7 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 	// -- REWARD ROOMS --
 
 	// First floor guaranteed library
-    {{1, 1},         {10, 30},	1,		6,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
+    {{1, 1},         {10, 20},	1,		6,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
 		{0,			CARPET,		DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
 		{0,			ALTAR_CAGE_OPEN,DUNGEON,	{3,5},		1,			(STAFF|RING|CHARM), -1,	0,				2,				0,			(ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),	(MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},
 //        {0,			STATUE_INERT,DUNGEON,		{1,1},		0,			0,			-1,			0,				2,				0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)},
@@ -1224,14 +1240,18 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 		{DF_TRIGGER_AREA,COFFIN_CLOSED,0,		{1,1},		1,			KEY,		KEY_CAGE,	MK_VAMPIRE,		1,				0,			(ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_SKELETON_KEY | MF_MONSTER_TAKE_ITEM | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN | MF_KEY_DISPOSABLE)},
 		{DF_AMBIENT_BLOOD,SECRET_DOOR,DUNGEON,	{1,1},		1,			0,			0,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN)}}},
 	// Legendary ally -- approach the altar with the crystal key to activate a portal and summon a legendary ally.
-	{{8, AMULET_LEVEL}, {30, 50},	15,		2,			0,                  (BP_ROOM | BP_REWARD),	{
+	{{8, AMULET_LEVEL}, {30, 50},	10,		2,			0,                  (BP_ROOM | BP_REWARD),	{
 		{DF_LUMINESCENT_FUNGUS,	ALTAR_KEYHOLE, DUNGEON,	{1,1}, 1,		KEY,		KEY_PORTAL,	0,				2,				0,			(ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY | MF_NEAR_ORIGIN | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_KEY_DISPOSABLE)},
 		{DF_LUMINESCENT_FUNGUS,	PORTAL,	DUNGEON,{1,1},		1,			0,			-1,			0,				2,				HORDE_MACHINE_LEGENDARY_ALLY,0,	(MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN)}}},
     // Goblin warren
-	{{5, 15},           {100, 200},	15,     9,			DP_GOBLIN_WARREN,   (BP_ROOM | BP_REWARD | BP_MAXIMIZE_INTERIOR | BP_REDESIGN_INTERIOR),	{
+	{{5, 15},           {75, 200},	3,     9,			DP_GOBLIN_WARREN,   (BP_ROOM | BP_REWARD | BP_MAXIMIZE_INTERIOR | BP_REDESIGN_INTERIOR | BP_SURROUND_WITH_WALLS),	{
 		{0,			MUD_FLOOR,	DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
         {0,         MUD_DOORWAY,DUNGEON,        {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_AT_ORIGIN)},
         {0,         MUD_WALL,   DUNGEON,        {1,1},      100,        0,			-1,			0,				1,				0,			0,			(MF_BUILD_IN_WALLS | MF_EVERYWHERE)},
+        {0,			0,	0,		{2,6},		1,			0,	0, MK_GOBLIN, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
+        {0,			0,	0,		{0,2},		1,			0,	0, MK_GOBLIN_CONJURER, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
+        {0,			0,	0,		{0,3},		1,			0,	0, MK_GOBLIN_DRIVER, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
+        {0,			0,	0,		{0,2},		1,			0,	0, MK_GOBLIN_MYSTIC, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
         {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(SCROLL),	SCROLL_ENCHANTING, MK_GOBLIN_CHIEFTAN, 2,   0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
 //        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_STRENGTH, MK_GOBLIN_CHIEFTAN, 2,         0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
         {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_VITALITY, MK_GOBLIN_CHIEFTAN, 2,         0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
@@ -1240,7 +1260,7 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
         {DF_HAY,	0,			0,				{10, 15},	1,			0,			-1,			0,				1,				0,			0,			(MF_NOT_IN_HALLWAY)},
 		{DF_JUNK,	0,			0,				{7, 12},	1,			0,			-1,			0,				1,				0,			0,			(MF_NOT_IN_HALLWAY)}}},
     // Sentinel sanctuary
-	{{10, 23},           {100, 200}, 15,  10,			DP_SENTINEL_SANCTUARY, (BP_ROOM | BP_REWARD | BP_MAXIMIZE_INTERIOR | BP_REDESIGN_INTERIOR),	{
+	{{10, 23},           {75, 200}, 3,  10,			DP_SENTINEL_SANCTUARY, (BP_ROOM | BP_REWARD | BP_MAXIMIZE_INTERIOR | BP_REDESIGN_INTERIOR | BP_SURROUND_WITH_WALLS),	{
 		{0,			MARBLE_FLOOR,DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
         {0,         CRYSTAL_WALL,DUNGEON,       {0,0},      0,          0,			-1,			0,				0,				0,			0,			(MF_BUILD_IN_WALLS | MF_EVERYWHERE)},
         {0,         PEDESTAL, DUNGEON, {1,1},	1,			(SCROLL),	SCROLL_ENCHANTING,0,	2,              0,              (ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
@@ -1252,6 +1272,22 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
         {0,         0,          0,              {4, 6},     4,          0,          -1,         MK_GUARDIAN,    1,              0,          0,          MF_TREAT_AS_BLOCKING},
         {0,         0,          0,              {0, 2},     0,          0,          -1,         MK_WINGED_GUARDIAN, 1,          0,          0,          MF_TREAT_AS_BLOCKING},
         {0,			0,			0,				{2,3},		2,			(SCROLL | POTION), -1,	0,				1,				0,			0,			(MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},
+    // Ogre armory -- a few equippables, including one good one, in a crappy makeshift hideout -- gsr
+	{{9, 20},           {70, 150},	5,     12,			DP_OGRE_ARMORY,   (BP_ROOM | BP_REWARD | BP_MAXIMIZE_INTERIOR | BP_REDESIGN_INTERIOR | BP_PURGE_LIQUIDS | BP_SURROUND_WITH_WALLS),	{
+//		{0,			MARBLE_FLOOR,     DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
+        {0,         OGRE_DOORWAY,       DUNGEON,        {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_AT_ORIGIN)},
+        {0,			OGRE_FLOOR,DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
+        {0,         TABLE, DUNGEON, {1,1},	1,			(WEAPON|ARMOR),	0,0,          2,              0,              0,	(MF_REQUIRE_GOOD_RUNIC | MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY)},
+        {0,         TABLE, DUNGEON, {1,3},	1,			(WEAPON|ARMOR),	0,0,          2,              0,              0,	(MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY)},
+        {0,         TABLE,       DUNGEON,       {0,3},      0,          0,			-1,			0,				0,				0,			0,			(MF_NOT_IN_HALLWAY)},
+        {0,         OGRE_WALL,       DUNGEON,       {0,0},      0,          0,			-1,			0,				0,				0,			0,			(MF_BUILD_IN_WALLS | MF_EVERYWHERE)},
+        {DF_BONES, 0,	0,				{3,5},		3,			0,			-1,			0,				1,				0,			0,			0},
+        {DF_HAY,	0,			0,				{1,2},	1,			0,			-1,			0,				1,				0,			0,			(MF_NOT_IN_HALLWAY)},
+        {0,			0,	          0,	    	{2,8},		1,			0,	        -1, MK_OGRE, 2,   0,			0,	(MF_GENERATE_HORDE)},
+        {0,			0,	          0,	    	{0,1},		1,			0,	        -1, MK_OGRE_SHAMAN, 2,   0,			0,	(MF_GENERATE_HORDE)},
+        {0,         STATUE_INERT,DUNGEON,       {6,12},     0,          0,          -1,         0,    2,              0,          0,          (MF_NOT_IN_HALLWAY)},
+        {0,			TORCH_WALL,	DUNGEON,		{5,6},		0,			0,			0,			0,				1,				0,			0,			(MF_BUILD_IN_WALLS)}}},
+
 
     // -- AMULET HOLDER --
     // Statuary -- key on an altar, area full of statues; take key to cause statues to burst and reveal monsters
@@ -1355,10 +1391,18 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
         {0,         FLAMETHROWER_HIDDEN,DUNGEON,{40, 60},   20,         0,          -1,         0,              1,              0,          0,          (MF_TREAT_AS_BLOCKING)},
 		{DF_DEEP_WATER_POOL,0,  0,              {4, 4},		1,			0,			-1,			0,				4,				HORDE_MACHINE_WATER_MONSTER,0,MF_GENERATE_HORDE},
         {DF_GRASS,	FOLIAGE,	SURFACE,		{3, 4},		3,			0,			-1,			0,				1,				0,			0,			0}}},
-    // Thief area -- empty altar, monster with item, permanently fleeing.
+
+/*    // Thief area -- empty altar, monster with item, permanently fleeing.
     {{3, AMULET_LEVEL},	{15, 20},	10,		2,			0,                  (BP_ADOPT_ITEM),	{
 		{DF_LUMINESCENT_FUNGUS,	ALTAR_INERT,DUNGEON,{1,1},	1,			0,			-1,			0,				2,				HORDE_MACHINE_THIEF,0,			(MF_ADOPT_ITEM | MF_BUILD_AT_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTER_TAKE_ITEM | MF_MONSTER_FLEEING)},
+        {0,         STATUE_INERT,0,             {3, 5},     2,          0,          -1,         0,              2,              0,          0,          (MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},*/
+    // The thief machine got broken in development, somehow. Let's just never speak of it again.
+    // So this one involves making your way through sticky stuff. -- gsr
+    {{3, AMULET_LEVEL},	{15, 20},	3,		3,			0,                  (BP_ADOPT_ITEM),	{
+		{DF_WEB_LARGE,	ALTAR_INERT,DUNGEON,{1,1},	1,			0,			-1,			0,				2,				0,          0,			(MF_BUILD_AT_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_ADOPT_ITEM)},
         {0,         STATUE_INERT,0,             {3, 5},     2,          0,          -1,         0,              2,              0,          0,          (MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},
+
+
 	// Collapsing floor area -- key on an altar in an area; take key to cause the floor of the area to collapse
 	{{1, AMULET_LEVEL},	{45, 65},	13,		3,			0,                  (BP_ADOPT_ITEM | BP_TREAT_AS_BLOCKING),	{
 		{0,			FLOOR_FLOODABLE,DUNGEON,	{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
@@ -1589,6 +1633,8 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 		(MONST_MALE | MONST_FEMALE)},
 
     {0, "pet dog",		PET_DOG_CHAR,	&white,	13,		17,		80,		{1, 3, 1},		20,	95, 	100,	DF_RED_BLOOD,	0,		1,		DF_URINE,       {0}, (MONST_FEMALE | MONST_MALE | MONST_NO_POLYMORPH)},
+	{0,	"adventurer",	PLAYER_CHAR,	&white,30,	0,		100,	{1, 2, 1},		20,	100,	100,	DF_RED_BLOOD,	0,		0,		0,              {0},
+		(MONST_MALE | MONST_FEMALE | MONST_NO_POLYMORPH | MONST_CAST_SPELLS_SLOWLY | MONST_CARRY_ITEM_100 | MONST_DISTANT_FOLLOWER | MONST_WILL_NOT_USE_STAIRS)},
 	{0, "rat",			'r',	&gray,			6,		0,		80,		{1, 3, 1},		20,	100,	100,	DF_RED_BLOOD,	0,		1,		DF_URINE,       {0}},
 	{0, "kobold",		'k',	&goblinColor,	7,		0,		80,		{1, 4, 1},		20,	120,	100,	DF_RED_BLOOD,	0,		0,		0,              {0}},
 	{0,	"jackal",		'j',	&jackalColor,	8,		0,		75,		{2, 3, 1},		20,	50,		100,	DF_RED_BLOOD,	0,		1,		DF_URINE,              {0}},
@@ -1622,7 +1668,7 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 		(MONST_REFLECT_4 | MONST_DIES_IF_NEGATED)},
 	{0, "rope golem",	'G',	&tanColor,			30,	0,     100,	    {4, 12, 1},		0,	75,	100,	DF_ROPE,0,		0,		0,              {0},
 		(MONST_DIES_IF_NEGATED | MONST_FLITS | MONST_CAST_SPELLS_SLOWLY | MONST_IMMUNE_TO_WEBS), {MA_ATTACKS_EXTEND}},
-	{0, "arrow turret", TURRET_CHAR,&black,		30,		0,		90,		{2, 6, 1},		0,	100,	250,	0,              0,		0,		0,              {BOLT_DISTANCE_ATTACK},
+	{0, "arrow turret", TURRET_CHAR,    &arrowTurretColor,		30,		0,		90,		{2, 6, 1},		0,	100,	250,	0,              IMP_LIGHT,		0,		0,              {BOLT_DISTANCE_ATTACK},
 		(MONST_TURRET), (0)},
 	{0, "acid mound",	'a',	&acidBackColor,	15,		10,		70,		{1, 3, 1},		5,	110,	100,	DF_ACID_BLOOD,	0,		0,		0,              {0},
 		(MONST_DEFEND_DEGRADE_WEAPON), (MA_HIT_DEGRADE_ARMOR)},
@@ -1633,6 +1679,8 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 
 	{0, "leprechaun",   'l',	&acidBackColor,		20,		100,     100,	{1, 2, 1},		20,	100,	100,	DF_GREEN_BLOOD,	0,		0,		0, {BOLT_BLINKING},
 		(MONST_CARRY_ITEM_100 | MONST_MALE | MONST_FEMALE | MONST_FLEES_NEAR_DEATH | MONST_FLITS)},
+    {0,	"ink eel",		'e',	&black,		18,		27,		100,	{3, 7, 2},		5,	50,		100,	0,              0,		0,		0,              {0},
+		(MONST_RESTRICTED_TO_LIQUID | MONST_IMMUNE_TO_WATER | MONST_SUBMERGES | MONST_FLITS | MONST_NEVER_SLEEPS), {MA_HIT_BLINDS}},
 
 	{0,	"bog monster",	'B',	&krakenColor,	55,		60,		5000,	{3, 4, 1},		3,	200,	100,	0,              0,		0,		0,              {0},
 		(MONST_RESTRICTED_TO_LIQUID | MONST_SUBMERGES | MONST_FLITS | MONST_FLEES_NEAR_DEATH), (MA_SEIZES)},
@@ -1640,7 +1688,7 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 		(MONST_IMMUNE_TO_WEBS | MONST_NEVER_SLEEPS | MONST_IMMOBILE | MONST_INANIMATE | MONST_WILL_NOT_USE_STAIRS), (0)},
 	{0, "spider",		's',	&white,			20,		70,		90,		{3, 4, 2},		20,	100,	200,	DF_GREEN_BLOOD,	0,		0,		0,              {BOLT_SPIDERWEB},
 		(MONST_IMMUNE_TO_WEBS | MONST_CAST_SPELLS_SLOWLY | MONST_ALWAYS_USE_ABILITY), (MA_POISONS)},
-	{0, "spark turret", TURRET_CHAR, &lightningColor,80,0,		100,	{0, 0, 0},		0,	100,	150,	0,              SPARK_TURRET_LIGHT,	0,	0,      {BOLT_SPARK},
+	{0, "spark turret", TURRET_CHAR, &sparkTurretColor,80,0,		100,	{0, 0, 0},		0,	100,	150,	0,              SPARK_TURRET_LIGHT,	0,	0,      {BOLT_SPARK},
 		(MONST_TURRET), (0)},
 	{0,	"will-o-the-wisp",'w',	&wispLightColor,10,		90,     100,	{5,	8, 2},		5,	90,	100,	DF_ASH_BLOOD,	WISP_LIGHT,	0,	0,              {0},
 		(MONST_IMMUNE_TO_FIRE | MONST_FLIES | MONST_FLITS | MONST_NEVER_SLEEPS | MONST_FIERY | MONST_DIES_IF_NEGATED)},
@@ -1671,9 +1719,9 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
         (MONST_NEVER_SLEEPS)},
 	{0, "sentinel",		STATUE_CHAR, &sentinelColor, 50,0,		0,		{0, 0, 0},		0,	100,	175,	DF_RUBBLE_BLOOD,SENTINEL_LIGHT,0,0,             {BOLT_HEALING, BOLT_SPARK},
 		(MONST_TURRET | MONST_CAST_SPELLS_SLOWLY | MONST_DIES_IF_NEGATED), (0)},
-	{0, "acid turret", TURRET_CHAR,	&acidBackColor,35,	0,		250,	{1, 2, 1},      0,	100,	250,	0,              0,		0,		0,              {BOLT_ACID_TURRET_ATTACK},
+	{0, "acid turret", TURRET_CHAR,	&acidTurretColor,35,	0,		250,	{1, 2, 1},      0,	100,	250,	0,              LICH_LIGHT,		0,		0,              {BOLT_ACID_TURRET_ATTACK},
 		(MONST_TURRET), (MA_HIT_DEGRADE_ARMOR)},
-    {0, "dart turret", TURRET_CHAR,	&centipedeColor,20,	0,		140,	{1, 2, 1},      0,	100,	250,	0,              0,		0,		0,              {BOLT_POISON_DART},
+    {0, "dart turret", TURRET_CHAR,	&dartTurretColor,20,	0,		140,	{1, 2, 1},      0,	100,	250,	0,              IFRIT_LIGHT,		0,		0,              {BOLT_POISON_DART},
 		(MONST_TURRET), (MA_CAUSES_WEAKNESS)},
 	{0,	"kraken",		'K',	&krakenColor,	120,	0,		150,	{15, 20, 3},	1,	50,		100,	0,              0,		0,		0,              {0},
 		(MONST_RESTRICTED_TO_LIQUID | MONST_IMMUNE_TO_WATER | MONST_SUBMERGES | MONST_FLITS | MONST_NEVER_SLEEPS | MONST_FLEES_NEAR_DEATH), (MA_SEIZES)},
@@ -1685,7 +1733,7 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 		(MONST_MAINTAINS_DISTANCE | MONST_FLIES | MONST_FLITS | MONST_MALE | MONST_FEMALE), (0)},
 	{0,	"phantom",		'P',	&ectoplasmColor,35,		70,     160,	{12, 18, 4},    0,	50,		200,	DF_ECTOPLASM_BLOOD,	0,	2,		DF_ECTOPLASM_DROPLET, {0},
 		(MONST_INVISIBLE | MONST_FLITS | MONST_FLIES | MONST_IMMUNE_TO_WEBS)},
-	{0, "flame turret", TURRET_CHAR, &lavaForeColor,40,	0,		150,	{1, 2, 1},		0,	100,	250,	0,              LAVA_LIGHT,	0,	0,              {BOLT_FIRE},
+	{0, "flame turret", TURRET_CHAR, &flameTurretColor,40,	0,		150,	{1, 2, 1},		0,	100,	250,	0,              LAVA_LIGHT,	0,	0,              {BOLT_FIRE},
 		(MONST_TURRET), (0)},
 	{0, "imp",			'i',	&pink,			35,		90,     225,	{4, 9, 2},		10,	100,	100,	DF_GREEN_BLOOD,	IMP_LIGHT,	0,	0,              {BOLT_BLINKING},
 		(0), (MA_HIT_STEAL_FLEE)},
@@ -1767,6 +1815,10 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 	{"Your pet dog accompanies you as you step into the dungeon. As a rescue dog, $HESHE has already seen $HISHER fair share of adventure.",
 		"tearing at", "Eating",
 		{"claws", "bites", "scratches", {0}}},
+	{"A fellow adventurer has made $HISHER way into the dungeon -- and seems to have made $HIMSELFHERSELF comfortable on this floor. Toting $HISHER own load of armor, weaponry, staffs, and other treasures, $HESHE looks at you and smirks in recognition.",
+		"studying", "Studying",
+		{"hit", {0}}},
+
 
 	{"The rat is a scavenger of the shallows, perpetually in search of decaying animal matter.",
 		"gnawing at", "Eating",
@@ -1841,6 +1893,11 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 	{"This curious creature always carries some sort of treasure, but $HESHE is agile enough to protect it.",
 		"studying", "Studying",
 		{"punches", "kicks", "grazes", {0}}},
+
+	{"This eel traverses the deep waters. $HISHER ink-based defense mechanisms can temporarily blind an adventurer.",
+		"eating", "Eating",
+		{"slimes", "douses", {0}}},
+
 	{"The horrifying bog monster dwells beneath the surface of mud-filled swamps. When $HISHER prey ventures into the mud, the bog monster will ensnare the unsuspecting victim in $HISHER pale tentacles and squeeze its life away.",
 		"draining", "Feeding",
 		{"squeezes", "strangles", "crushes", {0}}},
@@ -2108,6 +2165,7 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_OGRE,			0,		{0},									{{0}},							7,		13,		10},
 	{MK_LEPRECHAUN,		0,		{0},									{{0}},							5,		13,		2}, // gsr
 	{MK_EEL,			1,		{MK_EEL},								{{2, 4, 1}},					8,		22,		7,		DEEP_WATER},
+	{MK_INK_EEL,		1,		{0},	    							{{0}},      					12,		20,		7,		DEEP_WATER},
 	{MK_ACID_MOUND,		1,		{MK_ACID_MOUND},						{{2, 4, 1}},					9,		13,		3},
 	{MK_SPIDER,			0,		{0},									{{0}},							9,		16,		10},
 	{MK_DAR_BLADEMASTER,1,		{MK_DAR_BLADEMASTER},					{{0, 1, 1}},					10,		14,		10},
@@ -2533,17 +2591,18 @@ const char armorRunicNames[NUMBER_ARMOR_ENCHANT_KINDS][30] = {
 	"reflection",
     "respiration",
     "dampening",
+	"force", // gsr
 	"burden",
 	"vulnerability",
     "immolation",
 };
 
 itemTable scrollTable[NUMBER_SCROLL_KINDS] = {
-	{"enchanting",			itemTitles[0], "",	0,	55,	0,{0,0,0}, false, false, "This indispensable scroll will imbue a single item with a powerful and permanent magical charge. A staff will increase in power and in number of charges; a weapon will inflict more damage or find its mark more frequently; a suit of armor will deflect additional blows; the effect of a ring on its wearer will intensify; and a wand will gain expendable charges in the least amount that such a wand can be found with. Weapons and armor will also require less strength to use, and any curses on the item will be lifted."}, // frequency is dynamically adjusted
-	{"identify",			itemTitles[1], "",	30,	30,	0,{0,0,0}, false, false, "The scrying magic on this parchment will permanently reveal all of the secrets of a single item."},
+	{"enchanting",			itemTitles[0], "",	0,	55,	0,{0,0,0}, false, false, "This indispensable scroll will imbue a single item with a powerful and permanent magical charge. A staff will increase in power and in number of charges; a weapon will inflict more damage or find its mark more frequently; a suit of armor will deflect additional blows; the effect of a ring on its wearer will intensify. Weapons and armor will also require less strength to use, and any curses on the item will be lifted."}, // frequency is dynamically adjusted
+	{"identify",			itemTitles[1], "",	20,	30,	0,{0,0,0}, false, false, "The scrying magic on this parchment will permanently reveal all of the secrets of a single item."},
 	{"teleportation",		itemTitles[2], "",	10,	50,	0,{0,0,0}, false, false, "The spell on this parchment instantly transports the reader to a random location on the dungeon level. It can be used to escape a dangerous situation, but the unlucky reader might find himself in an even more dangerous place."},
-	{"remove curse",		itemTitles[3], "",	15,	15,	0,{0,0,0}, false, false, "The incantation on this scroll will instantly strip from the reader's weapon, armor, rings and carried items any evil enchantments that might prevent the wearer from removing them."},
-	{"recharging",			itemTitles[4], "",	2,	37,	0,{0,0,0}, false, false, "The power bound up in this parchment will instantly recharge all of your staffs and charms."},
+	{"remove curse",		itemTitles[3], "",	12,	15,	0,{0,0,0}, false, false, "The incantation on this scroll will instantly strip from the reader's weapon, armor, rings and carried items any evil enchantments that might prevent the wearer from removing them."},
+	{"recharging",			itemTitles[4], "",	8,	37,	0,{0,0,0}, false, false, "The power bound up in this parchment will instantly recharge all of your staffs and charms."},
 //	{"protect armor",		itemTitles[5], "",	10,	40,	0,{0,0,0}, false, false, "The armor worn by the reader of this scroll will be permanently proofed against degradation from acid."},
 //	{"protect weapon",		itemTitles[6], "",	10,	40,	0,{0,0,0}, false, false, "The weapon held by the reader of this scroll will be permanently proofed against degradation from acid."},
 	{"protect equipment",	itemTitles[5], "",	10,	100,	0,{0,0,0}, false, false, "All weapons and armor worn or held by the reader of this scroll will be permanently proofed against degradation from acid."},
@@ -2560,30 +2619,30 @@ itemTable scrollTable[NUMBER_SCROLL_KINDS] = {
 
 itemTable charmTable[NUMBER_CHARM_KINDS] = {
 	{"health",          "", "",	5,	90,	0,{1,2,1}, true, false, "This handful of dried bloodwort and mandrake root has been bound together with leather cord and imbued with a powerful healing magic."},
-//	{"protection",		"", "",	5,	80,	0,{1,2,1}, true, false, "Four copper rings have been joined into a tetrahedron. The construct is oddly warm to the touch."},
+	{"protection",		"", "",	5,	80,	0,{1,2,1}, true, false, "Four copper rings have been joined into a tetrahedron. The construct is oddly warm to the touch."},
 	{"haste",           "", "",	5,	75,	0,{1,2,1}, true, false, "Various animals have been etched into the surface of this brass bangle. It emits a barely audible hum."},
 	{"fire immunity",	"", "",	3,	75,	0,{1,2,1}, true, false, "Eldritch flames flicker within this polished crystal bauble."},
 	{"invisibility",	"", "",	5,	70,	0,{1,2,1}, true, false, "This intricate figurine depicts a strange humanoid creature. It has a face on both sides of its head, but all four eyes are closed."},
 //	{"telepathy",		"", "",	3,	70,	0,{1,2,1}, true, false, "Seven tiny glass eyes roll freely within this glass sphere. Somehow, they always come to rest facing outward."},
-	{"levitation",      "", "",	1,	70,	0,{1,2,1}, true, false, "Sparkling dust and fragments of feather waft and swirl endlessly inside this small glass sphere."},
-    {"shattering",      "", "",	1,	70,	0,{1,2,1}, true, false, "This turquoise crystal, fixed to a leather lanyard, hums with an arcane energy that sets your teeth on edge."},
+	{"levitation",      "", "",	4,	70,	0,{1,2,1}, true, false, "Sparkling dust and fragments of feather waft and swirl endlessly inside this small glass sphere."},
+    {"shattering",      "", "",	0,	70,	0,{1,2,1}, true, false, "This turquoise crystal, fixed to a leather lanyard, hums with an arcane energy that sets your teeth on edge."},
     {"guardian",        "", "",	5,	70,	0,{1,2,1}, true, false, "When you touch this tiny granite statue, a rhythmic booming sound echoes in your head."},
     {"fear",            "", "",	3,	70,	0,{1,2,1}, true, false, "When you gaze into the murky interior of this obsidian cube, you feel as though something predatory is watching you."},
     {"teleportation",   "", "",	4,	70,	0,{1,2,1}, true, false, "The surface of this nickel sphere has been etched with a perfect grid pattern. Somehow, the squares of the grid are all exactly the same size."},
     {"recharging",      "", "",	0,	70,	0,{1,2,1}, true, false, "A strip of bronze has been wound around a rough wooden sphere. Each time you touch it, you feel a tiny electric shock."},
 //    {"negation",        "", "",	5,	70,	0,{1,2,1}, true, false, "A featureless gray disc hangs from a leather lanyard. When you touch it, your hand briefly goes numb."},
     {"identify",        "", "",	0,	85,	0,{1,2,1}, true, false, "This pocket-sized tome is bound with worn leather. A bookmark of crimson silk flows from the top of its spine, dancing and waving subtly as if it were caught by a breeze."},
-    {"discord",         "", "",	5,	85,	0,{1,2,1}, true, false, "As you gaze upon this pristine crystal shard, images of chaos and discord cloud your thoughts."},
+    {"discord",         "", "",	5,	85,	0,{1,2,1}, true, false, "A series of jagged lines dance around the surface of this otherwise pristine shard of crystal."},
 };
 
 itemTable potionTable[NUMBER_POTION_KINDS] = {
 //	{"life",				itemColors[0], "",	0,	500,	0,{0,0,0}, false, false, "A swirling elixir that will instantly heal you, cure you of ailments, and permanently increase your maximum health."}, // frequency is dynamically adjusted
 //    {"strength",			itemColors[1], "",	0,	400,	0,{0,0,0}, false, false, "This powerful medicine will course through your muscles, permanently increasing your strength by one point."}, // frequency is dynamically adjusted
-    {"vitality",			itemColors[0], "",	0,	50,	0,{0,0,0}, false, false, "This powerful elixir will permanently increase your strength by one point, instantly heal you, cure you of all ailments, and permanently increase your maximum health. It can also be thrown at an ally (or an unfriendly creature!) to empower it similarly."}, // frequency is dynamically adjusted
-	{"telepathy",			itemColors[1], "",	20,	35,	0,{0,0,0}, false, false, "After drinking this, your mind will become attuned to the psychic signature of distant creatures, enabling you to sense biological presences through walls. Its effects will not reveal inanimate objects, such as totems, turrets and traps.\n\nThrowing it directly at a creature will form a one-way telepathic bond, allowing you to permanently track its movements."},
+    {"empowerment",			itemColors[0], "",	0,	50,	0,{0,0,0}, false, false, "This powerful elixir will permanently increase your strength by one point, instantly heal you, cure you of all ailments, and permanently increase your maximum health. It can also be thrown at an ally (or an unfriendly creature!) to empower it similarly."}, // frequency is dynamically adjusted
+	{"telepathy",           itemColors[1], "",	20,	35,	0,{0,0,0}, false, false, "After drinking this, your mind will become attuned to the psychic signature of distant creatures, enabling you to sense biological presences through walls. Its effects will not reveal inanimate objects, such as totems, turrets and traps.\n\nThrowing it directly at a creature will form a one-way telepathic bond, allowing you to permanently track its movements.\n\nShattering it on the ground or against a wall will psychically reveal to you a potion of the level around the point of impact."},
 	{"levitation",			itemColors[2], "",	15,	25,	0,{0,0,0}, false, false, "Drinking this curious liquid will cause you to hover in the air, able to drift effortlessly over lava, water, chasms and traps. Flames, gases and spiderwebs fill the air, however, and cannot be bypassed while airborne. Creatures that dwell in water or mud will be unable to attack you while you levitate.\n\nWhen thrown at a creature, this concoction will also allow it to float or fly for a long time."},
 	{"detect magic",		itemColors[3], "",	15,	50,	0,{0,0,0}, false, false, "This drink will sensitize your mind to the radiance of magic. Items imbued with helpful enchantments will be marked on the map with a full magical sigil; items corrupted by curses or intended to inflict harm on the bearer will be marked on the map with a hollow sigil. The Amulet of Yendor, if in the vicinity, will be revealed by its unique aura."},
-	{"speed",				itemColors[4], "",	20,	50,	0,{0,0,0}, false, false, "Quaffing the contents of this flask will enable you to move at blinding speed for several minutes. Throwing it at a creature will grant it the same effect."},
+	{"speed",				itemColors[4], "",	20,	50,	0,{0,0,0}, false, false, "Quaffing the contents of this flask will enable you to move at blinding speed for several minutes. Throwing it at a creature will grant it the same effect.\n\nSince the flask contains an energetic compound, shattering it on the ground will produce a tiny ember."},
 	{"fire immunity",		itemColors[5], "",	15,	50,	0,{0,0,0}, false, false, "This potion will render you impervious to heat and permit you to wander through fire and lava and ignore otherwise deadly bolts of flame. It can also be thrown at a creature (most importantly, an ally) to grant it fire immunity instead. (It will not guard against the concussive impact of an explosion, however.)"},
     {"invisibility",		itemColors[6], "",	15,	40,	0,{0,0,0}, false, false, "Drinking this potion will render you temporarily invisible. Enemies more than two spaces away will be unable to track you. It can be thrown at a creature to make it invisible for quite some time.\n\nAllowing the potion to shatter will instead create a cloud of supernatural darkness where it lands, and enemies will have difficulty seeing or following you if you take refuge under its cover."},
     {"healing",				itemColors[7], "",  20,	50,	0,{0,0,0}, false, false, "When this flask is shattered, a thick cloud of healing spores will emerge. When consumed directly, the concentrated substance will heal you significantly and rid you of many negative status ailments. It can also be thrown at an ally to heal its wounds instead."},
@@ -2595,7 +2654,7 @@ itemTable potionTable[NUMBER_POTION_KINDS] = {
 //	{"darkness",			itemColors[14], "",	7,	15,	0,{0,0,0}, false, false, "Drinking this potion will plunge you into darkness. At first, you will be completely blind to anything not illuminated by an independent light source, but over time your vision will regain its former strength. Throwing the potion will create a cloud of supernatural darkness, and enemies will have difficulty seeing or following you if you take refuge under its cover."},
 //	{"descent",				itemColors[15], "",	15,	50,	0,{0,0,0}, false, false, "When this flask is uncorked by hand or shattered by being thrown, the fog that seeps out will temporarily cause the ground in the vicinity to vanish."},
 //	{"creeping death",		itemColors[12], "",	7,	45,	0,{0,0,0}, false, false, "When the cork is popped or the flask is thrown, tiny spores will spill across the ground and begin to grow a deadly lichen. Anything that touches the lichen will be poisoned by its clinging tendrils, and the lichen will slowly grow to fill the area. Fire will purge the infestation."},
-    {"caustic gas",         itemColors[11], "",	15,	20,0,{0,0,0}, false, false, "Uncorking or shattering this pressurized glass will cause its contents to explode into a deadly cloud of caustic purple gas. You might choose to fling this potion at distant enemies instead of uncorking it by hand."},
+    {"caustic gas",         itemColors[11], "",	15,	20,0,{0,0,0}, false, false, "Uncorking or shattering this pressurized glass will cause its contents to explode into a deadly cloud of caustic, flammable purple gas. You might choose to fling this potion at distant enemies instead of uncorking it by hand."},
 };
 
 itemTable wandTable[NUMBER_WAND_KINDS] = {
@@ -2617,8 +2676,8 @@ itemTable staffTable[NUMBER_STAFF_KINDS] = {
 	{"tunneling",		itemWoods[3], "",	15,	300,	BOLT_TUNNELING,     {2,4,1}, false, false, "Bursts of magic from this staff will pass harmlessly through creatures but will reduce walls and other inanimate obstructions to rubble."},
 	{"blinking",		itemWoods[4], "",	11,	420,	BOLT_BLINKING,      {2,4,1}, false, false, "This staff will allow you to teleport in the chosen direction. Creatures and inanimate obstructions will block the teleportation. Be careful around dangerous terrain, as nothing will prevent you from teleporting to a fiery death in a lake of lava."},
 	{"obstruction",		itemWoods[5], "",	10,	400,	BOLT_OBSTRUCTION,   {2,4,1}, false, false, "A mass of impenetrable green crystal will spring forth from the point at which this staff is aimed, obstructing any who wish to move through the affected area and temporarily entombing any who are already there. The crystal will dissolve into the air as time passes. Higher level staffs will create larger obstructions."},
-	{"discord",			itemWoods[6], "",	10,	300,	BOLT_DISCORD,       {2,4,1}, false, false, "The purple light from this staff will alter the perception of a creature to lash out indiscriminately. Strangers and allies alike will turn on the victim."},
-	{"conjuration",		itemWoods[7], "",	10,	500,	BOLT_CONJURATION,   {2,4,1}, false, false, "A flick of this staff summons a number of phantom blades to fight on your behalf."},
+	{"discord",			itemWoods[6], "",	0,	300,	BOLT_DISCORD,       {2,4,1}, false, false, "The purple light from this staff will alter the perception of a creature to lash out indiscriminately. Strangers and allies alike will turn on the victim."},
+	{"conjuration",		itemWoods[7], "",	0,	500,	BOLT_CONJURATION,   {2,4,1}, false, false, "A flick of this staff summons a number of phantom blades to fight on your behalf."},
 
     {"domination",		itemWoods[8], "",	3,	950,	BOLT_DOMINATION,    {1,2,1}, false, false, "This staff can forever bind an enemy to the caster's will, turning it into a steadfast ally. However, the magic works only against enemies that are near death."},
 };
