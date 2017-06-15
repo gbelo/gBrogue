@@ -321,6 +321,8 @@ void applyInstantTileEffectsToCreature(creature *monst) {
 		}
 	}
 
+
+
     // Toxic gases!
     // If it's the player, and he's wearing armor of respiration, then no effect from toxic gases.
     if (monst == &player
@@ -332,7 +334,8 @@ void applyInstantTileEffectsToCreature(creature *monst) {
             message("Your armor trembles and a pocket of clean air swirls around you.", false);
             autoIdentify(rogue.armor);
         }
-    } else {
+    }
+    else {
 
         // zombie gas
         if (cellHasTerrainFlag(*x, *y, T_CAUSES_NAUSEA)
@@ -457,7 +460,7 @@ void applyGradualTileEffectsToCreature(creature *monst, short ticks) {
 						sprintf(buf, "%s float%s away in the current!",
                                 buf2,
                                 //(theItem->quantity == 1 ? "s" : ""));
-                                (theItem->quantity == 1 && theItem->quiverNumber == 0 ? "s" : ""));
+                                (theItem->quantity == 1 || theItem->quiverNumber != 0 ? "s" : ""));
 
 						messageWithColor(buf, &itemMessageColor, false);
 					}
@@ -675,6 +678,7 @@ short currentAggroValue() {
         // Subtract your bonuses from rings of stealth.
         // (Cursed rings of stealth will end up adding here.)
         stealthVal -= rogue.stealthBonus;
+
 
         // Can't go below 2 unless you just rested.
         if (stealthVal < 2 && !rogue.justRested) {
@@ -1943,8 +1947,6 @@ void decrementPlayerStatus() {
 
     char buf[COLS];
 
-
-
     // Handle hunger.
     //if (!player.status[STATUS_PARALYZED]) {
     if (!player.status[STATUS_PARALYZED] && !player.status[STATUS_EATING]) { // gsr
@@ -1967,6 +1969,11 @@ void decrementPlayerStatus() {
 		updateMinersLightRadius();
 		//updateVision();
 	}
+
+	if (player.status[STATUS_UNBREATHING] > 0 && !--player.status[STATUS_UNBREATHING]) {
+		message("you begin to breathe normally.", false);
+	}
+
 
 	if (player.status[STATUS_HALLUCINATING] > 0 && !--player.status[STATUS_HALLUCINATING]) {
 		displayLevel();
@@ -2057,7 +2064,7 @@ void decrementPlayerStatus() {
         }
 	}
 
-	if (player.status[STATUS_INVISIBLE] > 0 && !--player.status[STATUS_INVISIBLE]) {
+    if (player.status[STATUS_INVISIBLE] > 0 && !--player.status[STATUS_INVISIBLE]) {
 		message("you are no longer invisible.", false);
 	}
 
@@ -2323,6 +2330,7 @@ void playerTurnEnded() {
 				}
 
 				updateEnvironment(); // Update fire and gas, items floating around in water, monsters falling into chasms, etc.
+
 				decrementPlayerStatus();
 				applyInstantTileEffectsToCreature(&player);
 				if (rogue.gameHasEnded) { // caustic gas, lava, trapdoor, etc.
@@ -2395,6 +2403,13 @@ void playerTurnEnded() {
 								playerCanDirectlySee(monst->xLoc, monst->yLoc) ? "see" : "sense",
 								(isVowelish(buf2) ? "n" : ""),
 								buf2);
+
+
+                        // Flash monsters on awareness -- gsr
+                        // Modified from https://github.com/sulai/Brogue/commit/b32b97b7edcafe431c3dc64ff0dbdec74335a6bc
+                        flashMonster(monst, &pink, 100);//flashMonster(observer, &red, 100);
+                        //colorFlash(&magicMapFlashColor, 0, 0, 1, 1, monst->xLoc, monst->yLoc);
+
 						if (rogue.cautiousMode) {
 							strcat(buf, ".");
 							message(buf, true);

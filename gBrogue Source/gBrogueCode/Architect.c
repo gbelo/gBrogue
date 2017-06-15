@@ -174,6 +174,35 @@ short passableArcCount(short x, short y) {
 	return arcCount / 2; // Since we added one when we entered a wall and another when we left.
 }
 
+
+// Rotates around the cell, counting up the number of distinct strings of passable neighbors in a single revolution.
+//		Zero means there are no impassable tiles adjacent.
+//		One means it is adjacent to a wall.
+//		Two means it is in a hallway or something similar.
+//		Three means it is the center of a T-intersection or something similar.
+//		Four means it is in the intersection of two hallways.
+//		Five or more means there is a bug.
+short visibleArcCount(short x, short y) {
+	short arcCount, dir, oldX, oldY, newX, newY;
+
+    brogueAssert(coordinatesAreInMap(x, y));
+
+	arcCount = 0;
+	for (dir = 0; dir < DIRECTION_COUNT; dir++) {
+		oldX = x + cDirs[(dir + 7) % 8][0];
+		oldY = y + cDirs[(dir + 7) % 8][1];
+		newX = x + cDirs[dir][0];
+		newY = y + cDirs[dir][1];
+		// Counts every transition from passable to impassable or vice-versa on the way around the cell:
+		if ((coordinatesAreInMap(newX, newY) && cellHasTerrainFlag(newX, newY, T_OBSTRUCTS_VISION))
+			!= (coordinatesAreInMap(oldX, oldY) && cellHasTerrainFlag(oldX, oldY, T_OBSTRUCTS_VISION))) {
+			arcCount++;
+		}
+	}
+	return arcCount / 2; // Since we added one when we entered a wall and another when we left.
+}
+
+
 // locates all loops and chokepoints
 void analyzeMap(boolean calculateChokeMap) {
 	short i, j, i2, j2, dir, newX, newY, oldX, oldY, passableArcCount, cellCount;
@@ -425,7 +454,7 @@ void copyMap(pcell from[DCOLS][DROWS], pcell to[DCOLS][DROWS]) {
 
 boolean itemIsADuplicate(item *theItem, item **spawnedItems, short itemCount) {
     short i;
-    if (theItem->category & (STAFF | WAND | POTION | SCROLL | RING | WEAPON | ARMOR | CHARM)) {
+    if (theItem->category & (STAFF | WAND | POTION | SCROLL | RING | WEAPON | ARMOR | CHARM | THROWING_WEAPON)) {
         for (i = 0; i < itemCount; i++) {
             if (spawnedItems[i]->category == theItem->category
                 && spawnedItems[i]->kind == theItem->kind) {
@@ -1454,7 +1483,7 @@ boolean buildAMachine(enum machineTypes bp,
 							failsafe = 1000;
 							while ((theItem->flags & ITEM_CURSED)
 								   || ((feature->flags & MF_REQUIRE_GOOD_RUNIC) && (!(theItem->flags & ITEM_RUNIC))) // runic if requested
-								   || ((feature->flags & MF_NO_THROWING_WEAPONS) && theItem->category == WEAPON && theItem->quantity > 1) // no throwing weapons if prohibited
+								   || ((feature->flags & MF_NO_THROWING_WEAPONS) && theItem->category == THROWING_WEAPON) // no throwing weapons if prohibited
                                    || itemIsADuplicate(theItem, spawnedItems, itemCount)) { // don't want to duplicates of rings, staffs, etc.
 								deleteItem(theItem);
 								theItem = generateItem(feature->itemCategory, feature->itemKind);
@@ -2078,35 +2107,72 @@ void designChunkyRoom(short **grid) {
     }
 }
 
-void designCustomChunkyRoom(short **grid, short minChunkCount, short maxChunkCount, short radius) {
+void designBigRoom(short **grid) {
     short i, x, y;
 	short minX, maxX, minY, maxY;
-    short chunkCount = rand_range(minChunkCount, maxChunkCount);
+    short chunkCount = rand_range(100, 150);
+    short radius = 7;
+
     fillGrid(grid, 0);
     drawCircleOnGrid(grid, DCOLS/2, DROWS/2, radius, 1);
-    minX = DCOLS/2 - radius/2;
-    maxX = DCOLS/2 + radius/2;
-    minY = DROWS/2 - radius/5;
-    maxY = DROWS/2 + radius/5;
+    minX = DCOLS/2 - radius + 5;
+    maxX = DCOLS/2 + radius - 5;
+    minY = radius + 3;
+    maxY = DROWS - radius - 3;
 
     for (i=0; i<chunkCount;) {
-        x = rand_range(minX, maxX);
-        y = rand_range(minY, maxY);
+        x = randClumpedRange(minX, maxX, 1);
+        y = randClumpedRange(minY, maxY, 1);
         if (grid[x][y]) {
 //            colorOverDungeon(&darkGray);
 //            hiliteGrid(grid, &white, 100);
 
             drawCircleOnGrid(grid, x, y, radius, 1);
             i++;
-            minX = max(1, min(x - radius/2, minX));
-            maxX = min(DCOLS - 2, max(x + radius/2, maxX));
-            minY = max(1, min(y - 1, minY));
-            maxY = min(DROWS - 2, max(y + 1, maxY));
+            minX = max(radius + 2, min(x - radius/2, minX));
+            maxX = min(DCOLS - radius - 2, max(x + radius/2, maxX));
+            minY = max(radius + 3, min(y - 1, minY));
+            maxY = min(DROWS - radius - 3, max(y + 1, maxY));
 
 //            hiliteGrid(grid, &green, 50);
 //            temporaryMessage("Added a chunk:", true);
         }
     }
+}
+
+void designNarrowRoom(short **grid) {
+    short width, height, minX, maxX, minY, maxY, x, y, radius;
+
+    fillGrid(grid, 0);
+    minX = 5;
+    maxX = DCOLS - 5;
+    minY = 9;
+    maxY = DROWS - 9;
+    x = minX;
+    y = minY;
+    radius = 3;
+
+    while (x < maxX)
+    {
+        if (grid[x][y] || 1) {
+//            colorOverDungeon(&darkGray);
+//            hiliteGrid(grid, &white, 100);
+
+            drawCircleOnGrid(grid, x, y, radius, 1);
+
+
+//            hiliteGrid(grid, &green, 50);
+//            temporaryMessage("Added a chunk:", true);
+        }
+        x += rand_range(radius + 1, radius + 3);
+        y += rand_range(-radius + 2, radius + 2);
+        y = clamp(y + rand_range(-radius, radius), minY + 4, maxY - 4);
+    }
+
+/*    fillGrid(grid, 0);
+    width = rand_range(DCOLS * 3/4, DCOLS - 2);
+    height = rand_range(3, 5);
+    drawRectangleOnGrid(grid, (DCOLS - width) / 2, (DROWS - height) / 2, width, height, 1);*/
 }
 
 // If the indicated tile is a wall on the room stored in grid, and it could be the site of
@@ -2283,9 +2349,9 @@ void designRandomRoom(short **grid, boolean attachHallway, short doorSites[4][2]
 
     // Special levels
     if (rogue.depthLevel == NARROW_LEVEL)
-        designCavern(grid, DROWS-4, DROWS-2, 3, 15);
+        designNarrowRoom(grid);
     else if (rogue.depthLevel == BIG_LEVEL)
-        designCustomChunkyRoom(grid, 60, 80, 3);
+        designBigRoom(grid);
     else if (rogue.depthLevel == AMULET_LEVEL)
         designCrossRoom(grid);
     else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL)
@@ -2475,8 +2541,11 @@ void carveDungeon(short **grid) {
         temporaryMessage("First room placed:", true);
     }
 
-    if (rogue.depthLevel == NARROW_LEVEL)
-        attachRooms(grid, &theDP, 35, 1);
+
+    if (rogue.depthLevel == BIG_LEVEL) // Special levels handled here -- gsr
+        attachRooms(grid, &theDP, 35, 0);
+    else if (rogue.depthLevel == NARROW_LEVEL)
+        attachRooms(grid, &theDP, 35, 0);
     else
         attachRooms(grid, &theDP, 35, 35);
 
@@ -2533,9 +2602,12 @@ void liquidType(short *deep, short *shallow, short *shallowWidth) {
         rand = 1;
     }
 
-    // gsr
+    // In these levels, give the player some ability to stealth it out -- gsr
     else if (rogue.depthLevel == BIG_LEVEL)
         rand = 2;
+    else if (rogue.depthLevel == NARROW_LEVEL)
+        rand = 4;
+
     else if (rogue.depthLevel == AMULET_LEVEL) // no pits leading downward -- must take stairs!
         rand = 0;
     else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL) // no skipping Moloch's lair!
@@ -2561,6 +2633,11 @@ void liquidType(short *deep, short *shallow, short *shallowWidth) {
 			*deep = INERT_BRIMSTONE;
 			*shallow = OBSIDIAN;
 			*shallowWidth = 2;
+			break;
+		case 4: // only used in special cases
+			*deep = DEEP_WATER;
+			*shallow = SHALLOW_WATER;
+			*shallowWidth = 4;
 			break;
 	}
 }
@@ -3707,7 +3784,8 @@ void initializeLevel() {
 		temporaryMessage("Stair location candidates:", true);
 	}
 
-    if (getQualifyingGridLocNear(downLoc, levels[n].downStairsLoc[0], levels[n].downStairsLoc[1], grid, false)) {
+    //if (getQualifyingGridLocNear(downLoc, levels[n].downStairsLoc[0], levels[n].downStairsLoc[1], grid, false)) {
+    if (getQualifyingGridLocNear(downLoc, rogue.depthLevel == NARROW_LEVEL ? DCOLS : levels[n].downStairsLoc[0], levels[n].downStairsLoc[1], grid, false)) { // in narrow level, stairs are on opposite ends! -- gsr
         prepareForStairs(downLoc[0], downLoc[1], grid);
     } else {
         getQualifyingLocNear(downLoc, levels[n].downStairsLoc[0], levels[n].downStairsLoc[1], false, 0,
@@ -3730,7 +3808,8 @@ void initializeLevel() {
     levels[n].downStairsLoc[0] = downLoc[0];
     levels[n].downStairsLoc[1] = downLoc[1];
 
-	if (getQualifyingGridLocNear(upLoc, levels[n].upStairsLoc[0], levels[n].upStairsLoc[1], grid, false)) {
+	//if (getQualifyingGridLocNear(upLoc, levels[n].upStairsLoc[0], levels[n].upStairsLoc[1], grid, false)) {
+	if (getQualifyingGridLocNear(upLoc, rogue.depthLevel == NARROW_LEVEL ? 0 : levels[n].upStairsLoc[0], levels[n].upStairsLoc[1], grid, false)) { // in narrow level, stairs are on opposite ends! -- gsr
 		prepareForStairs(upLoc[0], upLoc[1], grid);
 	} else { // Hopefully this never happens.
 		getQualifyingLocNear(upLoc, levels[n].upStairsLoc[0], levels[n].upStairsLoc[1], false, 0,

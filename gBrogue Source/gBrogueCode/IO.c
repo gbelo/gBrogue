@@ -992,7 +992,7 @@ void getCellAppearance(short x, short y, uchar *returnChar, color *returnForeCol
 	item *theItem = NULL;
     enum tileType tile = NOTHING;
 	const uchar itemChars[] = {POTION_CHAR, SCROLL_CHAR, FOOD_CHAR, WAND_CHAR,
-						STAFF_CHAR, GOLD_CHAR, ARMOR_CHAR, WEAPON_CHAR, RING_CHAR, CHARM_CHAR};
+						STAFF_CHAR, GOLD_CHAR, ARMOR_CHAR, WEAPON_CHAR,  RING_CHAR, CHARM_CHAR, THROWING_WEAPON_CHAR};
 	enum dungeonLayers layer, maxLayer;
 
 	assureCosmeticRNG;
@@ -3728,7 +3728,7 @@ void printInstructionsScreen() {
 		"    ****wandering or sleeping monsters won't notice you. If you stay",
 		"    ****hidden, you can limit combat or shake off creatures pursuing you.",
         "",
-		"  - ****Potions of vitality increase your strength and health, which also",
+		"  - ****Potions of empowerment increase your strength and health, which also",
 		"    ****allows you to wear and wield heavier items without being encumbered",
 		"    ****by them. Scrolls of enchanting will enhance many items, but they",
 		"    ****should be allocated wisely.",
@@ -3864,7 +3864,7 @@ void printDiscoveriesScreen() {
 	plotCharToBuffer(STAFF_CHAR, x + 3, y, &itemColor, &black, dbuf);
 	printDiscoveries(STAFF, NUMBER_STAFF_KINDS, STAFF_CHAR, x + 1, ++y, dbuf);
 
-	printString("-- - RINGS --", x = mapToWindowX(30), y = mapToWindowY(15), &flavorTextColor, &black, dbuf);
+	printString("-- - RINGS --", x = mapToWindowX(53), y = mapToWindowY(NUMBER_STAFF_KINDS + 1), &flavorTextColor, &black, dbuf);
 	plotCharToBuffer(RING_CHAR, x + 3, y, &itemColor, &black, dbuf);
 	printDiscoveries(RING, NUMBER_RING_KINDS, RING_CHAR, x + 1, ++y, dbuf);
 
@@ -4236,6 +4236,7 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
         "Invisible",
         "", // STATUS_AGGRAVATING
         "Eating", // gsr
+        "Respirated",
 	};
 
 	if (y >= ROWS - 1) {
@@ -4507,7 +4508,7 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
 }
 
 void describeHallucinatedItem(char *buf) {
-	const unsigned short itemCats[10] = {FOOD, WEAPON, ARMOR, POTION, SCROLL, STAFF, WAND, RING, CHARM, GOLD};
+	const unsigned short itemCats[10] = {FOOD, WEAPON, ARMOR, POTION, SCROLL, STAFF, WAND, RING, CHARM, GOLD, THROWING_WEAPON};
     short cat, kind, maxKinds;
     assureCosmeticRNG;
     cat = itemCats[rand_range(0, 9)];

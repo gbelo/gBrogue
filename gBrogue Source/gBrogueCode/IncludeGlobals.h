@@ -10,7 +10,7 @@
  *
  *  Created by Brian Walker on 2/8/09.
  *  Copyright 2012. All rights reserved.
- *  
+ *
  *  This file is part of Brogue.
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -221,6 +221,7 @@ extern char itemGemsRef[NUMBER_ITEM_GEMS][30];
 extern itemTable keyTable[NUMBER_KEY_TYPES];
 extern itemTable foodTable[NUMBER_FOOD_KINDS];
 extern itemTable weaponTable[NUMBER_WEAPON_KINDS];
+extern itemTable throwingWeaponTable[NUMBER_THROWING_WEAPON_KINDS];
 extern itemTable armorTable[NUMBER_ARMOR_KINDS];
 extern itemTable scrollTable[NUMBER_SCROLL_KINDS];
 extern itemTable potionTable[NUMBER_POTION_KINDS];

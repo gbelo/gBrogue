@@ -7,8 +7,10 @@
  *  A special thank you to -LazyCat-, who provided a CodeBlocks project and made the job easier:
  *  https://www.reddit.com/r/brogueforum/comments/44gak5/compile_brogue_for_windows/czvqcij/
  *
- *  This file is modified from original source:
+ *  This file is modified from original source.
  *
+
+
 */
 //  Brogue
 //
@@ -31,6 +33,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,7 +44,7 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "17.05.19"
+#define BROGUE_VERSION_STRING "17.06.15"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
@@ -66,7 +69,7 @@
 #define D_MESSAGE_MACHINE_GENERATION    (DEBUGGING && 0)
 
 // set to false to allow multiple loads from the same saved file:
-#define DELETE_SAVE_FILE_AFTER_LOADING	true
+#define DELETE_SAVE_FILE_AFTER_LOADING	false
 
 // set to false to disable references to keystrokes (e.g. for a tablet port)
 #define KEYBOARD_LABELS true
@@ -145,7 +148,7 @@
 #define GUARANTEED_ADVENTURER_LEVEL 22
 
 //#define MACHINES_FACTOR         1.0         // use this to adjust machine frequency
-#define MACHINES_FACTOR         1.75         // use this to adjust machine frequency // --gsr
+#define MACHINES_FACTOR         1.25         // use this to adjust machine frequency // --gsr
 
 #define MACHINES_BUFFER_LENGTH  200
 
@@ -215,6 +218,7 @@
 #define POTION_CHAR		'!'
 #define ARMOR_CHAR		'['
 #define WEAPON_CHAR		0x2191
+#define THROWING_WEAPON_CHAR		0x2192
 #define STAFF_CHAR		'\\'
 #define WAND_CHAR		'~'
 #define GOLD_CHAR		'*'
@@ -291,6 +295,7 @@
 #define POTION_CHAR		'!'
 #define ARMOR_CHAR		'['
 #define WEAPON_CHAR		'('
+#define THROWING_WEAPON_CHAR		')'
 #define STAFF_CHAR		'\\'
 #define WAND_CHAR		'~'
 #define GOLD_CHAR		'*'
@@ -657,6 +662,7 @@ enum lightType {
     EXPLOSIVE_BLOAT_LIGHT,
 	BOLT_LIGHT_SOURCE,
 	TELEPATHY_LIGHT,
+	TELEPORTATION_LIGHT,
 
     SCROLL_PROTECTION_LIGHT,
     SCROLL_ENCHANTMENT_LIGHT,
@@ -704,24 +710,25 @@ enum itemCategory {
 	FOOD				= Fl(0),
 	WEAPON				= Fl(1),
 	ARMOR				= Fl(2),
-	POTION				= Fl(3),
-	SCROLL				= Fl(4),
-	STAFF				= Fl(5),
-	WAND				= Fl(6),
-	RING				= Fl(7),
-    CHARM               = Fl(8),
-	GOLD				= Fl(9),
-	AMULET				= Fl(10),
-	GEM					= Fl(11),
-	KEY					= Fl(12),
+	THROWING_WEAPON		= Fl(3),
+	POTION				= Fl(4),
+	SCROLL				= Fl(5),
+	STAFF				= Fl(6),
+	WAND				= Fl(7),
+	RING				= Fl(8),
+    CHARM               = Fl(9),
+	GOLD				= Fl(10),
+	AMULET				= Fl(11),
+	GEM					= Fl(12),
+	KEY					= Fl(13),
 
 	CAN_BE_DETECTED		= (WEAPON | ARMOR | POTION | SCROLL | RING | CHARM | WAND | STAFF | AMULET),
 	PRENAMED_CATEGORY	= (FOOD | GOLD | AMULET | GEM | KEY),
     NEVER_IDENTIFIABLE  = (FOOD | CHARM | GOLD | AMULET | GEM | KEY),
 //    COUNTS_TOWARD_SCORE = (GOLD | AMULET | GEM),
-	COUNTS_TOWARD_SCORE = (FOOD|POTION|WEAPON|ARMOR|STAFF|WAND|SCROLL|RING|CHARM|GOLD|AMULET|GEM|KEY),
+	COUNTS_TOWARD_SCORE = (FOOD|POTION|WEAPON|ARMOR|STAFF|WAND|SCROLL|RING|CHARM|GOLD|AMULET|GEM|KEY|THROWING_WEAPON),
     CAN_BE_SWAPPED      = (WEAPON | ARMOR | STAFF | CHARM | RING),
-	ALL_ITEMS			= (FOOD|POTION|WEAPON|ARMOR|STAFF|WAND|SCROLL|RING|CHARM|GOLD|AMULET|GEM|KEY),
+	ALL_ITEMS			= (FOOD|POTION|WEAPON|ARMOR|STAFF|WAND|SCROLL|RING|CHARM|GOLD|AMULET|GEM|KEY|THROWING_WEAPON),
 };
 
 enum keyKind {
@@ -748,6 +755,7 @@ enum potionKind {
 	POTION_FIRE_IMMUNITY,
 	POTION_INVISIBILITY,
 	POTION_HEALING, // gsr
+	POTION_RESPIRATION, // gsr
 //	POTION_CAUSTIC,
 	POTION_PARALYSIS,
 //	POTION_HALLUCINATION, //  gsr
@@ -789,12 +797,6 @@ enum weaponKind {
 	AXE,
 	WAR_AXE,
 
-	DART,
-	POISON_DART,
-	INCENDIARY_DART,
-	TRANQUILIZER_DART,
-	JAVELIN,
-
 	NUMBER_WEAPON_KINDS
 };
 
@@ -804,17 +806,31 @@ enum weaponEnchants {
 	W_QUIETUS,
 	W_PARALYSIS,
 	W_MULTIPLICITY,
-//	W_SLOWING, // dumb runics -- gsr
+//	W_SLOWING, // unpopular runics -- gsr
 //	W_CONFUSION,
     W_FORCE,
 	W_SLAYING,
+	W_POISON, // gsr
 	W_MERCY,
 	NUMBER_GOOD_WEAPON_ENCHANT_KINDS = W_MERCY,
+	W_DOUBLE_EDGE,
 	W_PLENTY,
 	NUMBER_WEAPON_RUNIC_KINDS
 };
 
+enum throwingWeaponKind {
+	DART,
+	POISON_DART,
+	INCENDIARY_DART,
+	TRANQUILIZER_DART,
+	SHURIKEN,
+	JAVELIN,
+
+	NUMBER_THROWING_WEAPON_KINDS
+};
+
 enum armorKind {
+    CLOAK,
 	LEATHER_ARMOR,
 	SCALE_MAIL,
 	CHAIN_MAIL,
@@ -835,9 +851,13 @@ enum armorEnchants {
     A_DAMPENING,
 
 	A_FORCE,
+	A_SHADOWS,
+
 	A_BURDEN,
 	NUMBER_GOOD_ARMOR_ENCHANT_KINDS = A_BURDEN,
 	A_VULNERABILITY,
+	A_FRAILTY,
+	A_TELEPORTATION,
     A_IMMOLATION,
 	NUMBER_ARMOR_ENCHANT_KINDS,
 };
@@ -868,6 +888,7 @@ enum staffKind {
 //	STAFF_HEALING,
 //	STAFF_HASTE,
 //	STAFF_PROTECTION,
+    STAFF_FORCE,    // new! --gsr
     STAFF_DOMINATION,
 	NUMBER_STAFF_KINDS
 };
@@ -906,6 +927,7 @@ enum boltType {
     BOLT_ANCIENT_SPIRIT_VINES,
     BOLT_WHIP,
     BOLT_POISON_BREATH,
+    BOLT_FORCE,
 	NUMBER_BOLT_KINDS
 };
 
@@ -996,6 +1018,7 @@ enum monsterTypes {
 	MK_OGRE,
 	MK_LEPRECHAUN,
 	MK_INK_EEL,
+	MK_MAGMA_EEL,
 	MK_BOG_MONSTER,
 	MK_OGRE_TOTEM,
 	MK_SPIDER,
@@ -1049,6 +1072,7 @@ enum monsterTypes {
 	MK_PHOENIX,
 	MK_PHOENIX_EGG,
     MK_ANCIENT_SPIRIT,
+    MK_WARRIOR_SOUL,
 
 	MK_BLACK_DRAGON,
 	MK_PARALYTIC_BLOAT,
@@ -1057,12 +1081,13 @@ enum monsterTypes {
 	MK_SHADOW_CENIPEDE,
 	MK_DAR_APPARITION,
 	MK_HELLHOUND,
+	MK_INVISIBLE_JELLY,
 	MK_MOLOCH,
 
 	NUMBER_MONSTER_KINDS
 };
 
-#define NUMBER_MUTATORS             12
+#define NUMBER_MUTATORS             14
 
 #define	NUMBER_HORDES				168
 
@@ -1125,22 +1150,22 @@ enum tileFlags {
 #define TURNS_FOR_FULL_REGEN				300
 
 // Nutrition stuff -- gsr
-#define NUTRITION_PER_TURN                  500
-#define NUTRITION_FOOD                      2000//1800
+#define NUTRITION_PER_TURN                  500 // amount restored every turn in Eating state
+#define NUTRITION_FOOD                      2500//1800
 #define NUTRITION_MANGO                     1500//1550
 #define TURNS_TO_EAT_FOOD                   NUTRITION_FOOD / NUTRITION_PER_TURN
 #define TURNS_TO_EAT_MANGO                  NUTRITION_MANGO / NUTRITION_PER_TURN
 
-#define STOMACH_SIZE						2150
-#define HUNGER_THRESHOLD					(STOMACH_SIZE - 1800)
-#define WEAK_THRESHOLD						150
-#define FAINT_THRESHOLD						50
+#define STOMACH_SIZE						2500//2150
+#define HUNGER_THRESHOLD					(STOMACH_SIZE - NUTRITION_FOOD/2)
+#define WEAK_THRESHOLD						HUNGER_THRESHOLD/10 //150
+#define FAINT_THRESHOLD						HUNGER_THRESHOLD/30 //50
 #define MAX_EXP_LEVEL						20
 #define MAX_EXP								100000000L
 
 #define XPXP_NEEDED_FOR_FOLLOW              400  // XPXP required to convince a peaceful monster to become a full ally
 #define XPXP_NEEDED_FOR_TELEPATHIC_BOND     1400 // XPXP required to enable telepathic awareness with the ally
-#define XPXP_NEEDED_FOR_EMPOWERMENT         3000 // We're going to try this -- XP needed for an ally to become "empowered." Yes, going back to the xpxp system. Maybe.
+#define XPXP_NEEDED_FOR_EMPOWERMENT         12000 // We're going to try this -- XP needed for an ally to become "empowered." Yes, going back to the xpxp system. Maybe.
 
 
 #define ROOM_MIN_WIDTH						4
@@ -1302,7 +1327,8 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 #define staffDamage(enchant)				(randClumpedRange(staffDamageLow(enchant), staffDamageHigh(enchant), 1 + (enchant) / 3))
 #define staffPoison(enchant)				((int) (5 * pow(1.3, (double) (enchant) - 2) + FLOAT_FUDGE))
 #define staffBlinkDistance(enchant)			((int) ((enchant) * 2 + 2 + FLOAT_FUDGE))
-#define staffTunnelDistance(enchant)		((int) ((enchant) * 1 + 3 + FLOAT_FUDGE))
+#define staffForceDistance(enchant)			((int) max(((enchant + 1) * 2 + FLOAT_FUDGE), 1))
+#define staffTunnelDistance(enchant)		((int) ((enchant) * 1 + 2 + FLOAT_FUDGE))
 #define staffHasteDuration(enchant)			((int) (2 + (enchant) * 4 + FLOAT_FUDGE))
 #define staffBladeCount(enchant)			((int) ((enchant) * 3 / 2 + FLOAT_FUDGE))
 #define staffDiscordDuration(enchant)		((int) ((enchant) * 4 + FLOAT_FUDGE))
@@ -1310,7 +1336,7 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 #define staffEntrancementDuration(enchant)	((int) ((enchant) * 3 + FLOAT_FUDGE))
 
 #define ringWisdomMultiplier(enchant)       (int) (10 * pow(1.3, min(27, (enchant))) + FLOAT_FUDGE)
-#define ringPropulsionBonus(enchant)        ((int) (5 * (enchant)))
+#define ringPropulsionBonus(enchant)        ((int) (2 * (enchant)))
 #define ringSpeedBonus(enchant)             ((int) (1 * (enchant)))
 #define ringStealthBonus(enchant)           ((int) ((enchant)))
 
@@ -1330,6 +1356,7 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 
 
 #define weaponParalysisDuration(enchant)	(max(2, (int) (2 + ((enchant) / 2) + FLOAT_FUDGE)))
+#define weaponPoisonDuration(enchant)	    (max(2, (int) (6 + 2*((enchant)) + FLOAT_FUDGE)))
 #define weaponConfusionDuration(enchant)	(max(3, (int) (1.5 * (enchant) + FLOAT_FUDGE)))
 #define weaponForceDistance(enchant)		(max(4, (((int) (enchant + FLOAT_FUDGE)) * 2 + 2))) // Depends on definition of staffBlinkDistance() above.
 #define weaponSlowDuration(enchant)			(max(3, (int) (((enchant) + 2) * ((enchant) + 2) / 3 + FLOAT_FUDGE)))
@@ -1851,7 +1878,7 @@ enum boltEffects {
     BE_HEALING,
     BE_HASTE,
     BE_SHIELDING,
-    BE_VOID, // gsr
+    BE_FORCE,
 };
 
 enum boltFlags {
@@ -2018,6 +2045,7 @@ enum statusEffects {
     STATUS_INVISIBLE,
     STATUS_AGGRAVATING,
     STATUS_EATING,
+    STATUS_UNBREATHING,
 	NUMBER_OF_STATUS_EFFECTS,
 };
 
@@ -3022,7 +3050,7 @@ extern "C" {
 	void clearStatus(creature *monst);
 	void moralAttack(creature *attacker, creature *defender);
 	short runicWeaponChance(item *theItem, boolean customEnchantLevel, float enchantLevel);
-	void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed);
+	void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, short damage);
     void teleport(creature *monst, short x, short y, boolean respectTerrainAvoidancePreferences);
 	void chooseNewWanderDestination(creature *monst);
 	boolean canPass(creature *mover, creature *blocker);

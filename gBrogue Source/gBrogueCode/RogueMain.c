@@ -1,5 +1,5 @@
 /*
- *  RogueMain.c
+ *  Rogue .c
  *  gBrogue
  *  A Brogue variant created by G. Reed on 4/5/17.
  *  Copyright 2017. All rights reserved.
@@ -440,14 +440,15 @@ void initializeRogue(unsigned long seed) {
 	theItem = addItemToPack(theItem);
 	equipItem(theItem, false);
 
-	theItem = generateItem(WEAPON, DART);
+	theItem = generateItem(THROWING_WEAPON, DART);
 	theItem->enchant1 = theItem->enchant2 = 0;
 	theItem->quantity = 10;
 	theItem->flags &= ~(ITEM_CURSED | ITEM_RUNIC);
 	identify(theItem);
 	theItem = addItemToPack(theItem);
 
-	theItem = generateItem(ARMOR, LEATHER_ARMOR);
+	//theItem = generateItem(ARMOR, LEATHER_ARMOR);
+	theItem = generateItem(ARMOR, CLOAK);
 	theItem->enchant1 = 0;
 	theItem->flags &= ~(ITEM_CURSED | ITEM_RUNIC);
 	identify(theItem);

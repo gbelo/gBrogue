@@ -1001,11 +1001,13 @@ void populateMonsters() {
 		numberOfMonsters++;
 	}
 
-	// gsr
-	if (rogue.depthLevel == NARROW_LEVEL)
-        numberOfMonsters/=2;
+
+	if (rogue.depthLevel == BIG_LEVEL) // make the big room explorable without TOO much trouble..
+        numberOfMonsters /= 1.1;
+	else if (rogue.depthLevel == NARROW_LEVEL) // don't crowd the narrow level -- gsr
+        numberOfMonsters /= 2;
     // "Our" Moloch, on the second to last floor, near down stairs to the final floor -- gsr
-    if (rogue.depthLevel == MOLOCH_LAIR_LEVEL && !rogue.moloch)
+    else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL && !rogue.moloch)
     {
         monst = generateMonster(MK_MOLOCH, false, false);
         getQualifyingLocNear(loc, rogue.downLoc[0], rogue.downLoc[1], false, 0,
@@ -1015,11 +1017,13 @@ void populateMonsters() {
         monst->yLoc = loc[1];
         rogue.moloch = monst;
     }
-
+    // Generate a fellow adventurer -- gsr
+    if ((rogue.depthLevel > 10 && rand_percent(2)) || rogue.depthLevel == GUARANTEED_ADVENTURER_LEVEL)
+        generateFellowAdventurer();
 
 
 	for (i=0; i<numberOfMonsters; i++) {
-		spawnHorde(0, -1, -1, (HORDE_IS_SUMMONED | HORDE_MACHINE_ONLY | HORDE_GUARANTEED_FOUND_CAPTIVE), 0); // random horde type, random location
+		spawnHorde(0, -1, -1, (HORDE_IS_SUMMONED | HORDE_MACHINE_ONLY), 0); // random horde type, random location
 	}
 }
 
@@ -1117,6 +1121,7 @@ void teleport(creature *monst, short x, short y, boolean respectTerrainAvoidance
             return; // Failure!
         }
     }
+    createFlare(monst->xLoc, monst->yLoc, TELEPORTATION_LIGHT); // gsr
     monst->bookkeepingFlags &= ~(MB_SEIZED | MB_SEIZING);
 	if (monst == &player) {
 		pmap[player.xLoc][player.yLoc].flags &= ~HAS_PLAYER;
@@ -1140,7 +1145,7 @@ void teleport(creature *monst, short x, short y, boolean respectTerrainAvoidance
 	refreshDungeonCell(monst->xLoc, monst->yLoc);
 
     // Note new position -- just a useful thing -- gsr
-    createFlare(monst->xLoc, monst->yLoc, GENERIC_FLASH_LIGHT);
+    createFlare(monst->xLoc, monst->yLoc, TELEPORTATION_LIGHT);
 
 }
 
@@ -1346,11 +1351,14 @@ boolean monsterAvoids(creature *monst, short x, short y) {
     if (monst == &player) {
         terrainImmunities |= T_SACRED;
     }
+/*
     if (monst == &player
         && rogue.armor
         && (rogue.armor->flags & ITEM_RUNIC)
         && rogue.armor->enchant2 == A_RESPIRATION) {
-
+*/
+    if (monst->status[STATUS_UNBREATHING])
+    {
         terrainImmunities |= T_RESPIRATION_IMMUNITIES;
     }
 
@@ -1621,7 +1629,15 @@ boolean awareOfTarget(creature *observer, creature *target) {
 		retval = false;
 	} else if (perceivedDistance <= awareness) {
         // within range but currently unaware
-        retval = rand_percent(25);
+
+        // If the monster's sleeping, he's obviously not as attentive. -- gsr
+        retval = rand_percent(MONSTER_SLEEPING ? 20 : 30); // rand_percent(25); // gsr
+
+        // Flash monsters on awareness -- gsr
+        // Modified from https://github.com/sulai/Brogue/commit/b32b97b7edcafe431c3dc64ff0dbdec74335a6bc
+        if (retval && !(observer->creatureState & (MONSTER_ALLY | MONSTER_FLEEING)))
+           flashMonster(observer, &pink, 1000);//flashMonster(observer, &red, 100);
+
     } else {
         retval = false;
     }
@@ -1787,7 +1803,7 @@ void updateMonsterState(creature *monst) {
         }
         else if (oldState == MONSTER_TRACKING_SCENT && monst->creatureState == MB_GIVEN_UP_ON_SCENT)
         {
-            sprintf(buf, "%s gives up pursuit", monstName);
+            sprintf(buf, "%s gives up hunting", monstName);
             combatMessage(buf, messageColorFromVictim(monst));
         }
         else if (oldState == MONSTER_ALLY && monst->creatureState == MONSTER_TRACKING_SCENT)
@@ -1798,13 +1814,13 @@ void updateMonsterState(creature *monst) {
         }
         else if (oldState == MONSTER_WANDERING && monst->creatureState == MONSTER_TRACKING_SCENT)
         {
-            sprintf(buf, "%s begins pursuit", monstName);
+            sprintf(buf, "%s begins hunting", monstName);
             combatMessage(buf, messageColorFromVictim(&player));
             flashMonster(monst, messageColorFromVictim(&player), 10);
         }
         else if (oldState == MONSTER_SLEEPING && monst->creatureState == MONSTER_TRACKING_SCENT)
         {
-            sprintf(buf, "%s wakes up and begins pursuit", monstName);
+            sprintf(buf, "%s wakes up and begins hunting", monstName);
             combatMessage(buf, messageColorFromVictim(&player));
             flashMonster(monst, messageColorFromVictim(&player), 10);
         }
@@ -4428,4 +4444,99 @@ void makeIdle(creature *monst) {
             return;
         }
     }
+}
+
+// gsr
+void generateFellowAdventurer()
+{
+    itemTable *theEntry;
+    item *tempItem = initializeItem();
+    short itemKind, i, j, k;
+    creature *monst;
+    short loc[2];
+
+    // Generate near downstairs
+    monst = generateMonster(MK_ADVENTURER, false, false);
+    getQualifyingLocNear(loc, rogue.downLoc[0], rogue.downLoc[1], false, 0,
+                         (T_PATHING_BLOCKER),
+                         (HAS_MONSTER | HAS_ITEM | HAS_UP_STAIRS | HAS_DOWN_STAIRS | IS_IN_MACHINE), false, false);
+    monst->xLoc = loc[0];
+    monst->yLoc = loc[1];
+
+    // He gonna help you out
+    monst->creatureState = MONSTER_ALLY;
+
+    // Let's equip it!
+        // Weapon
+			itemKind = chooseKind(weaponTable, NUMBER_WEAPON_KINDS);
+			theEntry = &weaponTable[itemKind];
+			tempItem->damage = weaponTable[itemKind].range;
+
+			monst->info.damage.lowerBound = tempItem->damage.lowerBound;
+			monst->info.damage.upperBound = tempItem->damage.upperBound;
+			monst->info.damage.clumpFactor = tempItem->damage.clumpFactor;
+
+        // Armor
+			itemKind = chooseKind(armorTable, NUMBER_ARMOR_KINDS);
+			monst->info.defense = randClump(armorTable[itemKind].range);
+
+        // Potions of vitality
+            for (i = 0; i < rogue.depthLevel; i++)
+            {
+                // Found a potion of vitality on this floor...
+                if (rand_percent(75))
+                {
+                    monst->info.maxHP += 10;
+                    monst->info.damage.lowerBound += 1;
+                    monst->info.damage.upperBound += 1;
+                }
+            }
+
+
+        // A few "staffs" we've "found"
+/*
+    BOLT_NONE = 0,
+	BOLT_TELEPORT,
+	BOLT_SLOW,
+	BOLT_POLYMORPH,
+	BOLT_NEGATION,
+	BOLT_DOMINATION,
+	BOLT_BECKONING,
+	BOLT_PLENTY,
+	BOLT_INVISIBILITY,
+    BOLT_EMPOWERMENT,
+	BOLT_LIGHTNING,
+	BOLT_FIRE,
+	BOLT_POISON,
+	BOLT_TUNNELING,
+	BOLT_BLINKING,
+	BOLT_ENTRANCEMENT,
+	BOLT_OBSTRUCTION,
+	BOLT_DISCORD,
+	BOLT_CONJURATION,
+	BOLT_HEALING,
+	BOLT_HASTE,
+    BOLT_SLOW_2,
+	BOLT_SHIELDING,
+    BOLT_SPIDERWEB,
+    BOLT_SPARK,
+*/
+            for (i = 0; i < rand_range(0, rogue.depthLevel * 3/4); i++)
+            {
+                do {
+                    j = rand_range(BOLT_TELEPORT, BOLT_SPARK);
+                    // Lots of cool bolts but we want to forbid some of them
+                } while (j == BOLT_POLYMORPH || j == BOLT_POLYMORPH || j == BOLT_DOMINATION || j == BOLT_PLENTY || j == BOLT_EMPOWERMENT || j == BOLT_ENTRANCEMENT || j == BOLT_SPIDERWEB);
+
+                for (k = 0; k <= i; k++)
+                {
+                    if (monst->info.bolts[k] == j)
+                        break;
+                    else
+                        monst->info.bolts[i] = j;
+                }
+            }
+
+    // How beat up are we?
+        monst->currentHP = min(monst->info.maxHP, rand_range(0, 200) * monst->info.maxHP / 100);
 }
