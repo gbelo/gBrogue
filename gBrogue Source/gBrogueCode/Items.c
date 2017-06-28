@@ -532,29 +532,27 @@ void populateItems(short upstairsX, short upstairsY) {
         }
 		numberOfGoldPiles = 0;
 	} else {
-        rogue.lifePotionFrequency += 34;
-		rogue.strengthPotionFrequency += 17;
-		rogue.vitalityPotionFrequency += 25; // gsr
-		rogue.enchantScrollFrequency += 30;
-		numberOfItems = 3;
-		while (rand_percent(40)) {//(60)) {
+        rogue.lifePotionFrequency += 34; // irrelevant now -- gsr
+		rogue.strengthPotionFrequency += 17; // irrelevant now -- gsr
+		rogue.vitalityPotionFrequency += 23; // gsr
+		rogue.enchantScrollFrequency += 25;
+		numberOfItems = 3;//3;
+		while (rand_percent(60)) {
 			numberOfItems++;
 		}
 		if (rogue.depthLevel == 1) {
 			numberOfItems += 1;
 		}
 		if (rogue.depthLevel <= 2) {
-			numberOfItems += 1;//3; // extra items to kickstart your career as a rogue
-		} else if (rogue.depthLevel <= 4) {
-			numberOfItems++; // and more here
+			numberOfItems += 2;//3; // extra items to kickstart your career as a rogue
 		} else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL - 1)
 			numberOfItems += rand_range(4, 6); // give the guy a fighting chance! -- gsr
 
         // rewards on special floors! -- gsr
 		else if (rogue.depthLevel == BIG_LEVEL)
-            numberOfItems += rand_range(8, 10);
+            numberOfItems += rand_range(10, 16);
         else if (rogue.depthLevel == NARROW_LEVEL)
-            numberOfItems += rand_range(6, 10);
+            numberOfItems += rand_range(6, 12);
 
 		numberOfGoldPiles = min(5, (int) (rogue.depthLevel / 4 + FLOAT_FUDGE));
 		for (goldBonusProbability = 60;

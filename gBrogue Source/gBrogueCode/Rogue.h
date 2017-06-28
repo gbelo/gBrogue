@@ -46,7 +46,7 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "17.06.27"
+#define BROGUE_VERSION_STRING "17.06.28"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
@@ -1158,7 +1158,7 @@ enum tileFlags {
 #define TURNS_TO_EAT_FOOD                   NUTRITION_FOOD / NUTRITION_PER_TURN
 #define TURNS_TO_EAT_MANGO                  NUTRITION_MANGO / NUTRITION_PER_TURN
 
-#define STOMACH_SIZE						2500//2150
+#define STOMACH_SIZE						3000//2150
 #define HUNGER_THRESHOLD					(STOMACH_SIZE - NUTRITION_FOOD/2)
 #define WEAK_THRESHOLD						HUNGER_THRESHOLD/10 //150
 #define FAINT_THRESHOLD						HUNGER_THRESHOLD/30 //50
@@ -1167,7 +1167,7 @@ enum tileFlags {
 
 #define XPXP_NEEDED_FOR_FOLLOW              400  // XPXP required to convince a peaceful monster to become a full ally
 #define XPXP_NEEDED_FOR_TELEPATHIC_BOND     1400 // XPXP required to enable telepathic awareness with the ally
-#define XPXP_NEEDED_FOR_EMPOWERMENT         4000 // We're going to try this -- XP needed for an ally to become "empowered." Yes, going back to the xpxp system. Maybe.
+#define XPXP_NEEDED_FOR_EMPOWERMENT         9000 // We're going to try this -- XP needed for an ally to become "empowered." Yes, going back to the xpxp system. Maybe.
 
 
 #define ROOM_MIN_WIDTH						4
