@@ -1245,7 +1245,7 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 		{DF_TRIGGER_AREA,COFFIN_CLOSED,0,		{1,1},		1,			KEY,		KEY_CAGE,	MK_VAMPIRE,		1,				0,			(ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_SKELETON_KEY | MF_MONSTER_TAKE_ITEM | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN | MF_KEY_DISPOSABLE)},
 		{DF_AMBIENT_BLOOD,SECRET_DOOR,DUNGEON,	{1,1},		1,			0,			0,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN)}}},
 	// Legendary ally -- approach the altar with the crystal key to activate a portal and summon a legendary ally.
-	{{8, AMULET_LEVEL}, {30, 50},	10,		2,			0,                  (BP_ROOM | BP_REWARD),	{
+	{{8, AMULET_LEVEL}, {30, 50},	0,		2,			0,                  (BP_ROOM | BP_REWARD),	{
 		{DF_LUMINESCENT_FUNGUS,	ALTAR_KEYHOLE, DUNGEON,	{1,1}, 1,		KEY,		KEY_PORTAL,	0,				2,				0,			(ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY | MF_NEAR_ORIGIN | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_KEY_DISPOSABLE)},
 		{DF_LUMINESCENT_FUNGUS,	PORTAL,	DUNGEON,{1,1},		1,			0,			-1,			0,				2,				HORDE_MACHINE_LEGENDARY_ALLY,0,	(MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN)}}},
     // Goblin warren
@@ -2240,18 +2240,18 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_DRAGON,			1,		{MK_DRAGON},							{{3, 5, 1}},					34,		MOLOCH_LAIR_LEVEL-1,    2},
 
 	// "post-game" -- gsr
-	{MK_BLACK_DRAGON,	0,		{0},									{{0}},							32,		MOLOCH_LAIR_LEVEL-1,		3},
+	{MK_BLACK_DRAGON,	0,		{0},									{{0}},							NETHER_LEVEL - 2,		MOLOCH_LAIR_LEVEL-1,		3},
 	{MK_BLACK_DRAGON,	0,		{0},									{{0}},							36,		MOLOCH_LAIR_LEVEL-1,		2,		STATUE_DORMANT, 0,				HORDE_MACHINE_STATUE},
-	{MK_PARALYTIC_BLOAT,0,		{0},									{{0}},							NETHER_LEVEL,		MOLOCH_LAIR_LEVEL,		2},
-	{MK_CRYSTAL_GOLEM,	0,		{0},									{{0}},							NETHER_LEVEL,		MOLOCH_LAIR_LEVEL-1,		2},
-	{MK_QUICKLING,  	0,		{0},									{{0}},							NETHER_LEVEL,		MOLOCH_LAIR_LEVEL-1,		3},
+	{MK_PARALYTIC_BLOAT,0,		{0},									{{0}},							NETHER_LEVEL - 2,		MOLOCH_LAIR_LEVEL,		2},
+	{MK_CRYSTAL_GOLEM,	0,		{0},									{{0}},							NETHER_LEVEL - 2,		MOLOCH_LAIR_LEVEL-1,		2},
+	{MK_QUICKLING,  	0,		{0},									{{0}},							NETHER_LEVEL - 4,		MOLOCH_LAIR_LEVEL-1,		3},
 	{MK_QUICKLING,  	1,		{MK_QUICKLING},							{{1,4,1}},						32,		            MOLOCH_LAIR_LEVEL-1,		2},
-	{MK_SHADOW_CENIPEDE,0,		{0},									{{0}},							NETHER_LEVEL,		MOLOCH_LAIR_LEVEL-1,		2},
+	{MK_SHADOW_CENIPEDE,0,		{0},									{{0}},							NETHER_LEVEL - 5,		MOLOCH_LAIR_LEVEL-1,		2},
 	{MK_SHADOW_CENIPEDE,0,		{MK_SHADOW_CENIPEDE},					{{1,3,1}},						30,		            MOLOCH_LAIR_LEVEL-1,        2},
-	{MK_DAR_APPARITION,0,		{0},									{{0}},							NETHER_LEVEL,		MOLOCH_LAIR_LEVEL-1,		1},
+	{MK_DAR_APPARITION,0,		{0},									{{0}},							NETHER_LEVEL - 1,		MOLOCH_LAIR_LEVEL-1,		1},
 	{MK_HELLHOUND,  	1,		{MK_HELLHOUND},							{{1,4,1}},						28,		            MOLOCH_LAIR_LEVEL-1,		2},
 	{MK_HELLHOUND,  	1,		{0},            					    {0},    						28,		            MOLOCH_LAIR_LEVEL,		2},
-	{MK_INVISIBLE_JELLY,  	1,		{0},            					{0},    						30,		            MOLOCH_LAIR_LEVEL,		2},
+	{MK_INVISIBLE_JELLY,  	1,		{0},            					{0},    						34,		            MOLOCH_LAIR_LEVEL,		2},
 
 
 
@@ -2345,6 +2345,7 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_GOBLIN_CONJURER,0,		{0},									{{0}},							2,		9,		10,		MONSTER_CAGE_CLOSED, 0,			HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE},
 	{MK_GOBLIN_MYSTIC,	0,		{0},									{{0}},							2,		9,		10,		MONSTER_CAGE_CLOSED, 0,			HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE},
 	{MK_OGRE,			0,		{0},									{{0}},							5,		15,		10,		MONSTER_CAGE_CLOSED, 0,			HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE},
+	{MK_OGRE_SHAMAN,    0,		{0},									{{0}},							8,		20,     10,     MONSTER_CAGE_CLOSED, 0,		HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE},
 	{MK_TROLL,			0,		{0},									{{0}},							10,		19,		10,		MONSTER_CAGE_CLOSED, 0,			HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE},
 	{MK_NAGA,			0,		{0},									{{0}},							9,		20,		10,		MONSTER_CAGE_CLOSED, 0,			HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE},
 	{MK_SALAMANDER,		0,		{0},									{{0}},							9,		20,		10,		MONSTER_CAGE_CLOSED, 0,			HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE},
@@ -2353,6 +2354,8 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_DAR_BLADEMASTER,0,		{0},									{{0}},							9,		AMULET_LEVEL, 10, MONSTER_CAGE_CLOSED, 0,		HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE},
 	{MK_DAR_PRIESTESS,	0,		{0},									{{0}},							12,		AMULET_LEVEL, 10, MONSTER_CAGE_CLOSED, 0,		HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE},
 	{MK_DAR_BATTLEMAGE,	0,		{0},									{{0}},							13,		AMULET_LEVEL, 10, MONSTER_CAGE_CLOSED, 0,		HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE},
+	{MK_DRAGON,	        0,		{0},									{{0}},							23,		AMULET_LEVEL, 5, MONSTER_CAGE_CLOSED, 0,		HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE},
+
 
 	// vampire bloodbags
 	{MK_MONKEY,			0,		{0},									{{0}},							1,		5,		10,		MONSTER_CAGE_CLOSED, 0,			HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE},
@@ -2374,11 +2377,17 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
     {MK_IMP,			0,		{0},									{{0}},							15,		DEEPEST_LEVEL,	10, 0,      0,                  HORDE_MACHINE_THIEF},
 
 	// legendary allies
-	{MK_UNICORN,		0,		{0},									{{0}},							1,		DEEPEST_LEVEL,	10, 0,		0,					HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER},
+/*	{MK_UNICORN,		0,		{0},									{{0}},							1,		DEEPEST_LEVEL,	10, 0,		0,					HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER},
 	{MK_IFRIT,			0,		{0},									{{0}},							1,		DEEPEST_LEVEL,	10,	0,		0,					HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER},
 	{MK_PHOENIX_EGG,	0,		{0},									{{0}},							1,		DEEPEST_LEVEL,	10,	0,		0,					HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER},
     {MK_ANCIENT_SPIRIT,	0,		{0},									{{0}},							1,		DEEPEST_LEVEL,	10,	0,		0,					HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER},
-    {MK_WARRIOR_SOUL,	0,		{0},									{{0}},							1,		DEEPEST_LEVEL,	10,	0,		0,					HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER},
+    {MK_WARRIOR_SOUL,	0,		{0},									{{0}},							1,		DEEPEST_LEVEL,	10,	0,		0,					HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER},*/
+    // Let's be a total jerk and make them late-ish game bosses -- gsr
+	{MK_UNICORN,		0,		{0},									{{0}},							15,		DEEPEST_LEVEL,	5, 0,		0,					HORDE_MACHINE_BOSS},
+	{MK_IFRIT,			0,		{0},									{{0}},							15,		DEEPEST_LEVEL,	5,	0,		0,					HORDE_MACHINE_BOSS},
+	{MK_PHOENIX_EGG,	0,		{0},									{{0}},							15,		DEEPEST_LEVEL,	5,	0,		0,					HORDE_MACHINE_BOSS},
+    {MK_ANCIENT_SPIRIT,	0,		{0},									{{0}},							15,		DEEPEST_LEVEL,	5,	0,		0,					HORDE_MACHINE_BOSS},
+    {MK_WARRIOR_SOUL,	0,		{0},									{{0}},							15,		DEEPEST_LEVEL,	5,	0,		0,					HORDE_MACHINE_BOSS},
 
     // goblin warren
     {MK_GOBLIN,			0,		{0},									{{0}},							1,		10,		10,     0,              0,              HORDE_MACHINE_GOBLIN_WARREN},

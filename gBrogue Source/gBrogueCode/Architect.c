@@ -175,31 +175,24 @@ short passableArcCount(short x, short y) {
 }
 
 
-// Rotates around the cell, counting up the number of distinct strings of passable neighbors in a single revolution.
-//		Zero means there are no impassable tiles adjacent.
-//		One means it is adjacent to a wall.
-//		Two means it is in a hallway or something similar.
-//		Three means it is the center of a T-intersection or something similar.
-//		Four means it is in the intersection of two hallways.
-//		Five or more means there is a bug.
-short visibleArcCount(short x, short y) {
-	short arcCount, dir, oldX, oldY, newX, newY;
+// Are we up against a wall(-ish)? -- gsr
+boolean againstAWall(short x, short y) {
+	short arcCount, dir, newX, newY;
+	char buf[255];
 
     brogueAssert(coordinatesAreInMap(x, y));
 
 	arcCount = 0;
 	for (dir = 0; dir < DIRECTION_COUNT; dir++) {
-		oldX = x + cDirs[(dir + 7) % 8][0];
-		oldY = y + cDirs[(dir + 7) % 8][1];
 		newX = x + cDirs[dir][0];
 		newY = y + cDirs[dir][1];
-		// Counts every transition from passable to impassable or vice-versa on the way around the cell:
-		if ((coordinatesAreInMap(newX, newY) && cellHasTerrainFlag(newX, newY, T_OBSTRUCTS_VISION))
-			!= (coordinatesAreInMap(oldX, oldY) && cellHasTerrainFlag(oldX, oldY, T_OBSTRUCTS_VISION))) {
+
+        if (coordinatesAreInMap(newX, newY) && (cellHasTerrainFlag(newX, newY, T_OBSTRUCTS_VISION) && !cellHasTMFlag(newX, newY, TM_PROMOTES_ON_STEP)) )
 			arcCount++;
-		}
 	}
-	return arcCount / 2; // Since we added one when we entered a wall and another when we left.
+	sprintf(buf, "%i", arcCount); // Alright. I have no idea why the hell this is, but if I sprintf this value, this function works. Otherwise, it doesn't. Seriously, try it. I dare you. -- gsr
+    //message(buf, false);
+	return (arcCount >= 3);
 }
 
 
@@ -2164,7 +2157,7 @@ void designNarrowRoom(short **grid) {
 //            hiliteGrid(grid, &green, 50);
 //            temporaryMessage("Added a chunk:", true);
         }
-        x += rand_range(radius + 1, radius + 3);
+        x += rand_range(radius - 1, radius + 1);
         y += rand_range(-radius + 2, radius + 2);
         y = clamp(y + rand_range(-radius, radius), minY + 4, maxY - 4);
     }

@@ -9,6 +9,8 @@
  *
  *  This file is modified from original source.
  *
+ * TO DO:
+ *  - Fix legendary allies not spawning? The crystal orb will spawn monsters with some conditions (e.g. is a boss) but not others.
 
 
 */
@@ -44,7 +46,7 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "17.06.15"
+#define BROGUE_VERSION_STRING "17.06.27"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
@@ -1165,7 +1167,7 @@ enum tileFlags {
 
 #define XPXP_NEEDED_FOR_FOLLOW              400  // XPXP required to convince a peaceful monster to become a full ally
 #define XPXP_NEEDED_FOR_TELEPATHIC_BOND     1400 // XPXP required to enable telepathic awareness with the ally
-#define XPXP_NEEDED_FOR_EMPOWERMENT         12000 // We're going to try this -- XP needed for an ally to become "empowered." Yes, going back to the xpxp system. Maybe.
+#define XPXP_NEEDED_FOR_EMPOWERMENT         4000 // We're going to try this -- XP needed for an ally to become "empowered." Yes, going back to the xpxp system. Maybe.
 
 
 #define ROOM_MIN_WIDTH						4

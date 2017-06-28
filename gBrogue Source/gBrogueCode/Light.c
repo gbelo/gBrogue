@@ -288,7 +288,7 @@ boolean playerInDarkness() {
     // special armor that makes you dark when you're up against walls! -- gsr
     if (rogue.armor && (rogue.armor->flags & ITEM_RUNIC)
         && rogue.armor->enchant2 == A_SHADOWS
-        && visibleArcCount(player.xLoc, player.yLoc) == 1)
+        && againstAWall(player.xLoc, player.yLoc))
         {
             if (!(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED))
             {

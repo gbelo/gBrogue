@@ -392,7 +392,7 @@ void specialHit(creature *attacker, creature *defender, short damage) {
 		// gsr
 		if (attacker->info.abilityFlags & MA_HIT_BLINDS) {
 			if (!player.status[STATUS_DARKNESS]) {
-				combatMessage("you can't see", 0);
+				combatMessage("your vision begins to fade", 0);
 			}
 			if (!player.status[STATUS_DARKNESS]) {
 				player.maxStatus[STATUS_DARKNESS] = 0;

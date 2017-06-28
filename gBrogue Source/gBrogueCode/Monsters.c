@@ -749,7 +749,8 @@ void drawManacles(short x, short y) {
 	}
 }
 
-// If hordeID is 0, it's randomly assigned based on the depth, with a 10% chance of an out-of-depth spawn from 1-5 levels deeper.
+// // If hordeID is 0, it's randomly assigned based on the depth, with a 10% chance of an out-of-depth spawn from 1-5 levels deeper.
+// The effective depth for hordes is now a function of the current depth and your deepest. This doesn't affect descent, but ascent is a different beast. -- gsr
 // If x is negative, location is random.
 // Returns a pointer to the leader.
 creature *spawnHorde(short hordeID, short x, short y, unsigned long forbiddenFlags, unsigned long requiredFlags) {
@@ -760,14 +761,18 @@ creature *spawnHorde(short hordeID, short x, short y, unsigned long forbiddenFla
     boolean tryAgain;
 
 	if (rogue.depthLevel > 1 && rand_percent(10)) {
-		depth = rogue.depthLevel + rand_range(1, min(5, rogue.depthLevel / 2));
+//		depth = rogue.depthLevel + rand_range(1, min(5, rogue.depthLevel / 2));
+		depth = (rogue.depthLevel + rogue.deepestLevel) / 2 + rand_range(1, min(5, rogue.depthLevel / 2));
 		if (depth > AMULET_LEVEL) {
 			depth = max(rogue.depthLevel, AMULET_LEVEL);
 		}
         forbiddenFlags |= HORDE_NEVER_OOD;
+
 	} else {
-		depth = rogue.depthLevel;
+//		depth = rogue.depthLevel;
+        depth = (rogue.depthLevel + rogue.deepestLevel) / 2;
 	}
+
 
 	if (hordeID <= 0) {
 		failsafe = 50;
