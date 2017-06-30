@@ -225,6 +225,7 @@ item *makeItemInto(item *theItem, unsigned long itemCategory, short itemKind) {
             theItem->quiverNumber = rand_range(1, 60000);
             theItem->flags &= ~(ITEM_CURSED | ITEM_RUNIC); // throwing weapons can't be cursed or runic
             theItem->enchant1 = 0; // throwing weapons can't be magical
+            theItem->flags &= ~ITEM_CAN_BE_IDENTIFIED;
 			break;
 
 		case ARMOR:
