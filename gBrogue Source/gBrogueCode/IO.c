@@ -3864,7 +3864,7 @@ void printDiscoveriesScreen() {
 	plotCharToBuffer(STAFF_CHAR, x + 3, y, &itemColor, &black, dbuf);
 	printDiscoveries(STAFF, NUMBER_STAFF_KINDS, STAFF_CHAR, x + 1, ++y, dbuf);
 
-	printString("-- - RINGS --", x = mapToWindowX(53), y = mapToWindowY(NUMBER_STAFF_KINDS + 1), &flavorTextColor, &black, dbuf);
+	printString("-- - RINGS --", x = mapToWindowX(53), y = mapToWindowY(NUMBER_STAFF_KINDS + 2), &flavorTextColor, &black, dbuf);
 	plotCharToBuffer(RING_CHAR, x + 3, y, &itemColor, &black, dbuf);
 	printDiscoveries(RING, NUMBER_RING_KINDS, RING_CHAR, x + 1, ++y, dbuf);
 
