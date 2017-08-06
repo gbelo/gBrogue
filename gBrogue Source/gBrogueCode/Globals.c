@@ -1153,19 +1153,13 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 	// -- REWARD ROOMS --
 
 	// First floor guaranteed library
-    {{1, 1},         {7, 30},	1,		6,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
+    {{1, 1},         {7, 30},	0,		6,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
 		{0,			CARPET,		DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
 		{0,			ALTAR_CAGE_OPEN,DUNGEON,	{3,8},		1,			(STAFF|RING|CHARM), -1,	0,				2,				0,			(ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),	(MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},
 //        {0,			STATUE_INERT,DUNGEON,		{1,1},		0,			0,			-1,			0,				2,				0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)},
         {0,         DOOR,DUNGEON,	{1,1},		1,			0,			0,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN)}}},
-
-/*	{{1, 1},           {20, 30},	1,		6,			1,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
-		{0,			CARPET,		DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
-        {0,			ALTAR_CAGE_OPEN,DUNGEON,	{3,5},		4,			(STAFF|RING|CHARM),     -1,	0,				2,				0,			(ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_PLAYER_AVOIDS),	(MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},
-        {0,         DOOR,DUNGEON,	{1,1},		1,			0,			0,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN)}}},
-*/
 	// Mixed item library -- can check one item out at a time
-	{{2, 12},           {30, 50},	20,		6,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
+	{{2, 12},           {30, 50},	10,		6,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
 		{0,			CARPET,		DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
 		{0,			0,          0,              {1,1},		1,			0,          0,          0,				2,				0,			0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)},
 //		{0,			ALTAR_CAGE_OPEN,DUNGEON,	{1,1},		1,			WAND,       WAND_EMPOWERMENT, 0,		2,				0,			(ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_PLAYER_AVOIDS),	(MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},
@@ -1174,17 +1168,17 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 		{0,			ALTAR_CAGE_OPEN,DUNGEON,	{2,3},		2,			(STAFF|RING|CHARM),-1,	0,				2,				0,			(ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),	(MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},
         {0,			STATUE_INERT,DUNGEON,		{2,3},		0,			0,			-1,			0,				2,				0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)}}},
 	// Single item category library -- can check one item out at a time
-	{{2, 12},           {30, 50},	15,		5,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
+	{{2, 12},           {30, 50},	10,		5,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
 		{0,			CARPET,		DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
 		{0,			0,          0,              {1,1},		1,			0,          0,          0,				2,				0,			0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)},
 		{0,			ALTAR_CAGE_OPEN,DUNGEON,	{3,4},		3,			(RING),		-1,			0,				2,				0,			(ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),	(MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_ALTERNATIVE | MF_IMPREGNABLE)},
 		{0,			ALTAR_CAGE_OPEN,DUNGEON,	{4,5},		4,			(STAFF),	-1,			0,				2,				0,			(ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),	(MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_ALTERNATIVE | MF_IMPREGNABLE)},
         {0,			STATUE_INERT,DUNGEON,		{2,3},		0,			0,			-1,			0,				2,				0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)}}},
 	// Treasure room -- apothecary or archive (potions or scrolls)
-	{{8, AMULET_LEVEL},	{20, 40},	10,		6,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
+	{{8, AMULET_LEVEL},	{20, 40},	5,		6,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
 		{0,			CARPET,		DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
-		{0,			0,			0,				{5,7},		2,			(POTION),	-1,			0,				2,				0,			0,			(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},
-		{0,			0,			0,				{4,6},		2,			(SCROLL),	-1,			0,				2,				0,			0,			(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},
+		{0,			0,			0,				{2,5},		2,			(POTION),	-1,			0,				2,				0,			0,			(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},
+		{0,			0,			0,				{2,4},		2,			(SCROLL),	-1,			0,				2,				0,			0,			(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},
 		{0,			FUNGUS_FOREST,SURFACE,		{3,4},		0,			0,			-1,			0,				2,				0,			0,			0},
 		{0,			0,          0,              {1,1},		1,			0,          0,          0,				2,				0,			0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)},
         {0,			STATUE_INERT,DUNGEON,		{2,3},		0,			0,			-1,			0,				2,				0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)}}},
@@ -1206,13 +1200,13 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
         {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_VITALITY,0,              2,				0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},
 		{0,			0,          0,              {1,1},		1,			0,          0,          0,				2,				0,			0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)}}},
     // Commutation altars
-	{{13, AMULET_LEVEL},{10, 30},	30,		4,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
+	{{13, AMULET_LEVEL},{10, 30},	20,		4,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
 		{0,			CARPET,		DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
         {0,			STATUE_INERT,DUNGEON,		{1,3},		0,			0,			-1,			0,				2,				0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)},
 		{DF_MAGIC_PIPING,COMMUTATION_ALTAR,DUNGEON,{2,2},	2,			0,          -1,         0,              2,				0,			0,          (MF_TREAT_AS_BLOCKING)},
 		{0,			0,          0,              {1,1},		1,			0,          0,          0,				2,				0,			0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)}}},
     // Resurrection altar
-	{{13, AMULET_LEVEL},{10, 30},	5,		4,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
+	{{13, AMULET_LEVEL},{10, 30},	10,		4,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
 		{0,			CARPET,		DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
         {0,			STATUE_INERT,DUNGEON,		{1,3},		0,			0,			-1,			0,				2,				0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)},
 		{DF_MACHINE_FLOOR_TRIGGER_REPEATING, RESURRECTION_ALTAR,DUNGEON, {1,1}, 1, 0, -1,       0,              2,				0,			0,          (MF_TREAT_AS_BLOCKING)},
@@ -1224,7 +1218,7 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 		{0,			0,			0,				{2,2},		2,			(STAFF),	-1,			0,				0,				0,			ITEM_MAX_CHARGES_KNOWN | ITEM_KIND_AUTO_ID, (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_BUILD_ANYWHERE_ON_LEVEL)},
         {0,			0,			0,				{1,2},		1,			(CHARM),	-1,			0,				0,				0,			ITEM_KIND_AUTO_ID, (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_BUILD_ANYWHERE_ON_LEVEL)}}},
 	// Dungeon -- two allies chained up for the taking
-	{{5, AMULET_LEVEL},	{30, 80},	12,		5,			0,                  (BP_ROOM | BP_REWARD),	{
+	{{5, AMULET_LEVEL},	{30, 80},	3,		5,			0,                  (BP_ROOM | BP_REWARD),	{
 		{0,			VOMIT,		SURFACE,		{2,2},		2,			0,			-1,			0,				2,				(HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE), 0, (MF_GENERATE_HORDE | MF_TREAT_AS_BLOCKING)},
 		{DF_AMBIENT_BLOOD,MANACLE_T,SURFACE,	{1,2},		1,			0,			-1,			0,				1,				0,			0,			0},
 		{DF_AMBIENT_BLOOD,MANACLE_L,SURFACE,	{1,2},		1,			0,			-1,			0,				1,				0,			0,			0},
@@ -1239,9 +1233,9 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
         {DF_BONES,	0,			0,				{3,5},		3,			0,			-1,			0,				1,				0,			0,			0},
         {0,			TORCH_WALL,	DUNGEON,		{2,3},		2,			0,			0,			0,				1,				0,			0,			(MF_BUILD_IN_WALLS)}}},
 	// Vampire lair -- allies locked in cages and chained in a hidden room with a vampire in a coffin; vampire has one cage key.
-	{{10, AMULET_LEVEL},{50, 80},	5,		4,			0,                  (BP_ROOM | BP_REWARD | BP_SURROUND_WITH_WALLS | BP_PURGE_INTERIOR),	{
+	{{10, AMULET_LEVEL},{50, 80},	3,		4,			0,                  (BP_ROOM | BP_REWARD | BP_SURROUND_WITH_WALLS | BP_PURGE_INTERIOR),	{
 		{DF_AMBIENT_BLOOD,0,	0,				{1,2},		1,			0,			-1,			0,				2,				(HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE), 0, (MF_GENERATE_HORDE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
-		{DF_AMBIENT_BLOOD,MONSTER_CAGE_CLOSED,DUNGEON,{2,4},2,			0,			-1,			0,				2,				(HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE), 0, (MF_GENERATE_HORDE | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY)},
+		{DF_AMBIENT_BLOOD,MONSTER_CAGE_CLOSED,DUNGEON,{2,4},2,			0,			-1,			0,				2,				(HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE), 0, (MF_GENERATE_HORDE | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY)},
 		{DF_TRIGGER_AREA,COFFIN_CLOSED,0,		{1,1},		1,			KEY,		KEY_CAGE,	MK_VAMPIRE,		1,				0,			(ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_SKELETON_KEY | MF_MONSTER_TAKE_ITEM | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN | MF_KEY_DISPOSABLE)},
 		{DF_AMBIENT_BLOOD,SECRET_DOOR,DUNGEON,	{1,1},		1,			0,			0,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN)}}},
 	// Legendary ally -- approach the altar with the crystal key to activate a portal and summon a legendary ally.
@@ -2573,7 +2567,7 @@ const itemTable weaponTable[NUMBER_WEAPON_KINDS] = {
  	{"sword",				"", "", 10, 44,		14, {7,	9,	1},		true, false, "The razor-sharp length of steel blade shines reassuringly."},
 	{"broadsword",			"", "",  7, 99,		19,	{14, 22, 1},	true, false, "This towering blade inflicts heavy damage by investing its heft into every cut."},
 
-    {"bullwhip",			"", "", 10, 44,		14, {3,	5,	1},		true, false, "This lash from this coil of braided leather can tear bark from trees, and it will reach opponents up to five spaces away."},
+    {"whip",			    "", "", 10, 44,		14, {3,	5,	1},		true, false, "This lash from this coil of braided leather can tear bark from trees, and it will reach opponents up to five spaces away."},
     {"chain whip",			"", "",  7, 65,		18, {10, 14,1},		true, false, "Weighty but flexible, this whip is composed of a series of strong metal rods joined end by rings. It will reach opponents up to five spaces away."},
 
     {"rapier",				"", "", 10, 44,		15, {3,	5,	1},		true, false, "This blade is thin and flexible, designed for deft and rapid maneuvers. It inflicts less damage than comparable weapons, but permits you to attack twice as quickly. If there is one space between you and an enemy and you step directly toward it, you will perform a devastating lunge attack, which deals treble damage and never misses."},

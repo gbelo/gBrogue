@@ -537,7 +537,7 @@ void populateItems(short upstairsX, short upstairsY) {
 		rogue.strengthPotionFrequency += 17; // irrelevant now -- gsr
 		rogue.vitalityPotionFrequency += 23; // gsr
 		rogue.enchantScrollFrequency += 25;
-		numberOfItems = 3;//3;
+		numberOfItems = 1;//3;
 		while (rand_percent(60)) {
 			numberOfItems++;
 		}
@@ -5924,7 +5924,12 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                     && hitMonsterWithProjectileWeapon(thrower, monst, theItem))
                 {
                     if (theItem->kind == INCENDIARY_DART)
-                        continue; // incendiaries are handled later on
+                    {
+                        // Moved incendiary dart handling to here
+                        spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_DART_EXPLOSION], true, false);
+                        exposeCreatureToFire(monsterAtLoc(x, y));
+                        return;
+                    }
                     else if (theItem->kind == POISON_DART)
                     {
                         addPoison(monst, 10, 1);
@@ -6005,6 +6010,14 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 		if (x == targetLoc[0] && y == targetLoc[1]) { // reached its target
 			break;
 		}
+	}
+
+	// Moved incendiary dart handling to here -- gsr
+	if ((theItem->category & THROWING_WEAPON && theItem->kind == INCENDIARY_DART) && (hitSomethingSolid || !cellHasTerrainFlag(x, y, T_AUTO_DESCENT)))
+	{
+        exposeTileToFire(x, y, true);
+        //spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_DART_EXPLOSION], true, false);
+        return;
 	}
 
 	if ((theItem->category & POTION) && (hitSomethingSolid || !cellHasTerrainFlag(x, y, T_AUTO_DESCENT))) {
@@ -6280,13 +6293,14 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 
 		return; // potions disappear when they break
 	}
-	if ((theItem->category & THROWING_WEAPON) && theItem->kind == INCENDIARY_DART) {
+    // moved to above
+/*	if ((theItem->category & THROWING_WEAPON) && theItem->kind == INCENDIARY_DART) {
 		spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_DART_EXPLOSION], true, false);
 		if (pmap[x][y].flags & (HAS_MONSTER | HAS_PLAYER)) {
 			exposeCreatureToFire(monsterAtLoc(x, y));
 		}
 		return;
-	}
+	}*/
 	getQualifyingLocNear(dropLoc, x, y, true, 0, (T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_PASSABILITY), (HAS_ITEM), false, false);
 	placeItem(theItem, dropLoc[0], dropLoc[1]);
 	refreshDungeonCell(dropLoc[0], dropLoc[1]);
@@ -6803,14 +6817,14 @@ void apply(item *theItem, boolean recordCommands) {
 				}
 			}
 			// kinda redid eating -- gsr
-            player.status[STATUS_EATING] = player.maxStatus[STATUS_EATING] = max(player.status[STATUS_EATING], theItem->kind == FOOD ? TURNS_TO_EAT_FOOD : TURNS_TO_EAT_MANGO);
-			/*
-			player.status[STATUS_NUTRITION] = min(foodTable[theItem->kind].strengthRequired + player.status[STATUS_NUTRITION], STOMACH_SIZE);
+//            player.status[STATUS_EATING] = player.maxStatus[STATUS_EATING] = max(player.status[STATUS_EATING], theItem->kind == FOOD ? TURNS_TO_EAT_FOOD : TURNS_TO_EAT_MANGO);
+
+			player.status[STATUS_NUTRITION] = min((theItem->kind == RATION ? NUTRITION_FOOD : NUTRITION_MANGO) + player.status[STATUS_NUTRITION], STOMACH_SIZE);
 			if (theItem->kind == RATION) {
 				messageWithColor("That food tasted delicious!", &itemMessageColor, false);
 			} else {
 				messageWithColor("My, what a yummy mango!", &itemMessageColor, false);
-			}*/
+			}/*
             rogue.automationActive = true;
             rogue.disturbed = false;
 
@@ -6818,7 +6832,7 @@ void apply(item *theItem, boolean recordCommands) {
 				messageWithColor("You begin eating the ration of food.", &itemMessageColor, true);
 			} else {
 				messageWithColor("My, what a yummy mango!", &itemMessageColor, true);
-			}
+			}*/
 
             rogue.featRecord[FEAT_MYSTIC] = false;
 			break;

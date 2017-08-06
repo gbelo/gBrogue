@@ -440,7 +440,7 @@ void initializeRogue(unsigned long seed) {
 	theItem = addItemToPack(theItem);
 	equipItem(theItem, false);
 
-	theItem = generateItem(THROWING_WEAPON, DART);
+	theItem = generateItem(THROWING_WEAPON, INCENDIARY_DART);
 	theItem->enchant1 = theItem->enchant2 = 0;
 	theItem->quantity = 10;
 	theItem->flags &= ~(ITEM_CURSED | ITEM_RUNIC);

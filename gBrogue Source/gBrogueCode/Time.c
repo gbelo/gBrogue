@@ -335,6 +335,10 @@ void applyInstantTileEffectsToCreature(creature *monst) {
             autoIdentify(rogue.armor);
         }
     }
+    // unbreathing -- do nothing
+    else if (monst == &player && cellHasTerrainFlag(*x, *y, T_RESPIRATION_IMMUNITIES) && monst->status[STATUS_UNBREATHING]) {
+        ;
+    }
     else {
 
         // zombie gas
@@ -484,6 +488,10 @@ void applyGradualTileEffectsToCreature(creature *monst, short ticks) {
                     message("Your armor trembles and a pocket of clean air swirls around you.", false);
                     autoIdentify(rogue.armor);
                 }
+            }
+            // unbreathing -- do nothing
+            else if (monst->status[STATUS_UNBREATHING]) {
+                ;
             } else {
                 rogue.disturbed = true;
                 messageWithColor(tileCatalog[pmap[x][y].layers[layer]].flavorText, &badMessageColor, false);

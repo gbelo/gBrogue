@@ -12,6 +12,14 @@
  * TO DO:
  *  - Fix legendary allies not spawning? The crystal orb will spawn monsters with some conditions (e.g. is a boss) but not others.
 
+* depth 17 was a vampire vault, but all of the cages were empty. I killed the vampire to get the key and opened one anyway just in case there were allies invisible, but no, just empty.
+    ***
+
+
+* way too many consumables to carry. True vanilla brogue has this in some seeds also. In this seed, I just ended up drinking status buffs at every down stair, so I would be levitating, telepathic, fire immune, etc.
+* Played one game. Had fun, but felt overwhelmed by choice. Saved a scroll of familiars and ended up with 2 spiders amongst a whole heap of others which made life very interesting for a bit to the point of being unmanageable.
+* more than a dozen vaults and more than a dozen powerful allies by the time I carelessly died in this seed, not much challenge unless the player chooses it. I didn't free the allies.
+    ***
 
 */
 //  Brogue
@@ -46,7 +54,7 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "1.0 RC1"
+#define BROGUE_VERSION_STRING "1.0 RC2"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
@@ -1152,14 +1160,14 @@ enum tileFlags {
 #define TURNS_FOR_FULL_REGEN				300
 
 // Nutrition stuff -- gsr
-#define NUTRITION_PER_TURN                  500 // amount restored every turn in Eating state
-#define NUTRITION_FOOD                      2500//1800
+#define NUTRITION_PER_TURN                  500 // amount restored every turn in Eating state -- unused
+#define NUTRITION_FOOD                      2000//1800
 #define NUTRITION_MANGO                     1500//1550
 #define TURNS_TO_EAT_FOOD                   NUTRITION_FOOD / NUTRITION_PER_TURN
 #define TURNS_TO_EAT_MANGO                  NUTRITION_MANGO / NUTRITION_PER_TURN
 
 #define STOMACH_SIZE						3000//2150
-#define HUNGER_THRESHOLD					(STOMACH_SIZE - NUTRITION_FOOD/2)
+#define HUNGER_THRESHOLD					(STOMACH_SIZE - NUTRITION_FOOD)
 #define WEAK_THRESHOLD						HUNGER_THRESHOLD/10 //150
 #define FAINT_THRESHOLD						HUNGER_THRESHOLD/30 //50
 #define MAX_EXP_LEVEL						20
