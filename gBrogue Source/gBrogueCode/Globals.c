@@ -1808,7 +1808,7 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 		(0), (MA_CAUSES_WEAKNESS)},
 	{0, "dar apparition", 'd',	&apparitionColor,	20,		60,		100,	{5, 7, 9},		20,	100,	100,	DF_RED_BLOOD,	PHOENIX_LIGHT,		0,		0,              {BOLT_FIRE, BOLT_SLOW_2, BOLT_SPARK, BOLT_BECKONING},
 		(MONST_CARRY_ITEM_100 | MONST_MALE | MONST_FEMALE), (MA_AVOID_CORRIDORS)},
-	{0,	"hellhound",	PET_DOG_CHAR,	&salamanderColor,	35,	  0,	75,		{1, 11, 1},		20,	50,		100,	DF_ASH,	EXPLOSIVE_BLOAT_LIGHT,		1,		{MONST_IMMUNE_TO_FIRE},              {0}},
+	{0,	"rotting hound",	PET_DOG_CHAR,	&vomitColor,	35,	  0,	75,		{1, 11, 1},		20,	50,		100,	0,	0,		1,		0,              {0}},
     {0,	"nether jelly",	'J',	&ectoplasmColor,			50,	0,		130,	{2, 3, 1},		0,	150,	150,	DF_ECTOPLASM_BLOOD,0,		0,		DF_ECTOPLASM_DROPLET,              {0},
 		(MONST_INVISIBLE), (MA_CLONE_SELF_ON_DEFEND)},
 
@@ -2104,9 +2104,9 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 	{"This powerful elf-turned-apparition seems to exist only halfway on your plane of existence. $HESHE can invoke a host of powerful magic spells.",
 		"draining", "Draining",
 		{"cuts", "slices", "slashes", "claws"}},
-    {"The hellhound is an undead, demonic perversion of the typical surface-dwelling dog. Like their living counterparts, they often travel in packs. They can coordinate to take down an intruder despite their visceral, savage nature.",
+    {"An undead perversion of the typical surface-dwelling dog, its eyes glow as noticeably as its flesh decays. Like their living counterparts, they often travel in packs. They often coordinate to take down intruders despite their visceral, savage nature.",
 		"tearing at", "Eating",
-		{"claws", "bites", "mauls", "singes", {0}}},
+		{"claws", "bites", "mauls", {0}}},
 
 	{"This slimy mass lurks in the shadows, invisible to the naked eye. Although weak, when it splits, it can disorient an adventure.",
 		"absorbing", "Feeding",
