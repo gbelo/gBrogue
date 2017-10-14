@@ -478,6 +478,7 @@ short runicWeaponChance(item *theItem, boolean customEnchantLevel, float enchant
         0.15,   // W_FORCE
 		0,		// W_SLAYING
 		0.10,	// W_POISON
+		0.07,   // W_FLAMES
 		0,		// W_MERCY
 		0,      // W_DOUBLE_EDGE
 		0};		// W_PLENTY
@@ -647,9 +648,9 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
 		&yellow, &pink, &green, &confusionGasColor, NULL, NULL, &darkRed, &rainbow};
 	//	W_TELEPORT, W_SPEED, W_QUIETUS, W_PARALYSIS, W_MULTIPLICITY, W_SLOWING, W_CONFUSION, W_FORCE, W_SLAYING, W_MERCY, W_DOUBLE_EDGE, W_PLENTY
 */
-	//	W_TELEPORT, W_SPEED, W_QUIETUS, W_PARALYSIS, W_MULTIPLICITY, W_FORCE, W_SLAYING, W_POISON, W_MERCY, W_PLENTY
+	//	W_TELEPORT, W_SPEED, W_QUIETUS, W_PARALYSIS, W_MULTIPLICITY, W_FORCE, W_SLAYING, W_POISON, W_FLAMES, W_MERCY, W_PLENTY
 	color *effectColors[NUMBER_WEAPON_RUNIC_KINDS] = {&white, &black,
-		&yellow, &pink, &green, NULL, &darkGreen, &darkRed, &red, &rainbow};
+		&yellow, &pink, &green, NULL, &darkGreen, &orange, &darkRed, &red, &rainbow};
 
 	short chance, i;
 	float enchant;
@@ -691,6 +692,9 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
                     break;
                 case W_POISON:
                     createFlare(defender->xLoc, defender->yLoc, FUNGUS_LIGHT);
+                    break;
+                case W_FLAMES:
+                    createFlare(defender->xLoc, defender->yLoc, EXPLOSION_LIGHT);
                     break;
                 default:
                     flashMonster(defender, effectColors[enchantType], 100);
@@ -742,6 +746,13 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
 					combatMessage(buf, messageColorFromVictim(defender));
                     autoID = true;
 				}
+				break;
+			case W_FLAMES:
+				sprintf(buf, "flames dance about your %s", theItemName);
+                buf[DCOLS] = '\0';
+                combatMessage(buf, 0);
+                exposeCreatureToFire(defender);
+                autoID = true;
 				break;
 			case W_MULTIPLICITY:
 				sprintf(buf, "Your %s emits a flash of light, and %sspectral duplicate%s appear%s!",

@@ -76,7 +76,9 @@ void updateFlavorText() {
 void updatePlayerUnderwaterness() {
     if (rogue.inWater) {
         if (!cellHasTerrainFlag(player.xLoc, player.yLoc, T_IS_DEEP_WATER) || player.status[STATUS_LEVITATING]
-            || cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))) {
+//            || cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))) {
+            || cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))
+            || (rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING)) {
 
             rogue.inWater = false;
             updateMinersLightRadius();
@@ -85,7 +87,8 @@ void updatePlayerUnderwaterness() {
         }
     } else {
         if (cellHasTerrainFlag(player.xLoc, player.yLoc, T_IS_DEEP_WATER) && !player.status[STATUS_LEVITATING]
-            && !cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))) {
+            && !cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))
+            && !(rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING)) {
 
             rogue.inWater = true;
             updateMinersLightRadius();
@@ -445,7 +448,17 @@ void applyGradualTileEffectsToCreature(creature *monst, short ticks) {
 		&& !cellHasTerrainFlag(x, y, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))
 		&& !(monst->info.flags & MONST_IMMUNE_TO_WATER)) {
 		if (monst == &player) {
-			if (!(pmap[x][y].flags & HAS_ITEM) && rand_percent(ticks * 50 / 100)) {
+
+            if (rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING)
+            {
+                if (!(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED))
+                {
+                    message("Your armor shimmers and you find yourself standing on top of the water.", false);
+                    autoIdentify(rogue.armor);
+                }
+            }
+
+            else if (!(pmap[x][y].flags & HAS_ITEM) && rand_percent(ticks * 50 / 100)) {
 				itemCandidates = numberOfMatchingPackItems(ALL_ITEMS, 0, (ITEM_EQUIPPED), false);
 				if (itemCandidates) {
 					randItemIndex = rand_range(1, itemCandidates);

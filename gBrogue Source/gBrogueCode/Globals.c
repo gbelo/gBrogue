@@ -554,8 +554,8 @@ const floorTileType tileCatalog[NUMBER_TILETYPES] = {
     {DEWAR_CHAR,    &methaneColor,          &darkGray,              10, 20, DF_DEWAR_METHANE,0,         DF_DEWAR_METHANE,0,             NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_GAS | T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_LIST_IN_SIDEBAR | TM_PROMOTES_ON_PLAYER_ENTRY | TM_INVERT_WHEN_HIGHLIGHTED),"a glass dewar of methane gas", ""},
 
 	// liquid layer
-	{LIQUID_CHAR,	&deepWaterForeColor,	&deepWaterBackColor,	40,	100,DF_STEAM_ACCUMULATION,	0,	0,				0,				NO_LIGHT,		(T_IS_FLAMMABLE | T_IS_DEEP_WATER), (TM_ALLOWS_SUBMERGING | TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE),"the murky waters",    "the current tugs you in all directions."},
-	{0,				&shallowWaterForeColor,	&shallowWaterBackColor,	55,	0,	DF_STEAM_ACCUMULATION,	0,	0,				0,				NO_LIGHT,		(0), (TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING),                              "shallow water",		"the water is cold and reaches your knees."},
+	{LIQUID_CHAR,	&deepWaterForeColor,	&deepWaterBackColor,	40,	100,DF_STEAM_ACCUMULATION,	0,	0,				0,				NO_LIGHT,		(T_IS_FLAMMABLE | T_IS_DEEP_WATER), (TM_ALLOWS_SUBMERGING | TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE),"the murky waters",    "water currents seemingly flow in several directions at once."}, // changed to account for water walking -- gsr
+	{0,				&shallowWaterForeColor,	&shallowWaterBackColor,	55,	0,	DF_STEAM_ACCUMULATION,	0,	0,				0,				NO_LIGHT,		(0), (TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING),                              "shallow water",		"this water is cold and shallow."}, // changed to account for water walking -- gsr
 	{MUD_CHAR,		&mudForeColor,			&mudBackColor,			55,	0,	DF_PLAIN_FIRE,	0,			DF_METHANE_GAS_PUFF, 100,		NO_LIGHT,		(0), (TM_STAND_IN_TILE | TM_ALLOWS_SUBMERGING),                                                     "a bog",				"you are knee-deep in thick, foul-smelling mud."},
 	{CHASM_CHAR,	&chasmForeColor,		&black,					40,	0,	DF_PLAIN_FIRE,	0,			0,				0,				NO_LIGHT,		(T_AUTO_DESCENT), (TM_STAND_IN_TILE),																"a chasm",				"you plunge downward into the chasm!"},
 	{FLOOR_CHAR,	&white,					&chasmEdgeBackColor,	80,	0,	DF_PLAIN_FIRE,	0,			0,				0,				NO_LIGHT,		0, 0,                                                                                               "the brink of a chasm",	"chilly winds blow upward from the stygian depths."},
@@ -569,7 +569,7 @@ const floorTileType tileCatalog[NUMBER_TILETYPES] = {
 //	{FLOOR_CHAR,	&floorForeColor,		&floorBackColor,		90,	0,	DF_PLAIN_FIRE,	0,			0,				0,				SUN_LIGHT,		(0), (TM_STAND_IN_TILE),																			"a patch of sunlight",	"sunlight streams through cracks in the ceiling."},
 //	{FLOOR_CHAR,	&floorForeColor,		&floorBackColor,		90,	0,	DF_PLAIN_FIRE,	0,			0,				0,				DARKNESS_PATCH_LIGHT,	(0), 0,																						"a patch of shadows",	"this area happens to be cloaked in shadows -- perhaps a safe place to hide."},
 
-// gsr
+// more defined sun and shade --gsr
 	{FLOOR_CHAR,	&torchLightColor,         		&floorBackColor,		90,	0,	DF_PLAIN_FIRE,	0,			0,				0,				SUN_LIGHT,		(0), (TM_STAND_IN_TILE),																			"a patch of sunlight",	"sunlight streams through cracks in the ceiling."},
 	{FLOOR_CHAR,	&floorForeColor,		        &black,        90,	0,	DF_PLAIN_FIRE,	0,			0,				0,				DARKNESS_PATCH_LIGHT,	(0), 0,																						"a patch of shadows",	"this area happens to be cloaked in shadows -- perhaps a safe place to hide."},
 
@@ -1726,8 +1726,8 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 		(MONST_TURRET), (MA_HIT_DEGRADE_ARMOR)},
     {0, "dart turret", TURRET_CHAR,	&dartTurretColor,20,	0,		140,	{1, 2, 1},      0,	100,	250,	0,              IFRIT_LIGHT,		0,		0,              {BOLT_POISON_DART},
 		(MONST_TURRET), (MA_CAUSES_WEAKNESS)},
-
-
+	{0, "nymph",		'n',	&green,			15,		10,     100,	{1, 2, 1},		20,	90,	100,	DF_GREEN_BLOOD,	SUN_LIGHT,	0,	0,              {},
+		(MONST_IMMUNE_TO_WATER | MONST_IMMUNE_TO_WEBS | MONST_FEMALE), (MA_AVOID_CORRIDORS | MA_TRANSFERENCE | MA_HIT_STEAL_FLEE)},
 	{0,	"kraken",		'K',	&krakenColor,	120,	0,		150,	{15, 20, 3},	1,	50,		100,	0,              0,		0,		0,              {0},
 		(MONST_RESTRICTED_TO_LIQUID | MONST_IMMUNE_TO_WATER | MONST_SUBMERGES | MONST_FLITS | MONST_NEVER_SLEEPS | MONST_FLEES_NEAR_DEATH), (MA_SEIZES)},
 	{0,	"lich",			'L',	&white,			35,		80,     175,	{2, 6, 1},		0,	100,	100,	DF_ASH_BLOOD,	LICH_LIGHT,	0,	0,              {BOLT_FIRE},
@@ -1978,6 +1978,9 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 	{"This spring-loaded contraption fires darts that are imbued with a strength-sapping poison.",
 		"gazing at", "Gazing",
 		{"pricks", {0}}},
+	{"A spirit of nature who tends to the scant flora found within the dungeon, $HESHE takes on the appearance of a young maiden and waits to lure adventurers away from their possessions.",
+		"draining", "Draining",
+		{"slaps", "pokes", "drains", {0}}},
 	{"This tentacled nightmare will emerge from the subterranean waters to ensnare and devour any creature foolish enough to set foot into $HISHER lake.",
 		"devouring", "Feeding",
 		{"slaps", "smites", "batters", {0}}},
@@ -2084,7 +2087,7 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 		"studying", "Studying",
 		{"slashes", "bashes", "cuts", "strikes", {0}}},
 
-	{"Despite its undead nature, the dark hide on this dragon shimmers in what little light trickles in to the lower depths of the dungeon. $HISHER penetrating yellow eyes and noxious breath round out its horrifying form.",
+	{"Though this creature is clearly undead, the dark hide on this dragon shimmers in what little light trickles in to the lower depths of the dungeon. $HISHER penetrating yellow eyes and noxious breath round out its horrifying form.",
 		"consuming", "Consuming",
 		{"claws", "tail-whips", "bites", {0}}},
 	{"This floating membrane is filled with paralytic gas. $HESHE can be weaponized if burst from a distance, but $HESHE can also be quite deadly to adventurers distracted by other monsters and unaware of $HISHER presence.",
@@ -2203,6 +2206,7 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_SPARK_TURRET,	0,		{0},									{{0}},							11,		18,		10,		WALL,	0,                      HORDE_NO_PERIODIC_SPAWN},
 	{MK_ZOMBIE,			0,		{0},									{{0}},							11,		18,		10},
 	{MK_TROLL,			0,		{0},									{{0}},							12,		19,		10},
+	{MK_NYMPH,			0,		{0},									{{0}},							12,		17,		3},
 	{MK_OGRE_TOTEM,		1,		{MK_OGRE},								{{2,4,1}},						12,		19,		6,		0,			0,					HORDE_NO_PERIODIC_SPAWN},
 	{MK_BOG_MONSTER,	1,		{MK_BOG_MONSTER},						{{2,4,1}},						12,		26,		10,		MUD},
 	{MK_NAGA,			0,		{0},									{{0}},							13,		20,		10,		DEEP_WATER},
@@ -2219,9 +2223,9 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_KRAKEN,			0,		{0},									{{0}},							15,		30,		10,		DEEP_WATER},
 	{MK_PHANTOM,		0,		{0},									{{0}},							16,		23,		10},
 	{MK_WRAITH,			1,		{MK_WRAITH},							{{1, 4, 1}},					16,		23,		8},
-	{MK_IMP,			0,		{0},									{{0}},							17,		24,		10},
+	{MK_IMP,			0,		{0},									{{0}},							17,		30,		10},
 	{MK_DAR_BLADEMASTER,3,		{MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS, MK_DAR_BATTLEMAGE},{{1,2,1},{1,1,1},{1,1,1}},18,25,10},
-	{MK_FURY,			1,		{MK_FURY},								{{2, 4, 1}},					18,		26,		8},
+	{MK_FURY,			1,		{MK_FURY},								{{2, 4, 1}},					18,		38,		8},
 	{MK_REVENANT,		0,		{0},									{{0}},							19,		27,		10},
 	{MK_GOLEM,			0,		{0},									{{0}},							21,		30,		10},
 	{MK_TENTACLE_HORROR,0,		{0},									{{0}},							22,		MOLOCH_LAIR_LEVEL-1,		10},
@@ -2618,6 +2622,7 @@ const char weaponRunicNames[NUMBER_WEAPON_RUNIC_KINDS][30] = {
     "force",
 	"slaying",
 	"poison",
+	"flames",
 	"mercy",
 	"the double edge", // gsr
 	"plenty"
@@ -2634,6 +2639,7 @@ const char armorRunicNames[NUMBER_ARMOR_ENCHANT_KINDS][30] = {
     "dampening",
 	"force", // gsr
 	"shadows", // gsr
+	"water walking",
 	"burden",
 	"vulnerability",
 	"frailty", // gsr
@@ -2786,12 +2792,15 @@ const bolt boltCatalog[NUMBER_BOLT_KINDS] = {
 #pragma mark Feat definitions
 
 const feat featTable[FEAT_COUNT] = {
-    {"Pure Mage",       "Ascend without using fists or a weapon.", true},
-    {"Pure Warrior",    "Ascend without using a staff, wand or charm.", true},
+//    {"Pure Mage",       "Ascend without using fists or a weapon.", true},
+//    {"Pure Warrior",    "Ascend without using a staff, wand or charm.", true},
+    {"Bashful",         "Ascend without using fists or a weapon.", true},
+    {"Skeptic",         "Ascend without using a staff, wand or charm.", true},
     {"Pacifist",        "Ascend without attacking a creature.", true},
     {"Archivist",       "Ascend without drinking a potion or reading a scroll.", true},
     {"Companion",       "Journey with an ally through 20 depths.", false},
     {"Specialist",      "Enchant an item up to or above +16.", false},
+//    {"Jellymancer",     "Obtain at least 90 jelly allies simultaneously.", false},
     {"Jellymancer",     "Obtain at least 90 jelly allies simultaneously.", false},
     {"Indomitable",     "Ascend without taking damage.", true},
     {"Mystic",          "Ascend without eating.", true},

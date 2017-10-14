@@ -1906,6 +1906,7 @@ void itemDetails(char *buf, item *theItem) {
         "the enemy will be flung",
 		"[slaying]", // never used
 		"the enemy will be poisoned",
+		"the enemy will be exposed to fire",
 		"the enemy will be healed",
 		"you will be dealt the same amount of damage you deal",
 		"the enemy will be cloned"
@@ -2422,6 +2423,9 @@ void itemDetails(char *buf, item *theItem) {
 								break;
 							case A_SHADOWS:
                                 sprintf(buf2, "It cloaks you in darkness when you stand firmly adjacent to walls or solid obstacles. ");
+								break;
+							case A_WATER_WALKING:
+                                sprintf(buf2, "It allows you to walk over deep water, although certain sea-dwelling monsters will be able to strike and grab you from below the surface. ");
 								break;
 							case A_FRAILTY:
                                 sprintf(buf2, "25% of the time it absorbs a blow, it will degrade -- regardless of any protection against corrosion that has been bestowed upon it. ");
@@ -8242,6 +8246,7 @@ unsigned long itemValue(item *theItem) {
         850,    //W_FORCE,
 		500,	//W_SLAYING,
 		550,    //W_POISON,
+		600,    //W_FLAMES
 		-1000,	//W_MERCY,
 		-1000,	//W_PLENTY,
 	};
@@ -8256,6 +8261,7 @@ unsigned long itemValue(item *theItem) {
         500,    //A_DAMPENING
         600,    //A_FORCE
         900,    //A_SHADOWS
+        500,    //A_WATER_WALKING
 		-1000,	//A_BURDEN,
 		-1000,	//A_VULNERABILITY,
         -1000,  //A_IMMOLATION,

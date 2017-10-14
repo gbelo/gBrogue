@@ -9,17 +9,8 @@
  *
  *  This file is modified from original source.
  *
- * TO DO:
- *  - Fix legendary allies not spawning? The crystal orb will spawn monsters with some conditions (e.g. is a boss) but not others.
 
 * depth 17 was a vampire vault, but all of the cages were empty. I killed the vampire to get the key and opened one anyway just in case there were allies invisible, but no, just empty.
-    ***
-
-
-* way too many consumables to carry. True vanilla brogue has this in some seeds also. In this seed, I just ended up drinking status buffs at every down stair, so I would be levitating, telepathic, fire immune, etc.
-* Played one game. Had fun, but felt overwhelmed by choice. Saved a scroll of familiars and ended up with 2 spiders amongst a whole heap of others which made life very interesting for a bit to the point of being unmanageable.
-* more than a dozen vaults and more than a dozen powerful allies by the time I carelessly died in this seed, not much challenge unless the player chooses it. I didn't free the allies.
-    ***
 
 */
 //  Brogue
@@ -54,11 +45,11 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "1.0 RC2"
+#define BROGUE_VERSION_STRING "v17.10.14"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
-#define DEBUGGING						1
+#define DEBUGGING						0
 
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.
@@ -821,6 +812,7 @@ enum weaponEnchants {
     W_FORCE,
 	W_SLAYING,
 	W_POISON, // gsr
+	W_FLAMES, // gsr
 	W_MERCY,
 	NUMBER_GOOD_WEAPON_ENCHANT_KINDS = W_MERCY,
 	W_DOUBLE_EDGE,
@@ -862,6 +854,7 @@ enum armorEnchants {
 
 	A_FORCE,
 	A_SHADOWS,
+	A_WATER_WALKING,
 
 	A_BURDEN,
 	NUMBER_GOOD_ARMOR_ENCHANT_KINDS = A_BURDEN,
@@ -1050,6 +1043,7 @@ enum monsterTypes {
 	MK_SENTINEL,
 	MK_ACID_TURRET,
 	MK_DART_TURRET,
+	MK_NYMPH,
 	MK_KRAKEN,
 	MK_LICH,
 	MK_PHYLACTERY,
@@ -1173,7 +1167,6 @@ enum tileFlags {
 #define MAX_EXP_LEVEL						20
 #define MAX_EXP								100000000L
 
-#define XPXP_NEEDED_FOR_FOLLOW              400  // XPXP required to convince a peaceful monster to become a full ally
 #define XPXP_NEEDED_FOR_TELEPATHIC_BOND     1400 // XPXP required to enable telepathic awareness with the ally
 #define XPXP_NEEDED_FOR_EMPOWERMENT         9000 // We're going to try this -- XP needed for an ally to become "empowered." Yes, going back to the xpxp system. Maybe.
 

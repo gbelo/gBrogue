@@ -335,9 +335,11 @@ short actionMenu(short x, boolean playingBack) {
         buttons[buttonCount].hotkey[0] = DISCOVERIES_KEY;
         buttonCount++;
         if (KEYBOARD_LABELS) {
-            sprintf(buttons[buttonCount].text, "  %s~: %sView dungeon seed  ",	yellowColorEscape, whiteColorEscape);
+//            sprintf(buttons[buttonCount].text, "  %s~: %sView dungeon seed  ",	yellowColorEscape, whiteColorEscape);
+            sprintf(buttons[buttonCount].text, "  %s~: %sCurrent session info  ",	yellowColorEscape, whiteColorEscape);
         } else {
-            strcpy(buttons[buttonCount].text, "  View dungeon seed  ");
+//            strcpy(buttons[buttonCount].text, "  View dungeon seed  ");
+            strcpy(buttons[buttonCount].text, "  Current session info  ");
         }
         buttons[buttonCount].hotkey[0] = SEED_KEY;
         buttonCount++;
@@ -2562,6 +2564,7 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
 				copyDisplayBuffer(dbuf, displayBuffer);
 				funkyFade(dbuf, &white, 0, 100, mapToWindowX(player.xLoc), mapToWindowY(player.yLoc), false);
 			}*/
+			/*
 			// DEBUG displayLoops();
 			// DEBUG displayChokeMap();
 			DEBUG displayMachines();
@@ -2570,6 +2573,8 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
 			// parseFile();
 			// DEBUG spawnDungeonFeature(player.xLoc, player.yLoc, &dungeonFeatureCatalog[DF_METHANE_GAS_ARMAGEDDON], true, false);
 			printSeed();
+			*/
+			printGameInfoScreen();
 			break;
 		case EASY_MODE_KEY:
 			//if (shiftKey) {
@@ -3794,7 +3799,7 @@ void printDiscoveries(short category, short count, unsigned short itemCharacter,
 
 	for (i = 0; i < count; i++) {
 
-	    // Dummied out items will not be displayed -- gsr
+	    // Dummied out items (i.e. never spawning, i.e. frequency is 0) will not be displayed -- gsr
         if (theTable[i].frequency == 0 && !(category == SCROLL && i == SCROLL_ENCHANTING) &&  !(category == POTION && i == POTION_VITALITY)) // gsr
             continue;
 
@@ -3847,24 +3852,32 @@ void printDiscoveries(short category, short count, unsigned short itemCharacter,
 
 void printDiscoveriesScreen() {
 	short i, j, x, y;
+	char buf[COLS];
 	cellDisplayBuffer dbuf[COLS][ROWS], rbuf[COLS][ROWS];
 
 	clearDisplayBuffer(dbuf);
 
 	// redid this a bit -- gsr
-	printString("-- - SCROLLS --", x = mapToWindowX(2), y = mapToWindowY(1), &flavorTextColor, &black, dbuf);
+
+	printString("-- Discoveries --", x = mapToWindowX(11), y = 2, &itemMessageColor, &black, dbuf);
+
+//	printString("-- - SCROLLS --", x = mapToWindowX(2), y = 4, &flavorTextColor, &black, dbuf);
+	printString("-- - SCROLLS --", x = mapToWindowX(2), y = 4, &flavorTextColor, &black, dbuf);
 	plotCharToBuffer(SCROLL_CHAR, x + 3, y, &itemColor, &black, dbuf);
 	printDiscoveries(SCROLL, NUMBER_SCROLL_KINDS, SCROLL_CHAR, x + 1, ++y, dbuf);
 
-	printString("-- - POTIONS --", x = mapToWindowX(30), y = mapToWindowY(1), &flavorTextColor, &black, dbuf);
+//	printString("-- - POTIONS --", x = mapToWindowX(30), y = 4, &flavorTextColor, &black, dbuf);
+	printString("-- - POTIONS --", x = mapToWindowX(30), y = 4, &flavorTextColor, &black, dbuf);
 	plotCharToBuffer(POTION_CHAR, x + 3, y, &itemColor, &black, dbuf);
 	printDiscoveries(POTION, NUMBER_POTION_KINDS, POTION_CHAR, x + 1, ++y, dbuf);
 
-	printString("-- - STAFFS --", x = mapToWindowX(53), y = mapToWindowY(1), &flavorTextColor, &black, dbuf);
+//	printString("-- - STAFFS --", x = mapToWindowX(53), y = 4, &flavorTextColor, &black, dbuf);
+	printString("-- - STAFFS --", x = mapToWindowX(53), y = 4, &flavorTextColor, &black, dbuf);
 	plotCharToBuffer(STAFF_CHAR, x + 3, y, &itemColor, &black, dbuf);
 	printDiscoveries(STAFF, NUMBER_STAFF_KINDS, STAFF_CHAR, x + 1, ++y, dbuf);
 
-	printString("-- - RINGS --", x = mapToWindowX(53), y = mapToWindowY(NUMBER_STAFF_KINDS + 2), &flavorTextColor, &black, dbuf);
+//	printString("-- - RINGS --", x = mapToWindowX(53), y = 4 + (NUMBER_STAFF_KINDS + 2), &flavorTextColor, &black, dbuf);
+	printString("-- - RINGS --", x = mapToWindowX(53), y = 4 + (NUMBER_STAFF_KINDS + 1), &flavorTextColor, &black, dbuf);
 	plotCharToBuffer(RING_CHAR, x + 3, y, &itemColor, &black, dbuf);
 	printDiscoveries(RING, NUMBER_RING_KINDS, RING_CHAR, x + 1, ++y, dbuf);
 
@@ -3890,6 +3903,61 @@ void printDiscoveriesScreen() {
     */
 //	printString("-- WANDS --", mapToWindowX(53), y += NUMBER_STAFF_KINDS + 1, &flavorTextColor, &black, dbuf);
 //	printDiscoveries(WAND, NUMBER_WAND_KINDS, WAND_CHAR, mapToWindowX(54), ++y, dbuf);
+
+    printString(KEYBOARD_LABELS ? "-- press any key to continue --" : "-- touch anywhere to continue --",
+                mapToWindowX(20), mapToWindowY(DROWS-2), &itemMessageColor, &black, dbuf);
+
+	for (i=0; i<COLS; i++) {
+		for (j=0; j<ROWS; j++) {
+			dbuf[i][j].opacity = (i < STAT_BAR_WIDTH ? 0 : INTERFACE_OPACITY);
+		}
+	}
+	overlayDisplayBuffer(dbuf, rbuf);
+
+    waitForKeystrokeOrMouseClick();
+
+	overlayDisplayBuffer(rbuf, NULL);
+}
+
+// gsr
+void printGameInfoScreen()
+{
+	short i, j, x, y;
+	char buf[COLS];
+	cellDisplayBuffer dbuf[COLS][ROWS], rbuf[COLS][ROWS];
+
+	clearDisplayBuffer(dbuf);
+
+//	printString("-- Current playthrough information --", x = mapToWindowX(11), y = 2, &itemMessageColor, &black, dbuf);
+
+	// Feats
+        y = 2;
+        printString("-- Available feats --", mapToWindowX(2), y, &itemMessageColor, &black, dbuf);
+        y+=2;
+        for (i = 0; i < FEAT_COUNT; i++) {
+            //printf("\nConduct %i (%s) is %s.", i, featTable[i].name, rogue.featRecord[i] ? "true" : "false");
+            // Unbroken
+            if (rogue.featRecord[i]) {
+
+                sprintf(buf, "%s: %s", featTable[i].name, featTable[i].description);
+                printString(buf, mapToWindowX(3), y, &white, &black, dbuf);
+                sprintf(buf, "%s:", featTable[i].name);
+                printString(buf, mapToWindowX(3), y, &itemMessageColor, &black, dbuf);
+                y++;
+            }
+            // Disabled/broken
+            else {
+                sprintf(buf, "%s: %s", featTable[i].name, featTable[i].description);
+                printString(buf, mapToWindowX(3), y, &darkGray, &black, dbuf);
+                sprintf(buf, "%s:", featTable[i].name);
+                printString(buf, mapToWindowX(3), y, &gray, &black, dbuf);
+                y++;
+            }
+        }
+    // Seed etc.
+        y++;
+        sprintf(buf, "Dungeon seed #%lu; turn #%lu", rogue.seed, rogue.playerTurnNumber);
+        printString(buf, mapToWindowX(2), y, &white, &black, dbuf);
 
     printString(KEYBOARD_LABELS ? "-- press any key to continue --" : "-- touch anywhere to continue --",
                 mapToWindowX(20), mapToWindowY(DROWS-2), &itemMessageColor, &black, dbuf);

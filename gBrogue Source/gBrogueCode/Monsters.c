@@ -762,7 +762,7 @@ creature *spawnHorde(short hordeID, short x, short y, unsigned long forbiddenFla
 
 	if (rogue.depthLevel > 1 && rand_percent(10)) {
 //		depth = rogue.depthLevel + rand_range(1, min(5, rogue.depthLevel / 2));
-		depth = (rogue.depthLevel + rogue.deepestLevel) / 2 + rand_range(1, min(5, rogue.depthLevel / 2));
+		depth = (rogue.depthLevel * 0.25 + rogue.deepestLevel * 0.75) + rand_range(1, min(5, rogue.depthLevel / 2));
 		if (depth > AMULET_LEVEL) {
 			depth = max(rogue.depthLevel, AMULET_LEVEL);
 		}
@@ -770,7 +770,7 @@ creature *spawnHorde(short hordeID, short x, short y, unsigned long forbiddenFla
 
 	} else {
 //		depth = rogue.depthLevel;
-        depth = (rogue.depthLevel + rogue.deepestLevel) / 2;
+        depth = (rogue.depthLevel * 0.25 + rogue.deepestLevel * 0.75);
 	}
 
 

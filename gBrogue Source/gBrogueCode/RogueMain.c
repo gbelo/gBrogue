@@ -440,7 +440,7 @@ void initializeRogue(unsigned long seed) {
 	theItem = addItemToPack(theItem);
 	equipItem(theItem, false);
 
-	theItem = generateItem(THROWING_WEAPON, INCENDIARY_DART);
+	theItem = generateItem(THROWING_WEAPON, DART);
 	theItem->enchant1 = theItem->enchant2 = 0;
 	theItem->quantity = 10;
 	theItem->flags &= ~(ITEM_CURSED | ITEM_RUNIC);
@@ -919,7 +919,7 @@ void startLevel(short oldLevelNumber, short stairDirection) {
         }
 	}
 	if (cellHasTerrainFlag(player.xLoc, player.yLoc, T_IS_DEEP_WATER) && !player.status[STATUS_LEVITATING]
-		&& !cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))) {
+        && !cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))) {
 		rogue.inWater = true;
 	}
 
