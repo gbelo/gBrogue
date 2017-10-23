@@ -6356,8 +6356,9 @@ void throwCommand(item *theItem) {
 
 //	maxDistance = (12 + 2 * max(rogue.strength - player.weaknessAmount - 12, 2));
 	// gsr
-	maxDistance = (8 + max(ringPropulsionBonus(rogue.throwingBonus) + 2*(rogue.strength - player.weaknessAmount - 12), 2));
+	maxDistance = max(12 + ringPropulsionBonus(rogue.throwingBonus) + 2*(rogue.strength - player.weaknessAmount - 12), 2);
 //	maxDistance = max(4, ringPropulsionBonus(rogue.throwingBonus) + 0.75 * (rogue.strength - player.weaknessAmount - 12) + 2);
+
 
 	autoTarget = (theItem->category & (THROWING_WEAPON | WEAPON | POTION)) ? true : false;
 	// for good thrown things (potions), but only if known -- gsr

@@ -45,7 +45,7 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "v17.10.14"
+#define BROGUE_VERSION_STRING "v17.10.22"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
@@ -1339,7 +1339,7 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 #define staffEntrancementDuration(enchant)	((int) ((enchant) * 3 + FLOAT_FUDGE))
 
 #define ringWisdomMultiplier(enchant)       (int) (10 * pow(1.3, min(27, (enchant))) + FLOAT_FUDGE)
-#define ringPropulsionBonus(enchant)        ((int) (2 * (enchant)))
+#define ringPropulsionBonus(enchant)        ((int) (4 * (enchant)))
 #define ringSpeedBonus(enchant)             ((int) (1 * (enchant)))
 #define ringStealthBonus(enchant)           ((int) ((enchant)))
 
@@ -2120,7 +2120,7 @@ enum monsterBehaviorFlags {
 									   | MONST_FLITS | MONST_IMMUNE_TO_FIRE | MONST_REFLECT_4 | MONST_FIERY | MONST_MAINTAINS_DISTANCE),
 	MONST_TURRET					= (MONST_IMMUNE_TO_WEBS | MONST_NEVER_SLEEPS | MONST_IMMOBILE | MONST_INANIMATE |
 									   MONST_ATTACKABLE_THRU_WALLS | MONST_WILL_NOT_USE_STAIRS),
-	LEARNABLE_BEHAVIORS				= (MONST_INVISIBLE | MONST_FLIES | MONST_IMMUNE_TO_FIRE | MONST_REFLECT_4),
+	LEARNABLE_BEHAVIORS				= (MONST_INVISIBLE | MONST_FLIES | MONST_IMMUNE_TO_FIRE | MONST_IMMUNE_TO_WATER),
 	MONST_NEVER_VORPAL_ENEMY		= (MONST_INANIMATE | MONST_INVULNERABLE | MONST_IMMOBILE | MONST_RESTRICTED_TO_LIQUID | MONST_GETS_TURN_ON_ACTIVATION | MONST_MAINTAINS_DISTANCE),
     MONST_NEVER_MUTATED             = (MONST_INVISIBLE | MONST_INANIMATE | MONST_IMMOBILE | MONST_INVULNERABLE),
 };
@@ -2145,7 +2145,7 @@ enum monsterAbilityFlags {
     MA_HIT_BLINDS       			= Fl(16),	// monster blinds (darkness) character
 
 	SPECIAL_HIT						= (MA_HIT_HALLUCINATE | MA_HIT_STEAL_FLEE | MA_HIT_DEGRADE_ARMOR | MA_HIT_BLINDS | MA_POISONS | MA_TRANSFERENCE | MA_CAUSES_WEAKNESS),
-	LEARNABLE_ABILITIES				= (MA_TRANSFERENCE | MA_CAUSES_WEAKNESS),
+	LEARNABLE_ABILITIES				= (MA_TRANSFERENCE | MA_CAUSES_WEAKNESS | MA_ATTACKS_PENETRATE | MA_POISONS | MA_SEIZES | MA_ATTACKS_ALL_ADJACENT),
 
     MA_NON_NEGATABLE_ABILITIES      = (MA_ATTACKS_PENETRATE | MA_ATTACKS_ALL_ADJACENT),
     MA_NEVER_VORPAL_ENEMY           = (MA_KAMIKAZE),
@@ -2403,6 +2403,7 @@ typedef struct playerCharacter {
     unsigned long absoluteTurnNumber;   // number of turns since the beginning of time. Always increments.
 	signed long milliseconds;			// milliseconds since launch, to decide whether to engage cautious mode
 	short xpxpThisTurn;					// how many squares the player explored this turn
+    unsigned long numCellsDiscovered;	// how many squares the player has discovered overall (slightly different from xpxp) -- gsr
     short aggroRange;                   // distance from which monsters will notice you
 
 	short previousHealthPercent;        // remembers what your health proportion was at the start of the turn,

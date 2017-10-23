@@ -733,6 +733,7 @@ void discoverCell(const short x, const short y) {
             rogue.xpxpThisTurn++;
         }
     }
+    rogue.numCellsDiscovered++;
 }
 
 void updateVision(boolean refreshDisplay) {

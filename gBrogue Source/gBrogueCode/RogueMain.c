@@ -1192,6 +1192,7 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 	if (!rogue.quit) {
         printString(buf, (COLS - strLenWithoutEscapes(buf)) / 2, ROWS / 2, &gray, &black, 0);
 
+        /*
         y = ROWS / 2 + 3;
         for (i = 0; i < FEAT_COUNT; i++) {
             //printf("\nConduct %i (%s) is %s.", i, featTable[i].name, rogue.featRecord[i] ? "true" : "false");
@@ -1202,7 +1203,7 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
                 printString(buf, (COLS - strLenWithoutEscapes(buf)) / 2, y, &advancementMessageColor, &black, 0);
                 y++;
             }
-        }
+        }*/
 
 		displayMoreSign();
 	}
@@ -1316,6 +1317,8 @@ void victory(boolean superVictory, boolean hasAmulet) {
             if (rogue.featRecord[j]) {
                 sprintf(buf, "%s: %s", featTable[j].name, featTable[j].description);
                 printString(buf, mapToWindowX(2), i, &advancementMessageColor, &black, dbuf);
+                sprintf(buf, "%s:", featTable[j].name);
+                printString(buf, mapToWindowX(2), i, &white, &black, dbuf);
                 i++;
             }
         }
@@ -1365,7 +1368,7 @@ void victory(boolean superVictory, boolean hasAmulet) {
 	rogue.gameHasEnded = true;
 }
 
-/*void victory(boolean superVictory) {
+/* void victory(boolean superVictory) {
 	char buf[COLS*3], victoryVerb[20];
 	item *theItem;
 	short i, j, gemCount = 0;

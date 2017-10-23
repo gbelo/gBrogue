@@ -3945,7 +3945,7 @@ void printGameInfoScreen()
                 printString(buf, mapToWindowX(3), y, &itemMessageColor, &black, dbuf);
                 y++;
             }
-            // Disabled/broken
+            // Disabled/broken/failed
             else {
                 sprintf(buf, "%s: %s", featTable[i].name, featTable[i].description);
                 printString(buf, mapToWindowX(3), y, &darkGray, &black, dbuf);
@@ -3956,8 +3956,15 @@ void printGameInfoScreen()
         }
     // Seed etc.
         y++;
-        sprintf(buf, "Dungeon seed #%lu; turn #%lu", rogue.seed, rogue.playerTurnNumber);
-        printString(buf, mapToWindowX(2), y, &white, &black, dbuf);
+        printString("-- Playthrough info --", mapToWindowX(2), y, &itemMessageColor, &black, dbuf);
+        y+=2;
+        sprintf(buf, "Seed: %lu", rogue.seed);
+        printString(buf, mapToWindowX(2), y++, &white, &black, dbuf);
+        sprintf(buf, "Turns: %lu", rogue.playerTurnNumber);
+        printString(buf, mapToWindowX(2), y++, &white, &black, dbuf);
+        sprintf(buf, "Area discovered: %i ca", rogue.numCellsDiscovered); // in units of centiares; legit but obscure enough to be abstract -- gsr
+        printString(buf, mapToWindowX(2), y++, &white, &black, dbuf);
+
 
     printString(KEYBOARD_LABELS ? "-- press any key to continue --" : "-- touch anywhere to continue --",
                 mapToWindowX(20), mapToWindowY(DROWS-2), &itemMessageColor, &black, dbuf);
