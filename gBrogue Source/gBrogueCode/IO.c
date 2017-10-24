@@ -3936,7 +3936,7 @@ void printGameInfoScreen()
         y+=2;
         for (i = 0; i < FEAT_COUNT; i++) {
             //printf("\nConduct %i (%s) is %s.", i, featTable[i].name, rogue.featRecord[i] ? "true" : "false");
-            // Unbroken
+            // Achieved (pending ascension)
             if (rogue.featRecord[i]) {
 
                 sprintf(buf, "%s: %s", featTable[i].name, featTable[i].description);
@@ -3945,7 +3945,15 @@ void printGameInfoScreen()
                 printString(buf, mapToWindowX(3), y, &itemMessageColor, &black, dbuf);
                 y++;
             }
-            // Disabled/broken/failed
+            // Failed/violated
+            else if (!rogue.featRecord[i] && featTable[i].initialValue) {
+                sprintf(buf, "%s: %s", featTable[i].name, featTable[i].description);
+                printString(buf, mapToWindowX(3), y, &darkRed, &black, dbuf);
+                sprintf(buf, "%s:", featTable[i].name);
+                printString(buf, mapToWindowX(3), y, &red, &black, dbuf);
+                y++;
+            }
+            // Not yet earned, but could be
             else {
                 sprintf(buf, "%s: %s", featTable[i].name, featTable[i].description);
                 printString(buf, mapToWindowX(3), y, &darkGray, &black, dbuf);
