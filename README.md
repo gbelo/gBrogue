@@ -1,10 +1,13 @@
-# gBrogue - v1.0 RC1
-gBrogue: A fork of the wonderful roguelike Brogue
+# gBrogue (v1.17.10.24)
+gBrogue: A community-driven fork of Brogue
 
-I'm a huge fan of Brogue.
-For one thing, Brogue gives you -a lot- of information so that you can make well-informed decisions, and unlike pretty much every other roguelike out there it's playable without a thousand pages of spoilers. gBrogue is based on Brogue v1.7.4 and mostly designed to crank Brogue's particular advantages up to 11.
+gBrogue is based on the roguelike game Brogue. It's mostly designed to build upon Brogue's particular advantages over other roguelikes. Brogue provides you with a lot of information, but not overwhelmingly so; is easy to navigate, use, and understand; and presents more varied and interesting level designs than many other roguelikes. This modest fork strives to crank these to 11 while also adding some twists and turns, with increments guided by community feedback.
 
-Changes –
+It's currently based upon Brogue v1.7.4. gBrogue v1.17.10.24 marks the first version with a real "v1.0" tag, meaning that the design philosophy and overall approach is sound enough to build upon.
+
+___
+
+Changes from Brogue –
 General feel / Overview:
  * Items have generally been streamlined, reduced in total number but enhanced in versatility. Many gameplay functions, such as throwing and applying/using items, are changed with that in mind.
  * You're given options. You can choose one of a few different special items on the very first floor to get the game going. You can choose to explore and find hidden areas to find more items. Potions, especially, are multipurpose. You can choose to allow your starting pet to accompany you and to take care of it, and/or you can free captured monsters along the way.
@@ -69,6 +72,7 @@ Changes to monster behavior:
  * Empowered monsters are healed for 50% rather than 100%.
  * Monsters are woken up if something is thrown at them. Enough said.
  * Those legendary allies? At least they're still legendary.
+ * Changed around what skills could be learned by allies. Allies can now learn to swim, for example, but they can't learn how to make other allies invisible.
 
 Usability enhancements:
  * Aggro/stealth range displays by default. (This is mainly so that new players can dive right in and know what stealth actually is.)
@@ -85,6 +89,7 @@ Usability enhancements:
  * The multiplier for the color for dark and lit squares have been exaggerated, making it easier to tell what's dark or light or neither.
  * "This is a scroll of identify/enchanting" prompt is only given the one time.
  * Redid placement of items on the Discoveries screen. Of course.
+ * Replaced the "View seed" (~) command with a "View session information" of sorts. It shows the seeds, but it also shows you which conducts/feats you've violated, which you have earned (pending ascension), and which are still in the running for you.
 
 Extremely minor changes:
  * The title and main menu screen are different. Obviously.
@@ -105,3 +110,16 @@ Things that only "deep-divers" would ever care about:
  * Force weapon hit routine is generalized to account for, say, staff of force.
  * Added a routine, much like the passableArcCount routine, that basically "executive summarizes" the situation of the player wrt walls. Used by armor of shadows.
  * And a lot more, hopefully documented well.
+
+___
+ 
+Changes since last version of gBrogue –
+ * Fixed "pretty much always crashing after D30 or so" bug. Yes, it was a new monster that caused the problem. Replaced the hellhound with what might be a more interesting monster.
+ * Replaced the "View seed" (~) command with a "View session information" of sorts. It shows the seeds, but it also shows you which conducts/feats you've violated, which you have earned (pending ascension), and which are still in the running for you.
+ * Rebalanced throwing items. Throwing distance is now back up to snuff. Ring of propulsion is also made a somewhat useful item, in that it's pretty powerful at low enchants and worth keeping around for situational purposes.
+ * Changed around what skills could be learned by allies. Allies can now learn to swim, for example, but they can't learn how to make other allies invisible.
+ * Added nymphs. Inconsequential monster for veterans, possibly minorly interesting for newcomers.
+
+To do:
+ * Fix warnings in code.
+ 
