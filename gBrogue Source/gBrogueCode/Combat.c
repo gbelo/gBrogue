@@ -213,6 +213,7 @@ void splitMonster(creature *monst, short x, short y) {
 					monsterName(monstName, monst, true);
 					monst->currentHP = (monst->currentHP + 1) / 2;
 					clone = cloneMonster(monst, false, false);
+					clone->info.turnsBetweenRegen = 0; // Clones will never regenerate. Sorry! --gsr
 
                     // Split monsters don't inherit the learnings of their parents.
                     // Sorry, but self-healing jelly armies are too much.
@@ -1230,6 +1231,10 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
                 damage *= 3; // Treble damage for general sneak attacks.
             }
 		}
+		// Also handled here in case immunity can be given in other ways later on.. -- gsr
+		if (attacker != &player && playerImmuneToMonster(attacker))
+            damage = 0;
+
 /* moved below -- gsr
 		if (defender == &player && rogue.armor && (rogue.armor->flags & ITEM_RUNIC)) {
 			applyArmorRunicEffect(armorRunicString, attacker, &damage, true);

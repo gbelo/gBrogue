@@ -10,7 +10,6 @@
  *  This file is modified from original source.
  *
 
-* depth 17 was a vampire vault, but all of the cages were empty. I killed the vampire to get the key and opened one anyway just in case there were allies invisible, but no, just empty.
 
 */
 //  Brogue
@@ -45,7 +44,7 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "v1.17.10.24"
+#define BROGUE_VERSION_STRING "v1.17.12a"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 

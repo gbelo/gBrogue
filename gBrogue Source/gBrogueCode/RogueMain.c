@@ -458,8 +458,6 @@ void initializeRogue(unsigned long seed) {
 
     recalculateEquipmentBonuses();
 
-
-
 	DEBUG {
 
 		theItem = generateItem(RING, RING_CLAIRVOYANCE);
@@ -484,6 +482,16 @@ void initializeRogue(unsigned long seed) {
 		theItem->flags |= (ITEM_PROTECTED | ITEM_RUNIC);
 		identify(theItem);
 		theItem = addItemToPack(theItem);
+
+		theItem = generateItem(ARMOR, LEATHER_ARMOR);
+		theItem->enchant1 = 1;
+		theItem->enchant2 = A_IMMUNITY;
+		theItem->flags &= ~(ITEM_CURSED | ITEM_RUNIC_HINTED);
+		theItem->flags |= (ITEM_PROTECTED | ITEM_RUNIC);
+        theItem->vorpalEnemy = chooseVorpalEnemy();
+        identify(theItem);
+		theItem = addItemToPack(theItem);
+
 /*
 		theItem = generateItem(STAFF, STAFF_FIRE);
 		theItem->enchant1 = 10;

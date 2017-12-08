@@ -218,9 +218,9 @@ item *makeItemInto(item *theItem, unsigned long itemCategory, short itemKind) {
 			theEntry = &throwingWeaponTable[itemKind];
 			// Comes in stacks
             if (itemKind == INCENDIARY_DART || itemKind == POISON_DART || itemKind == TRANQUILIZER_DART)
-                theItem->quantity = rand_range(3, 6);
+                theItem->quantity = rand_range(2, 3);
             else
-                theItem->quantity = rand_range(5, 18);
+                theItem->quantity = rand_range(5, 10);
 
             theItem->quiverNumber = rand_range(1, 60000);
             theItem->flags &= ~(ITEM_CURSED | ITEM_RUNIC); // throwing weapons can't be cursed or runic
@@ -5782,10 +5782,6 @@ boolean hitMonsterWithProjectileWeapon(creature *thrower, creature *monst, item 
 	itemName(theItem, theItemName, false, false, NULL);
 	monsterName(targetName, monst, true);
 
-	if (!(theItem->category & WEAPON) && !(theItem->category & THROWING_WEAPON)) { // gsr
-		return false;
-	}
-
 	monst->status[STATUS_ENTRANCED] = 0;
 
 	if (monst != &player
@@ -5801,18 +5797,22 @@ boolean hitMonsterWithProjectileWeapon(creature *thrower, creature *monst, item 
 	}
 
 	if (thrower == &player) {
+
 		equippedWeapon = rogue.weapon;
-		equipItem(theItem, true);
-		thrownWeaponHit = attackHit(&player, monst);
+		if (theItem->category & WEAPON)
+    		equipItem(theItem, true);
+
+        thrownWeaponHit = attackHit(&player, monst);
+
 		if (equippedWeapon) {
 			equipItem(equippedWeapon, true);
 		} else {
 			unequipItem(theItem, true);
 		}
-		// If we don't have enough strength to wield it, we'll always miss a throw
-		if (strengthModifier(theItem) < 0)
-            thrownWeaponHit = false;
 
+		// For weapons, if the required strength is greater than our strength, then it'll miss as well. This balances the buffed throwing aspect of the game.
+        if (strengthModifier(theItem) < 0)
+            thrownWeaponHit = false;
 	} else {
 		thrownWeaponHit = attackHit(thrower, monst);
 	}
@@ -5849,7 +5849,7 @@ boolean hitMonsterWithProjectileWeapon(creature *thrower, creature *monst, item 
         else
             return false;
 	} else {
-		theItem->flags &= ~ITEM_PLAYER_AVOIDS; // Don't avoid thrown weapons that missed.
+//		theItem->flags &= ~ITEM_PLAYER_AVOIDS; // Don't avoid thrown weapons that missed.
 		sprintf(buf, "the %s missed %s.", theItemName, targetName);
 		message(buf, false);
 		return false;
@@ -5924,43 +5924,42 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                 }
 
                 // gsr
-                if ((theItem->category & (THROWING_WEAPON))
-                    && hitMonsterWithProjectileWeapon(thrower, monst, theItem))
-                {
-                    if (theItem->kind == INCENDIARY_DART)
-                    {
-                        // Moved incendiary dart handling to here
-                        spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_DART_EXPLOSION], true, false);
-                        exposeCreatureToFire(monsterAtLoc(x, y));
-                        return;
-                    }
-                    else if (theItem->kind == POISON_DART)
-                    {
-                        addPoison(monst, 10, 1);
-                        monsterName(monstName, monst, true);
-                        sprintf(buf, "%s %s %s sick",
-                                monstName,
-                                (monst == &player ? "feel" : "looks"),
-                                (monst->status[STATUS_POISONED] * monst->poisonAmount >= monst->currentHP && !player.status[STATUS_HALLUCINATING] ? "fatally" : "very"));
-                        combatMessage(buf, messageColorFromVictim(monst));
-                        return;
-                    }
-                    else if (theItem->kind == TRANQUILIZER_DART)
-                    {
-                        if (monst->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE))
+                else if ((theItem->category & THROWING_WEAPON)
+                    && hitMonsterWithProjectileWeapon(thrower, monst, theItem)) {
+                        if (theItem->kind == INCENDIARY_DART)
+                        {
+                            // Moved incendiary dart handling to here
+                            spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_DART_EXPLOSION], true, false);
+                            exposeCreatureToFire(monsterAtLoc(x, y));
                             return;
-                        if (canDirectlySeeMonster(monst) && !monst->status[STATUS_PARALYZED]) {
-                            flashMonster(monst, &pink, 100);
-                            monsterName(buf, monst, true);
-                            sprintf(buf2, "%s %s paralyzed!", buf, (monst == &player ? "are": "is"));
-                            message(buf2, (monst == &player));
                         }
-                        monst->status[STATUS_PARALYZED] = monst->maxStatus[STATUS_PARALYZED] = max(monst->status[STATUS_PARALYZED], 10);
+                        else if (theItem->kind == POISON_DART)
+                        {
+                            addPoison(monst, 10, 1);
+                            monsterName(monstName, monst, true);
+                            sprintf(buf, "%s %s %s sick",
+                                    monstName,
+                                    (monst == &player ? "feel" : "looks"),
+                                    (monst->status[STATUS_POISONED] * monst->poisonAmount >= monst->currentHP && !player.status[STATUS_HALLUCINATING] ? "fatally" : "very"));
+                            combatMessage(buf, messageColorFromVictim(monst));
+                            return;
+                        }
+                        else if (theItem->kind == TRANQUILIZER_DART)
+                        {
+                            if (monst->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE))
+                                return;
+                            if (canDirectlySeeMonster(monst) && !monst->status[STATUS_PARALYZED]) {
+                                flashMonster(monst, &pink, 100);
+                                monsterName(buf, monst, true);
+                                sprintf(buf2, "%s %s paralyzed!", buf, (monst == &player ? "are": "is"));
+                                message(buf2, (monst == &player));
+                            }
+                            monst->status[STATUS_PARALYZED] = monst->maxStatus[STATUS_PARALYZED] = max(monst->status[STATUS_PARALYZED], 10);
+                            return;
+                        }
+
                         return;
                     }
-
-                    return;
-                }
             }
         }
 

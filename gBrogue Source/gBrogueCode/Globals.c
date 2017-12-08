@@ -2126,10 +2126,10 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 
 const mutation mutationCatalog[NUMBER_MUTATORS] = {
     //Title         textColor       healthFactor    moveSpdMult attackSpdMult   defMult damMult DF% DFtype  light   monstFlags  abilityFlags    forbiddenFlags      forbiddenAbilities
-    {"jelly",     &pinkJellyColor,        25,         50,         50,            50,     50,     -1, 0,      0,      (0), (MA_CLONE_SELF_ON_DEFEND), (MONST_MAINTAINS_DISTANCE|MONST_FLIES|MONST_SUBMERGES|MONST_INVISIBLE), (MA_CLONE_SELF_ON_DEFEND),
+    {"jelly",     &pinkJellyColor,        25,         50,         50,            50,     50,     -1, 0,      0,      (0), (MA_CLONE_SELF_ON_DEFEND), (MONST_IMMUNE_TO_WEAPONS|MONST_MAINTAINS_DISTANCE|MONST_FLIES|MONST_SUBMERGES|MONST_INVISIBLE), (MA_CLONE_SELF_ON_DEFEND),
         "$HESHE has been transformed into a writhing mass of slime through means unknown, causing $HIMHER to replicate upon taking damage while sacrificing most of $HISHER strength and agility."},
-    {"floating",     &turquoise,        100,         75,         75,            100,     100,     -1, 0,      0,      (MONST_FLIES), (0), (MONST_FLIES|MONST_SUBMERGES|MONST_INVISIBLE),
-        "An unseen force causes $HIMHER to levitate, allowing $HIMHER to float over pits and lava at the cost of some speed."},
+    {"floating",     &turquoise,        100,         75,         75,            100,     100,     -1, 0,      0,      (MONST_FLIES|MONST_FLITS), (0), (MONST_FLIES|MONST_SUBMERGES|MONST_INVISIBLE),
+        "An unseen force causes $HIMHER to levitate, allowing $HIMHER to float over pits and lava at the cost of some navigational ability."},
     {"explosive",   &orange,        50,             100,        100,            50,     100,    0,  DF_MUTATION_EXPLOSION, EXPLOSIVE_BLOAT_LIGHT, 0, MA_DF_ON_DEATH, MONST_SUBMERGES, 0,
         "A rare mutation will cause $HIMHER to explode violently when $HESHE dies."},
     {"infested",    &purple,   50,             100,        100,            50,     100,    0,  DF_MUTATION_LICHEN, 0, 0,   MA_DF_ON_DEATH, 0,               0,
@@ -2409,7 +2409,7 @@ const monsterClass monsterClassCatalog[MONSTER_CLASS_COUNT] = {
     {"ogre",            10,         16,         {MK_OGRE, MK_OGRE_SHAMAN, MK_OGRE_TOTEM}},
     {"dragon",          10,         -1,         {MK_DRAGON, MK_BLACK_DRAGON}},
     {"undead",          10,         -1,         {MK_ZOMBIE, MK_WRAITH, MK_VAMPIRE, MK_PHANTOM, MK_LICH, MK_REVENANT, MK_SHADOW_CENIPEDE, MK_BLACK_DRAGON, MK_DAR_APPARITION}},
-    {"jelly",           10,         15,         {MK_PINK_JELLY, MK_BLACK_JELLY, MK_ACID_JELLY | MK_INVISIBLE_JELLY}},
+    {"jelly",           10,         15,         {MK_PINK_JELLY, MK_BLACK_JELLY, MK_ACID_JELLY, MK_INVISIBLE_JELLY}},
     {"turret",          5,          18,         {MK_ARROW_TURRET, MK_SPARK_TURRET, MK_DART_TURRET, MK_FLAME_TURRET}},
     {"infernal",        10,         -1,         {MK_FLAMEDANCER, MK_IMP, MK_REVENANT, MK_FURY, MK_PHANTOM, MK_MAGMA_EEL, MK_BLACK_DRAGON}},
     {"waterborne",      10,         17,         {MK_EEL, MK_NAGA, MK_KRAKEN}},

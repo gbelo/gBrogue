@@ -762,7 +762,8 @@ creature *spawnHorde(short hordeID, short x, short y, unsigned long forbiddenFla
 
 	if (rogue.depthLevel > 1 && rand_percent(10)) {
 //		depth = rogue.depthLevel + rand_range(1, min(5, rogue.depthLevel / 2));
-		depth = (rogue.depthLevel * 0.25 + rogue.deepestLevel * 0.75) + rand_range(1, min(5, rogue.depthLevel / 2));
+//		depth = (rogue.depthLevel * 0.25 + rogue.deepestLevel * 0.75) + rand_range(1, min(5, rogue.depthLevel / 2));
+		depth = rogue.deepestLevel + rand_range(1, min(5, rogue.depthLevel / 2));
 		if (depth > AMULET_LEVEL) {
 			depth = max(rogue.depthLevel, AMULET_LEVEL);
 		}
@@ -770,7 +771,8 @@ creature *spawnHorde(short hordeID, short x, short y, unsigned long forbiddenFla
 
 	} else {
 //		depth = rogue.depthLevel;
-        depth = (rogue.depthLevel * 0.25 + rogue.deepestLevel * 0.75);
+//        depth = (rogue.depthLevel * 0.25 + rogue.deepestLevel * 0.75);
+		depth = rogue.deepestLevel;
 	}
 
 
@@ -842,6 +844,7 @@ creature *spawnHorde(short hordeID, short x, short y, unsigned long forbiddenFla
 		leader->bookkeepingFlags |= MB_CAPTIVE;
 		leader->creatureState = MONSTER_WANDERING;
 		leader->currentHP = leader->info.maxHP / 4 + 1;
+		leader->mutationIndex = -1; // Captives never mutated -- gsr
 
 		// Draw the manacles unless the horde spawns in weird terrain (e.g. cages).
 		if (!hordeCatalog[hordeID].spawnsIn) {
