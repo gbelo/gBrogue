@@ -3058,7 +3058,7 @@ char displayInventory(unsigned short categoryMask,
 		upperCase(buf);
 
 		if ((theItem->flags & ITEM_MAGIC_DETECTED)
-			&& !(theItem->category & AMULET)) { // Won't include food, keys, lumenstones or amulet.
+			&& !(theItem->category & AMULET) && !(theItem->category & GEM)) { // Won't include food, keys, lumenstones or amulet.
 
 			buttons[i].symbol[0] = (itemMagicChar(theItem) ? itemMagicChar(theItem) : '-');
 			if (buttons[i].symbol[0] == '-') {
