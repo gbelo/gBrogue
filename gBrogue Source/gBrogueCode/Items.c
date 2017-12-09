@@ -524,15 +524,36 @@ void populateItems(short upstairsX, short upstairsY) {
 	char RNGmessage[100];
 #endif
 
+    // This sets up the lumenstones, which are the only items we get. If not in the lumenstoneDistribution levels, there's only one.
+    /*
 	if (rogue.depthLevel > AMULET_LEVEL) {
         if (rogue.depthLevel - AMULET_LEVEL - 1 >= 8) {
             numberOfItems = 1;
         } else {
-            const short lumenstoneDistribution[8] = {3, 3, 3, 2, 2, 2, 2, 2};
+            // TO DO: play around with this --gsr
+//            const short lumenstoneDistribution[8] = {3, 3, 3, 2, 2, 2, 2, 2};
+              const short lumenstoneDistribution[8] = {3, 3, 3, 2, 2, 2, 2, 2};
             numberOfItems = lumenstoneDistribution[rogue.depthLevel - AMULET_LEVEL - 1];
         }
 		numberOfGoldPiles = 0;
-	} else {
+	}*/
+
+	// Alright. Trying something new here. One lumenstone per level, with more levels. --gsr
+	// To do: Make lumenstone visible on map
+	if (rogue.depthLevel > AMULET_LEVEL && rogue.depthLevel < MOLOCH_LAIR_LEVEL - 1) {
+        //if (rogue.depthLevel - AMULET_LEVEL - 1 >= 8) {
+            numberOfItems = 1;
+        /*} else {
+            // TO DO: play around with this --gsr
+//            const short lumenstoneDistribution[8] = {3, 3, 3, 2, 2, 2, 2, 2};
+              const short lumenstoneDistribution[8] = {3, 3, 3, 2, 2, 2, 2, 2};
+            numberOfItems = lumenstoneDistribution[rogue.depthLevel - AMULET_LEVEL - 1];
+        }*/
+		numberOfGoldPiles = 0;
+	}
+
+
+	 else {
         rogue.lifePotionFrequency += 34; // irrelevant now -- gsr
 		rogue.strengthPotionFrequency += 17; // irrelevant now -- gsr
 		rogue.vitalityPotionFrequency += 23; // gsr
@@ -898,7 +919,8 @@ item *addItemToPack(item *theItem) {
 	item *previousItem, *tempItem;
 	char itemLetter;
 	// Can the item stack with another in the inventory?
-	if (theItem->category & (FOOD|POTION|SCROLL|GEM)) {
+//	if (theItem->category & (FOOD|POTION|SCROLL|GEM)) {
+    if (theItem->category & (FOOD|POTION|SCROLL)) { // lumenstones don't stack anymore!
 		for (tempItem = packItems->nextItem; tempItem != NULL; tempItem = tempItem->nextItem) {
 			if (theItem->category == tempItem->category && theItem->kind == tempItem->kind) {
 				// We found a match!
@@ -1597,7 +1619,16 @@ void itemName(item *theItem, char *root, boolean includeDetails, boolean include
 			sprintf(root, "%sAmulet%s of Yendor%s", yellowEscapeSequence, pluralization, baseEscapeSequence);
 			break;
 		case GEM:
-			sprintf(root, "%slumenstone%s%s", yellowEscapeSequence, pluralization, baseEscapeSequence);
+		    // Lumenstones per depth now -- gsr
+//			sprintf(root, "%slumenstone%s%s", yellowEscapeSequence, pluralization, baseEscapeSequence);
+			if (includeDetails && theItem->originDepth > 0 && theItem->originDepth != rogue.depthLevel)// && theItem->originDepth > 0) {
+            {
+                sprintf(root, "%slumenstone%s%s from depth %i", yellowEscapeSequence, pluralization, baseEscapeSequence,
+						theItem->originDepth);
+			} else {
+                sprintf(root, "%slumenstone%s%s", yellowEscapeSequence, pluralization, baseEscapeSequence);
+            }
+
 
 			break;
 		case KEY:
@@ -7732,6 +7763,8 @@ uchar itemMagicChar(item *theItem) {
             break;
 		case AMULET:
 			return AMULET_CHAR;
+		case GEM:
+			return GEM_CHAR;
 	}
 	return 0;
 }

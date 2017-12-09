@@ -48,7 +48,7 @@
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
-#define DEBUGGING						0
+#define DEBUGGING						1
 
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.
@@ -140,7 +140,8 @@
 
 #define AMULET_LEVEL			26			// how deep before the amulet appears
 #define NETHER_LEVEL			    AMULET_LEVEL+1	// where "hell" starts
-#define DEEPEST_LEVEL           40          // how deep the universe goes
+//#define DEEPEST_LEVEL           40          // how deep the universe goes
+#define DEEPEST_LEVEL           53          // how deep the universe goes
 
 #define NARROW_LEVEL            13         // special levels -- gsr
 #define BIG_LEVEL               6
@@ -722,7 +723,9 @@ enum itemCategory {
 	GEM					= Fl(12),
 	KEY					= Fl(13),
 
-	CAN_BE_DETECTED		= (WEAPON | ARMOR | POTION | SCROLL | RING | CHARM | WAND | STAFF | AMULET),
+//	CAN_BE_DETECTED		= (WEAPON | ARMOR | POTION | SCROLL | RING | CHARM | WAND | STAFF | AMULET),
+	CAN_BE_DETECTED		= (WEAPON | ARMOR | POTION | SCROLL | RING | CHARM | WAND | STAFF | GEM | AMULET), // lumenstones can be detected as part of our trade on what lumenstones are all about
+
 	PRENAMED_CATEGORY	= (FOOD | GOLD | AMULET | GEM | KEY),
     NEVER_IDENTIFIABLE  = (FOOD | CHARM | GOLD | AMULET | GEM | KEY | THROWING_WEAPON),
 //    COUNTS_TOWARD_SCORE = (GOLD | AMULET | GEM),

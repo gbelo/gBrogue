@@ -2595,7 +2595,7 @@ void liquidType(short *deep, short *shallow, short *shallowWidth) {
     else if (rogue.depthLevel == NARROW_LEVEL)
         rand = 4;
 
-    else if (rogue.depthLevel == AMULET_LEVEL) // no pits leading downward -- must take stairs!
+    else if (rogue.depthLevel == AMULET_LEVEL) // no pits leading downward -- must take stairs! -- gsr
         rand = 0;
     else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL) // no skipping Moloch's lair!
         rand = 3;

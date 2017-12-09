@@ -2240,7 +2240,7 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	// "post-game" -- gsr
 	{MK_BLACK_DRAGON,	0,		{0},									{{0}},							NETHER_LEVEL - 2,		MOLOCH_LAIR_LEVEL-1,		3},
 	{MK_BLACK_DRAGON,	0,		{0},									{{0}},							36,		MOLOCH_LAIR_LEVEL-1,		2,		STATUE_DORMANT, 0,				HORDE_MACHINE_STATUE},
-	{MK_PARALYTIC_BLOAT,0,		{0},									{{0}},							NETHER_LEVEL - 2,		MOLOCH_LAIR_LEVEL,		1},
+	{MK_PARALYTIC_BLOAT,0,		{0},									{{0}},							NETHER_LEVEL - 2,		MOLOCH_LAIR_LEVEL-1,		1},
 	{MK_CRYSTAL_GOLEM,	0,		{0},									{{0}},							NETHER_LEVEL - 2,		MOLOCH_LAIR_LEVEL-1,		2},
 	{MK_QUICKLING,  	0,		{0},									{{0}},							NETHER_LEVEL - 4,		MOLOCH_LAIR_LEVEL-1,		3},
 	{MK_QUICKLING,  	1,		{MK_QUICKLING},							{{1,4,1}},						32,		            MOLOCH_LAIR_LEVEL-1,		2},
@@ -2248,8 +2248,8 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_SHADOW_CENIPEDE,0,		{MK_SHADOW_CENIPEDE},					{{1,3,1}},						30,		            MOLOCH_LAIR_LEVEL-1,        2},
 	{MK_DAR_APPARITION,0,		{0},									{{0}},							NETHER_LEVEL - 1,		MOLOCH_LAIR_LEVEL-1,		1},
 	{MK_HELLHOUND,  	1,		{MK_HELLHOUND},							{{1,4,1}},						28,		            MOLOCH_LAIR_LEVEL-1,		2},
-	{MK_HELLHOUND,  	1,		{0},            					    {0},    						28,		            MOLOCH_LAIR_LEVEL,		2},
-	{MK_INVISIBLE_JELLY,  	1,		{0},            					{0},    						34,		            MOLOCH_LAIR_LEVEL,		2},
+	{MK_HELLHOUND,  	1,		{0},            					    {0},    						28,		            MOLOCH_LAIR_LEVEL-1,		2},
+	{MK_INVISIBLE_JELLY,  	1,		{0},            					{0},    						34,		            MOLOCH_LAIR_LEVEL-1,		2},
 
 
 
