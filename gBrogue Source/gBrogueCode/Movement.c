@@ -2107,7 +2107,7 @@ boolean useStairs(short stairDirection) {
 			succeeded = true;
 		} else {
 			confirmMessages();
-			// Allow early quit
+			// Allow early quit -- gsr
 			if (confirm("Really leave the dungeon without the Amulet of Yendor?", false))
             {
                 rogue.quit = true;

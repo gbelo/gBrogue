@@ -1714,6 +1714,12 @@ void addMachines() {
     }
 
     // Add the initial guaranteed treasure room if we're on the appropriate floor -- gsr
+        /*if (rogue.depthLevel == GUARANTEED_CAPTIVE_LEVEL)
+        {
+            // Generate the captive monster out of sight from the very first entrance in the game
+            getRandomMonsterSpawnLocation(x, y);
+            spawnHorde(0, &x, &y, NULL, HORDE_GUARANTEED_FOUND_CAPTIVE);
+        }*/
         if (rogue.depthLevel == GUARANTEED_VAULT_LEVEL)
         {
             for (failsafe = 50; failsafe; failsafe--) {
@@ -2595,7 +2601,7 @@ void liquidType(short *deep, short *shallow, short *shallowWidth) {
     else if (rogue.depthLevel == NARROW_LEVEL)
         rand = 4;
 
-    else if (rogue.depthLevel == AMULET_LEVEL) // no pits leading downward -- must take stairs! -- gsr
+    else if (rogue.depthLevel == AMULET_LEVEL) // no pits leading downward -- must take stairs!
         rand = 0;
     else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL) // no skipping Moloch's lair!
         rand = 3;
@@ -3055,6 +3061,26 @@ void digDungeon() {
 
 	// Now finish any exposed granite with walls and revert any unexposed walls to granite
 	finishWalls(true);
+
+	// NOW re-dress the level if we'd like.
+	// Different wall types and all for different types of stuff: hell, etc. etc. -- gsr
+    for (i=0; i<DCOLS; i++)
+		for (j=0; j<DROWS; j++)
+        {
+            if (rogue.depthLevel > AMULET_LEVEL)
+            {
+                if (pmap[i][j].layers[DUNGEON] == WALL)
+                    pmap[i][j].layers[DUNGEON] = NETHER_WALL;
+                else if (pmap[i][j].layers[DUNGEON] == GRANITE)
+                    pmap[i][j].layers[DUNGEON] = NETHER_GRANITE;
+                else if (pmap[i][j].layers[DUNGEON] == DOOR)
+                    pmap[i][j].layers[DUNGEON] = DEAD_FOLIAGE;
+                else if (pmap[i][j].layers[DUNGEON] == SECRET_DOOR)
+                    pmap[i][j].layers[DUNGEON] = DEAD_FOLIAGE;
+            }
+        }
+
+
 
 	if (D_INSPECT_LEVELGEN) {
 		dumpLevelToScreen();
@@ -3665,7 +3691,8 @@ void restoreItem(item *theItem) {
 boolean validStairLoc(short x, short y) {
 	short newX, newY, dir, neighborWallCount;
 
-	if (x < 1 || x >= DCOLS - 1 || y < 1 || y >= DROWS - 1 || pmap[x][y].layers[DUNGEON] != WALL) {
+//	if (x < 1 || x >= DCOLS - 1 || y < 1 || y >= DROWS - 1 || pmap[x][y].layers[DUNGEON] != WALL) {
+    if (x < 1 || x >= DCOLS - 1 || y < 1 || y >= DROWS - 1 || !(pmap[x][y].layers[DUNGEON] == WALL || pmap[x][y].layers[DUNGEON] == NETHER_WALL)) {
 		return false;
 	}
 
@@ -3736,6 +3763,10 @@ void prepareForStairs(short x, short y, char grid[DCOLS][DROWS]) {
 		if (pmap[newX][newY].layers[DUNGEON] == GRANITE) {
 			pmap[newX][newY].layers[DUNGEON] = WALL;
 		}
+		// gsr
+		else if (pmap[newX][newY].layers[DUNGEON] == NETHER_GRANITE) {
+			pmap[newX][newY].layers[DUNGEON] = NETHER_WALL;
+		}
         if (cellHasTerrainFlag(newX, newY, T_OBSTRUCTS_PASSABILITY)) {
             pmap[newX][newY].flags |= IMPREGNABLE;
         }
@@ -3782,6 +3813,9 @@ void initializeLevel() {
 
     if (rogue.depthLevel == DEEPEST_LEVEL) {
         pmap[downLoc[0]][downLoc[1]].layers[DUNGEON] = DUNGEON_PORTAL;
+    }
+    else if (rogue.depthLevel == AMULET_LEVEL) {
+        pmap[downLoc[0]][downLoc[1]].layers[DUNGEON] = NETHER_PORTAL;
     } else {
         pmap[downLoc[0]][downLoc[1]].layers[DUNGEON] = DOWN_STAIRS;
     }
@@ -3809,6 +3843,9 @@ void initializeLevel() {
 
 	if (rogue.depthLevel == 1) {
 		pmap[upLoc[0]][upLoc[1]].layers[DUNGEON] = DUNGEON_EXIT;
+	}
+	else if (rogue.depthLevel == NETHER_LEVEL) { // gsr
+		pmap[upLoc[0]][upLoc[1]].layers[DUNGEON] = NETHER_PORTAL;
 	} else {
 		pmap[upLoc[0]][upLoc[1]].layers[DUNGEON] = UP_STAIRS;
 	}

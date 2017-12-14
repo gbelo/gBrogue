@@ -538,25 +538,23 @@ void populateItems(short upstairsX, short upstairsY) {
 		numberOfGoldPiles = 0;
 	}*/
 
-	// Alright. Trying something new here. One lumenstone per level, with more levels. --gsr
-	// To do: Make lumenstone visible on map
-	if (rogue.depthLevel > AMULET_LEVEL && rogue.depthLevel < MOLOCH_LAIR_LEVEL - 1) {
+	// Alright. Trying something new here. One lumenstone per level, with more (but somewhat shorter) levels. --gsr
+	if (rogue.depthLevel > AMULET_LEVEL) {
         //if (rogue.depthLevel - AMULET_LEVEL - 1 >= 8) {
+        if (rogue.depthLevel < MOLOCH_LAIR_LEVEL)
             numberOfItems = 1;
-        /*} else {
-            // TO DO: play around with this --gsr
-//            const short lumenstoneDistribution[8] = {3, 3, 3, 2, 2, 2, 2, 2};
-              const short lumenstoneDistribution[8] = {3, 3, 3, 2, 2, 2, 2, 2};
-            numberOfItems = lumenstoneDistribution[rogue.depthLevel - AMULET_LEVEL - 1];
-        }*/
-		numberOfGoldPiles = 0;
+        else
+        {
+            numberOfItems = 0;
+            numberOfGoldPiles = 0;
+        }
 	}
 
 
 	 else {
         rogue.lifePotionFrequency += 34; // irrelevant now -- gsr
 		rogue.strengthPotionFrequency += 17; // irrelevant now -- gsr
-		rogue.vitalityPotionFrequency += 23; // gsr
+		rogue.vitalityPotionFrequency += 20; // gsr
 		rogue.enchantScrollFrequency += 25;
 		numberOfItems = 1;//3;
 		while (rand_percent(60)) {
@@ -6229,7 +6227,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                         // Around a certain radius, magically reveal part of the map
                         for (i=0; i<DCOLS; i++) {
                             for (j=0; j<DROWS; j++) {
-                                if (!(pmap[i][j].flags & DISCOVERED) && pmap[i][j].layers[DUNGEON] != GRANITE)
+                                if (!(pmap[i][j].flags & DISCOVERED) && (pmap[i][j].layers[DUNGEON] != GRANITE && pmap[i][j].layers[DUNGEON] != NETHER_GRANITE))
                                 {
                                     if ((x - i) * (x - i) + (y - j) * (y - j) < telepathyRadius * telepathyRadius) // gsr
                                     {
@@ -7323,7 +7321,7 @@ void readScroll(item *theItem) {
 			}
 			for (i=0; i<DCOLS; i++) {
 				for (j=0; j<DROWS; j++) {
-					if (!(pmap[i][j].flags & DISCOVERED) && pmap[i][j].layers[DUNGEON] != GRANITE) {
+					if (!(pmap[i][j].flags & DISCOVERED) && (pmap[i][j].layers[DUNGEON] != GRANITE && pmap[i][j].layers[DUNGEON] != NETHER_GRANITE)) {
                         magicMapCell(i, j);
 					}
 				}

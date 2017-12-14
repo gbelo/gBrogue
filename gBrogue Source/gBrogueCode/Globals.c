@@ -128,6 +128,11 @@ color wallBackColor;
 const color wallBackColorStart =	{45,	40,		40,		15,		0,			5,			20,		false};
 const color wallBackColorEnd =		{40,	30,		35,		0,		20,			30,			20,		false};
 
+const color netherWallForeColor =		{30,		30,		30,		20,		3,			3,			0,		false};
+color netherWallBackColor;
+const color netherWallBackColorStart =	{60,	60,		60,		2,		2,			2,			1,		false};
+const color netherWallBackColorEnd =		{45,	45,		45,		1,		1,			1,			2,		false};
+
 const color mudWallForeColor =      {55,	45,		0,		5,		5,			5,			1,		false};
 //const color mudWallForeColor =      {40,	34,		7,		0,		3,			0,			3,		false};
 const color mudWallBackColor =      {20,	12,		3,		8,		4,			3,			0,		false};
@@ -385,6 +390,8 @@ const color *dynamicColors[NUMBER_DYNAMIC_COLORS][3] = {
 	{&shallowWaterBackColor,&shallowWaterBackColorStart,&shallowWaterBackColorEnd},
 	{&floorBackColor,		&floorBackColorStart,		&floorBackColorEnd},
 	{&chasmEdgeBackColor,	&chasmEdgeBackColorStart,	&chasmEdgeBackColorEnd},
+	{&netherWallBackColor,		&netherWallBackColorStart,		&netherWallBackColorEnd},
+
 };
 
 #pragma mark Autogenerator definitions
@@ -721,6 +728,24 @@ const floorTileType tileCatalog[NUMBER_TILETYPES] = {
 	{WALL_CHAR,		&darkGray,			&wallBackColor,		0,	0,	DF_PLAIN_FIRE,	0,			0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a gritty stone wall",	"Chunks of rock have been haphazardly chipped away."},
     {OMEGA_CHAR,	&wallBackColor,      &graniteBackColor,		25,	50,	DF_EMBERS,		0,			0,              0,				NO_LIGHT,		(T_OBSTRUCTS_VISION | T_OBSTRUCTS_GAS), (TM_STAND_IN_TILE | TM_VISUALLY_DISTINCT), "a bead-adorned archway",	"you push through strings of stone beads hanging from above."},
 	{ALTAR_CHAR,	&doorForeColor,		&doorBackColor,		0, 0,	0,				0,			0,				0,				NO_LIGHT,	(T_OBSTRUCTS_SURFACE_EFFECTS), (TM_VISUALLY_DISTINCT),							"a wooden table",	"an uninviting, ill-crafted table rests here."},
+
+	// hell's decor
+    {OMEGA_CHAR,	&lavaLightColor,		&firstStairsBackColor,	30,	0,	DF_PLAIN_FIRE,	0,			DF_REPEL_CREATURES, 0,			LAVA_LIGHT,		(T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_PROMOTES_ON_STEP | TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY | TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED), "a foreboding archway",		"Bright lights of all sorts of shades of red swirl around inside this archway."},
+    {WALL_CHAR,		&netherWallForeColor,   &netherWallBackColor,			0,	0,	DF_PLAIN_FIRE,	0,			0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a magmatite wall",			"The rough magmatite wall is firm and warm to the touch."},
+    {WALL_CHAR,		&wallBackColor,			&lavaLightColor,		0,	0,	DF_PLAIN_FIRE,	0,			0,				0,				LAVA_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a rough granite wall",	"Magmatite has split open, revealing semi-solid magma."},
+
+    {OMEGA_CHAR,	&doorForeColor,			&netherWallBackColor,	25,	50,	0,		DF_SHOW_DOOR,			DF_RUBBLE,	0,				NO_LIGHT,		(T_OBSTRUCTS_VISION | T_OBSTRUCTS_GAS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP | TM_VISUALLY_DISTINCT), "a pile of rubble",	"you push your way through the loose rock."},
+//	{WALL_CHAR,		&netherWallForeColor,   &netherWallBackColor,	0,	0,	0,	0,			0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET),	"a magnetite wall",		"The rough magmatite wall is firm and warm to the touch."},
+    {WALL_CHAR,		&netherWallForeColor,   &netherWallBackColor,	0,	0,	0,	DF_SHOW_DOOR,			0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a magmatite wall",			"The rough magmatite wall is firm and warm to the touch."},
+
+
+//	{WALL_CHAR,		&wallForeColor,			&wallBackColor,			0,	50,	DF_EMBERS,		DF_SHOW_DOOR,0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET),	"a stone wall",		"The rough stone wall is firm and unyielding."},
+
+//	{WALL_CHAR,		&wallForeColor,			&wallBackColor,			0,	50,	DF_EMBERS,		DF_SHOW_DOOR,0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET),	"a stone wall",		"The rough stone wall is firm and unyielding."},
+
+
+//	{FOLIAGE_CHAR,	&deadFoliageColor,		0,						45,	80,	DF_PLAIN_FIRE,	0,			DF_SMALL_DEAD_GRASS, 0,			NO_LIGHT,		(T_OBSTRUCTS_VISION | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP), "dead foliage",    "the decaying husk of a fungal growth fills the area."},
+
 
 };
 
@@ -2115,7 +2140,7 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 		"absorbing", "Feeding",
 		{"smears", "slimes", "drenches"}},
 
-	{"Having bided his time for aeons in another plane, the cruel demon-god Moloch has vowed to obtain and the Amulet of Yendor for $HIMHERSELF by any means necessary. $HESHE will stop at nothing to use $HISHER brutish strength and powerful demonic magic to obtain the coveted artifact and ascend over all other gods.",
+	{"Having bided his time for aeons in another plane, the cruel demon-god Moloch has vowed to obtain and the Amulet of Yendor for by any means necessary. $HESHE will stop at nothing to use $HISHER brutish strength and powerful demonic magic to obtain the coveted artifact and ascend over all other gods.",
 		"consecrating", "Consecrating",
 		{"claws", "slashes", "gores", {0}},
 		{0},

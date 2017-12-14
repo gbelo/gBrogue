@@ -44,7 +44,7 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "v1.17.12a"
+#define BROGUE_VERSION_STRING "v1.17.12.13"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
@@ -140,8 +140,8 @@
 
 #define AMULET_LEVEL			26			// how deep before the amulet appears
 #define NETHER_LEVEL			    AMULET_LEVEL+1	// where "hell" starts
-//#define DEEPEST_LEVEL           40          // how deep the universe goes
-#define DEEPEST_LEVEL           53          // how deep the universe goes
+#define DEEPEST_LEVEL           26 + 25 + 2  // 26 levels, 25 levels (one lumenstone each, Moloch lair, tranquil level thing) //40          // how deep the universe goes
+
 
 #define NARROW_LEVEL            13         // special levels -- gsr
 #define BIG_LEVEL               6
@@ -149,7 +149,7 @@
 #define GUARANTEED_ADVENTURER_LEVEL 22
 
 //#define MACHINES_FACTOR         1.0         // use this to adjust machine frequency
-#define MACHINES_FACTOR         1.25         // use this to adjust machine frequency // --gsr
+#define MACHINES_FACTOR         1.2         // use this to adjust machine frequency // --gsr
 
 #define MACHINES_BUFFER_LENGTH  200
 
@@ -404,7 +404,7 @@ enum textEntryTypes {
 	TEXT_INPUT_TYPES,
 };
 
-#define NUMBER_DYNAMIC_COLORS	6
+#define NUMBER_DYNAMIC_COLORS	7//6
 
 enum tileType {
 	NOTHING = 0,
@@ -637,6 +637,12 @@ enum tileType {
     OGRE_WALL,
     OGRE_DOORWAY,
     TABLE,
+
+    NETHER_PORTAL,
+    NETHER_WALL,
+    NETHER_GRANITE,
+    NETHER_DOOR,
+    NETHER_SECRET_DOOR,
 
 	NUMBER_TILETYPES,
 };
@@ -1312,7 +1318,7 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 #define playerCanSee(x, y)					(pmap[x][y].flags & ANY_KIND_OF_VISIBLE)
 #define playerCanSeeOrSense(x, y)			((pmap[x][y].flags & ANY_KIND_OF_VISIBLE) \
 											|| (rogue.playbackOmniscience \
-                                                && (pmap[x][y].layers[DUNGEON] != GRANITE || (pmap[x][y].flags & DISCOVERED))))
+                                                && ((pmap[x][y].layers[DUNGEON] != GRANITE && (pmap[x][y].layers[DUNGEON] != NETHER_GRANITE)) || (pmap[x][y].flags & DISCOVERED))))
 
 #define CYCLE_MONSTERS_AND_PLAYERS(x)		for ((x) = &player; (x) != NULL; (x) = ((x) == &player ? monsters->nextCreature : (x)->nextCreature))
 

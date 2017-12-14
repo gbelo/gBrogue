@@ -579,7 +579,7 @@ void updateClairvoyance() {
 			dy = (player.yLoc - j);
 
 			if (dx*dx + dy*dy < clairvoyanceRadius*clairvoyanceRadius + clairvoyanceRadius
-				&& (pmap[i][j].layers[DUNGEON] != GRANITE || pmap[i][j].flags & DISCOVERED)) {
+				&& ((pmap[i][j].layers[DUNGEON] != GRANITE && pmap[i][j].layers[DUNGEON] != NETHER_GRANITE) || pmap[i][j].flags & DISCOVERED)) {
 
 				if (cFlags & DISCOVERED) {
                     discoverCell(i, j);
