@@ -1970,8 +1970,7 @@ void decrementPlayerStatus() {
     char buf[COLS];
 
     // Handle hunger.
-    //if (!player.status[STATUS_PARALYZED]) {
-    if (!player.status[STATUS_PARALYZED] && !player.status[STATUS_EATING]) { // gsr
+    if (!player.status[STATUS_PARALYZED]) {
         // No nutrition is expended while paralyzed.
         if (player.status[STATUS_NUTRITION] > 0) {
             if (!numberOfMatchingPackItems(AMULET, 0, 0, false) || rand_percent(20)) {
@@ -2016,22 +2015,6 @@ void decrementPlayerStatus() {
 
 	if (player.status[STATUS_PARALYZED] > 0 && !--player.status[STATUS_PARALYZED]) {
 		message("you can move again.", false);
-	}
-
-	// eating -- gsr
-	if (player.status[STATUS_EATING] > 0) {
-        player.status[STATUS_NUTRITION] = min(player.status[STATUS_NUTRITION] + NUTRITION_PER_TURN, STOMACH_SIZE);
-        player.status[STATUS_EATING]--;
-
-        /*if (rogue.disturbed)
-            player.status[STATUS_EATING] = 0;*/
-
-        if (player.status[STATUS_NUTRITION] >= STOMACH_SIZE || player.status[STATUS_EATING] == 0) // Finished; toss the rest if done eating
-        {
-            player.status[STATUS_EATING] = 0;
-            message("you are finished eating.", false);
-            rogue.disturbed = false;
-        }
 	}
 
 	if (player.status[STATUS_HASTED] > 0 && !--player.status[STATUS_HASTED]) {
@@ -2195,7 +2178,7 @@ void playerTurnEnded() {
 			return;
 		}
 
-		if (!player.status[STATUS_PARALYZED] || !player.status[STATUS_EATING]) {
+		if (!player.status[STATUS_PARALYZED]) {
 			rogue.playerTurnNumber++; // So recordings don't register more turns than you actually have.
 		}
         rogue.absoluteTurnNumber++;
@@ -2376,7 +2359,6 @@ void playerTurnEnded() {
 
                     if ((monst->info.flags & MONST_GETS_TURN_ON_ACTIVATION)
                         || monst->status[STATUS_PARALYZED]
-                        || monst->status[STATUS_EATING]
                         || monst->status[STATUS_ENTRANCED]
                         || (monst->bookkeepingFlags & MB_CAPTIVE)) {
 
@@ -2477,7 +2459,7 @@ void playerTurnEnded() {
 
 		displayCombatText();
 
-		if (player.status[STATUS_PARALYZED] || player.status[STATUS_EATING]) {
+		if (player.status[STATUS_PARALYZED]) {
 			if (!fastForward) {
 				fastForward = rogue.playbackFastForward || pauseBrogue(25);
 			}
@@ -2507,7 +2489,7 @@ void playerTurnEnded() {
             return;
         }
 
-	} while (player.status[STATUS_PARALYZED] || player.status[STATUS_EATING]);
+	} while (player.status[STATUS_PARALYZED]);
 
 	rogue.justRested = false;
 	updateFlavorText();

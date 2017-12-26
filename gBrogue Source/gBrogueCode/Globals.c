@@ -729,11 +729,17 @@ const floorTileType tileCatalog[NUMBER_TILETYPES] = {
     {OMEGA_CHAR,	&wallBackColor,      &graniteBackColor,		25,	50,	DF_EMBERS,		0,			0,              0,				NO_LIGHT,		(T_OBSTRUCTS_VISION | T_OBSTRUCTS_GAS), (TM_STAND_IN_TILE | TM_VISUALLY_DISTINCT), "a bead-adorned archway",	"you push through strings of stone beads hanging from above."},
 	{ALTAR_CHAR,	&doorForeColor,		&doorBackColor,		0, 0,	0,				0,			0,				0,				NO_LIGHT,	(T_OBSTRUCTS_SURFACE_EFFECTS), (TM_VISUALLY_DISTINCT),							"a wooden table",	"an uninviting, ill-crafted table rests here."},
 
-	// hell's decor
-    {OMEGA_CHAR,	&lavaLightColor,		&firstStairsBackColor,	30,	0,	DF_PLAIN_FIRE,	0,			DF_REPEL_CREATURES, 0,			LAVA_LIGHT,		(T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_PROMOTES_ON_STEP | TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY | TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED), "a foreboding archway",		"Bright lights of all sorts of shades of red swirl around inside this archway."},
-    {WALL_CHAR,		&netherWallForeColor,   &netherWallBackColor,			0,	0,	DF_PLAIN_FIRE,	0,			0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a magmatite wall",			"The rough magmatite wall is firm and warm to the touch."},
-    {WALL_CHAR,		&wallBackColor,			&lavaLightColor,		0,	0,	DF_PLAIN_FIRE,	0,			0,				0,				LAVA_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a rough granite wall",	"Magmatite has split open, revealing semi-solid magma."},
+	// corpse! -- gsr
+	{CORPSE_CHAR,	&darkRed,			0,						    20,	0,	0,	            0,			0,			    500,			0,	            0,    (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                               "a mangled corpse",	"an unrecognizable, mangled corpse rests here."},
 
+//    {CORPSE_CHAR,   &white,          0,       85,	0,	0,0,		0,				0,				NO_LIGHT,		0, 0,                                                     "a mangled corpse",		""},
+
+	// hell's decor
+    {OMEGA_CHAR,	&lavaLightColor,		&firstStairsBackColor,	30,	0,	DF_PLAIN_FIRE,	0,			DF_REPEL_CREATURES, 0,			PHOENIX_LIGHT,		(T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_PROMOTES_ON_STEP | TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY | TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED), "a foreboding archway",		"Bright lights of all sorts of shades of red swirl around inside this archway."},
+    {WALL_CHAR,		&netherWallForeColor,   &netherWallBackColor,			0,	0,	DF_PLAIN_FIRE,	0,			0,				0,		NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a magmatite wall",			"The rough magmatite wall is firm and warm to the touch."},
+    {WALL_CHAR,		&wallBackColor,			&lavaLightColor,		0,	0,	DF_PLAIN_FIRE,	0,			0,				0,				PHOENIX_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a rough granite wall",	"Magmatite has split open, revealing semi-solid magma."},
+
+    // unused for now
     {OMEGA_CHAR,	&doorForeColor,			&netherWallBackColor,	25,	50,	0,		DF_SHOW_DOOR,			DF_RUBBLE,	0,				NO_LIGHT,		(T_OBSTRUCTS_VISION | T_OBSTRUCTS_GAS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP | TM_VISUALLY_DISTINCT), "a pile of rubble",	"you push your way through the loose rock."},
 //	{WALL_CHAR,		&netherWallForeColor,   &netherWallBackColor,	0,	0,	0,	0,			0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET),	"a magnetite wall",		"The rough magmatite wall is firm and warm to the touch."},
     {WALL_CHAR,		&netherWallForeColor,   &netherWallBackColor,	0,	0,	0,	DF_SHOW_DOOR,			0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a magmatite wall",			"The rough magmatite wall is firm and warm to the touch."},
@@ -801,6 +807,7 @@ dungeonFeature dungeonFeatureCatalog[NUMBER_DUNGEON_FEATURES] = {
 	{RUBBLE,					SURFACE,	33,		25,		0},
 	{ROT_GAS,					GAS,		12,		0,		0},
 
+
 	// monster effects
 	{VOMIT,						SURFACE,	30,		10,		0},
 	{POISON_GAS,				GAS,		2000,	0,		0},
@@ -808,7 +815,12 @@ dungeonFeature dungeonFeatureCatalog[NUMBER_DUNGEON_FEATURES] = {
 	{RED_BLOOD,					SURFACE,	150,	30,		0},
 	{FLAMEDANCER_FIRE,			SURFACE,	200,	75,		0},
 
-    // mutation effects
+    // corpse! -- gsr
+//	{MONSTER_CORPSE,			SURFACE,	0,	1,		DF_DEAD_FOLIAGE},
+
+	{MONSTER_CORPSE,			DUNGEON,	0,		0,		0,	"", 0,	0,	0,		0,			0},
+
+     // mutation effects
     {GAS_EXPLOSION,				SURFACE,	350,	100,	0,	"The corpse detonates with terrifying force!", EXPLOSION_FLARE_LIGHT},
 	{LICHEN,					SURFACE,	70,		60,		0,  "Poisonous spores burst from the corpse!"},
 
@@ -1070,6 +1082,7 @@ dungeonFeature dungeonFeatureCatalog[NUMBER_DUNGEON_FEATURES] = {
     // goblin warren:
     {STENCH_SMOKE_GAS,          GAS,		50,		0,		0, "", 0, 0, 0, 0, DF_PLAIN_FIRE},
     {STENCH_SMOKE_GAS,          GAS,		50,		0,		0, "", 0, 0, 0, 0, DF_EMBERS},
+
 };
 
 #pragma mark Dungeon Profiles

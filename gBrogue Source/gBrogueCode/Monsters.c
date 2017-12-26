@@ -2156,7 +2156,6 @@ boolean creatureEligibleForSwarming(creature *monst) {
         || monst->status[STATUS_ENTRANCED]
         || monst->status[STATUS_CONFUSED]
         || monst->status[STATUS_STUCK]
-        || monst->status[STATUS_EATING]
         || monst->status[STATUS_PARALYZED]
         || monst->status[STATUS_MAGICAL_FEAR]
         || monst->status[STATUS_LIFESPAN_REMAINING] == 1
@@ -3204,8 +3203,7 @@ void monstersTurn(creature *monst) {
     applyInstantTileEffectsToCreature(monst); // Paralysis, confusion etc. take effect before the monster can move.
 
 	// if the monster is paralyzed, entranced or chained, this is where its turn ends.
-	//if (monst->status[STATUS_PARALYZED] || monst->status[STATUS_ENTRANCED] || monst->status[STATUS_EATING] || (monst->bookkeepingFlags & MB_CAPTIVE)) {
-	if (monst->status[STATUS_PARALYZED] || monst->status[STATUS_ENTRANCED] || monst->status[STATUS_EATING] || (monst->bookkeepingFlags & MB_CAPTIVE)) {
+	if (monst->status[STATUS_PARALYZED] || monst->status[STATUS_ENTRANCED] || (monst->bookkeepingFlags & MB_CAPTIVE)) {
 		monst->ticksUntilTurn = monst->movementSpeed;
 		if ((monst->bookkeepingFlags & MB_CAPTIVE) && monst->carriedItem) {
 			makeMonsterDropItem(monst);
@@ -3486,7 +3484,6 @@ boolean canPass(creature *mover, creature *blocker) {
 
 	if (blocker->status[STATUS_CONFUSED]
 		|| blocker->status[STATUS_STUCK]
-        || blocker->status[STATUS_EATING]
 		|| blocker->status[STATUS_PARALYZED]
 		|| blocker->status[STATUS_ENTRANCED]
 		|| mover->status[STATUS_ENTRANCED]) {

@@ -483,15 +483,6 @@ void initializeRogue(unsigned long seed) {
 		identify(theItem);
 		theItem = addItemToPack(theItem);
 
-		theItem = generateItem(ARMOR, LEATHER_ARMOR);
-		theItem->enchant1 = 1;
-		theItem->enchant2 = A_IMMUNITY;
-		theItem->flags &= ~(ITEM_CURSED | ITEM_RUNIC_HINTED);
-		theItem->flags |= (ITEM_PROTECTED | ITEM_RUNIC);
-        theItem->vorpalEnemy = chooseVorpalEnemy();
-        identify(theItem);
-		theItem = addItemToPack(theItem);
-
 /*
 		theItem = generateItem(STAFF, STAFF_FIRE);
 		theItem->enchant1 = 10;
@@ -671,7 +662,6 @@ void startLevel(short oldLevelNumber, short stairDirection) {
 					&& !(cellHasTerrainFlag(x, y, T_OBSTRUCTS_PASSABILITY))
 					&& !monst->status[STATUS_ENTRANCED]
 					&& !monst->status[STATUS_PARALYZED]
-					&& !monst->status[STATUS_EATING]
 					&& (mapToStairs[monst->xLoc][monst->yLoc] < 30000 || monst->creatureState == MONSTER_ALLY || monst == rogue.yendorWarden || monst == rogue.moloch)) {
 
 					monst->status[STATUS_ENTERS_LEVEL_IN] = clamp(mapToStairs[monst->xLoc][monst->yLoc] * monst->movementSpeed / 100 + 1, 1, 150);

@@ -123,7 +123,6 @@ boolean attackHit(creature *attacker, creature *defender) {
 	// automatically hit if the monster is sleeping or captive or stuck in a web
 	if (defender->status[STATUS_STUCK]
 		|| defender->status[STATUS_PARALYZED]
-		|| defender->status[STATUS_EATING]
 		|| (defender->bookkeepingFlags & MB_CAPTIVE)) {
 
 		return true;
@@ -1281,6 +1280,7 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
 		}
 
 		if (inflictDamage(attacker, defender, damage, &red, false)) { // if the attack killed the defender
+
 			if (defenderWasAsleep || sneakAttack || defenderWasParalyzed || lungeAttack) {
 				sprintf(buf, "%s %s %s%s", attackerName,
 						((defender->info.flags & MONST_INANIMATE) ? "destroyed" : "dispatched"),
@@ -1310,6 +1310,8 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
 
                 rogue.featRecord[FEAT_DRAGONSLAYER] = true;
             }
+
+
 		} else { // if the defender survived
 			if (!rogue.blockCombatText && (canSeeMonster(attacker) || canSeeMonster(defender))) {
 				attackVerb(verb, attacker, max(damage - attacker->info.damage.lowerBound * monsterDamageAdjustmentAmount(attacker), 0) * 100
@@ -1509,6 +1511,8 @@ boolean anyoneWantABite(creature *decedent) {
 	for (ally = monsters->nextCreature; ally != NULL; ally = ally->nextCreature) {
 		if (canAbsorb(ally, ourBolts, decedent, grid)) { // This populates ourBolts if it returns true.
 			candidates++;
+            // corpse for allies to feast upon -- gsr
+            spawnDungeonFeature(decedent->xLoc, decedent->yLoc, &dungeonFeatureCatalog[DF_MONSTER_CORPSE], true, false);
 		}
 	}
 	if (candidates > 0) {
@@ -1937,8 +1941,7 @@ short monsterPower(const creature *theMonst) {
 			}
 
 			while (ticksTillTurn[k] <= 0) {
-				//if (k == 1 || !statuses[STATUS_PARALYZED]) {
-				if (k == 1 || !(statuses[STATUS_PARALYZED] && statuses[STATUS_EATING])) {
+				if (k == 1 || !statuses[STATUS_PARALYZED]) {
 					damageDealt[k] += damagePerHit[k] * hitChance[k];
 				}
 				ticksTillTurn[k] += k ? 100 : speed;

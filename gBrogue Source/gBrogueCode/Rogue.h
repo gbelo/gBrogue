@@ -140,7 +140,10 @@
 
 #define AMULET_LEVEL			26			// how deep before the amulet appears
 #define NETHER_LEVEL			    AMULET_LEVEL+1	// where "hell" starts
-#define DEEPEST_LEVEL           26 + 25 + 2  // 26 levels, 25 levels (one lumenstone each, Moloch lair, tranquil level thing) //40          // how deep the universe goes
+
+#define GEMS_PER_LEVEL 1
+
+#define DEEPEST_LEVEL           26 + 25/GEMS_PER_LEVEL + 2  // 26 levels, 25 levels (one lumenstone each, Moloch lair, tranquil level thing) //40          // how deep the universe goes
 
 
 #define NARROW_LEVEL            13         // special levels -- gsr
@@ -209,6 +212,8 @@
 #define TRAMPLED_FOLIAGE_CHAR	'"'		// 0x2034 // 0x2037
 
 #define PLAYER_CHAR		'@'
+#define CORPSE_CHAR		'%'
+
 
 #define AMULET_CHAR		0x2640
 #define FOOD_CHAR		';'
@@ -637,6 +642,8 @@ enum tileType {
     OGRE_WALL,
     OGRE_DOORWAY,
     TABLE,
+
+    MONSTER_CORPSE,
 
     NETHER_PORTAL,
     NETHER_WALL,
@@ -1339,7 +1346,7 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 #define staffPoison(enchant)				((int) (5 * pow(1.3, (double) (enchant) - 2) + FLOAT_FUDGE))
 #define staffBlinkDistance(enchant)			((int) ((enchant) * 2 + 2 + FLOAT_FUDGE))
 #define staffForceDistance(enchant)			((int) max(((enchant + 1) * 2 + FLOAT_FUDGE), 1))
-#define staffTunnelDistance(enchant)		((int) ((enchant) * 1 + 2 + FLOAT_FUDGE))
+#define staffTunnelDistance(enchant)		((int) ((enchant) * 1 + 1 + FLOAT_FUDGE))
 #define staffHasteDuration(enchant)			((int) (2 + (enchant) * 4 + FLOAT_FUDGE))
 #define staffBladeCount(enchant)			((int) ((enchant) * 3 / 2 + FLOAT_FUDGE))
 #define staffDiscordDuration(enchant)		((int) ((enchant) * 4 + FLOAT_FUDGE))
@@ -1566,6 +1573,9 @@ enum dungeonFeatureTypes {
 	DF_BLOAT_EXPLOSION,
 	DF_BLOOD_EXPLOSION,
 	DF_FLAMEDANCER_CORONA,
+
+    // corpse! -- gsr
+    DF_MONSTER_CORPSE,
 
 	DF_MUTATION_EXPLOSION,
     DF_MUTATION_LICHEN,
@@ -2055,7 +2065,6 @@ enum statusEffects {
 	STATUS_SHIELDED,
     STATUS_INVISIBLE,
     STATUS_AGGRAVATING,
-    STATUS_EATING,
     STATUS_UNBREATHING,
 	NUMBER_OF_STATUS_EFFECTS,
 };

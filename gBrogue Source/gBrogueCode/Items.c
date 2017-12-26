@@ -538,7 +538,7 @@ void populateItems(short upstairsX, short upstairsY) {
 		numberOfGoldPiles = 0;
 	}*/
 
-	// Alright. Trying something new here. One lumenstone per level, with more (but somewhat shorter) levels. --gsr
+	// Alright. Trying something new here. One lumenstone per level, with more (but somewhat shorter) levels. One additional item per depth, too. --gsr
 	if (rogue.depthLevel > AMULET_LEVEL) {
         //if (rogue.depthLevel - AMULET_LEVEL - 1 >= 8) {
         if (rogue.depthLevel < MOLOCH_LAIR_LEVEL)
@@ -565,8 +565,7 @@ void populateItems(short upstairsX, short upstairsY) {
 		}
 		if (rogue.depthLevel <= 2) {
 			numberOfItems += 2;//3; // extra items to kickstart your career as a rogue
-		} else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL - 1)
-			numberOfItems += rand_range(4, 6); // give the guy a fighting chance! -- gsr
+		}
 
         // rewards on special floors! -- gsr
 		else if (rogue.depthLevel == BIG_LEVEL)
@@ -673,7 +672,7 @@ void populateItems(short upstairsX, short upstairsY) {
 				numberOfItems++; // Food isn't at the expense of lumenstones.
 			}
 		} else if (rogue.depthLevel > AMULET_LEVEL) {
-			theCategory = GEM;
+                theCategory = GEM;
 		}/* else if (rogue.lifePotionsSpawned * 4 + 3 < rogue.depthLevel + randomDepthOffset) {
             theCategory = POTION;
             theKind = POTION_LIFE;
@@ -1621,7 +1620,7 @@ void itemName(item *theItem, char *root, boolean includeDetails, boolean include
 //			sprintf(root, "%slumenstone%s%s", yellowEscapeSequence, pluralization, baseEscapeSequence);
 			if (includeDetails && theItem->originDepth > 0 && theItem->originDepth != rogue.depthLevel)// && theItem->originDepth > 0) {
             {
-                sprintf(root, "%slumenstone%s%s from depth %i", yellowEscapeSequence, pluralization, baseEscapeSequence,
+                sprintf(root, "%slumenstone%s%s from depth %i", yellowEscapeSequence, pluralization, grayEscapeSequence,
 						theItem->originDepth);
 			} else {
                 sprintf(root, "%slumenstone%s%s", yellowEscapeSequence, pluralization, baseEscapeSequence);
@@ -6851,7 +6850,6 @@ void apply(item *theItem, boolean recordCommands) {
 				}
 			}
 			// kinda redid eating -- gsr
-//            player.status[STATUS_EATING] = player.maxStatus[STATUS_EATING] = max(player.status[STATUS_EATING], theItem->kind == FOOD ? TURNS_TO_EAT_FOOD : TURNS_TO_EAT_MANGO);
 
 			player.status[STATUS_NUTRITION] = min((theItem->kind == RATION ? NUTRITION_FOOD : NUTRITION_MANGO) + player.status[STATUS_NUTRITION], STOMACH_SIZE);
 			if (theItem->kind == RATION) {
