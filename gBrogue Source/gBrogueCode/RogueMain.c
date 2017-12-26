@@ -130,7 +130,8 @@ void benchmark() {
 
 void welcome() {
     char buf[DCOLS*3], buf2[DCOLS*3];
-	message("Hello and welcome, adventurer, to the Dungeons of Doom!", false);
+
+    message("Hello and welcome, adventurer, to the Dungeons of Doom!", false);
     strcpy(buf, "Retrieve the ");
     encodeMessageColor(buf, strlen(buf), &itemMessageColor);
     strcat(buf, "Amulet of Yendor");
@@ -142,6 +143,16 @@ void welcome() {
         messageWithColor("Press <?> for help at any time.", &backgroundMessageColor, false);
     }
 	flavorMessage("The doors to the dungeon slam shut behind you.");
+
+    // special message to the wizards out there
+    if (rogue.wizardMode)
+    {
+        strcpy(buf, "Hello and welcome, ");
+        encodeMessageColor(buf, strlen(buf), &blue);
+        strcat(buf, "wizard");
+        encodeMessageColor(buf, strlen(buf), &white);
+        sprintf(buf2, ", to the Dungeons of Doom!", AMULET_LEVEL);
+    }
 }
 
 void generateFontFiles() {
@@ -400,6 +411,7 @@ void initializeRogue(unsigned long seed) {
 	rogue.automationActive = false;
 	rogue.justRested = false;
 	rogue.easyMode = false;
+	rogue.wizardMode = false;
 	rogue.inWater = false;
 	rogue.creaturesWillFlashThisTurn = false;
 	rogue.updatedSafetyMapThisTurn = false;
@@ -1142,7 +1154,7 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 
     rogue.creaturesWillFlashThisTurn = false;
 
-	if (D_IMMORTAL && !rogue.quit) {
+	if ((D_IMMORTAL || rogue.wizardMode) && !rogue.quit) {
 		message("...but then you get better.", false);
 		player.currentHP = player.info.maxHP;
 		if (player.status[STATUS_NUTRITION] < 10) {
@@ -1172,7 +1184,8 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 	}
     theEntry.score = rogue.gold;
 	if (rogue.easyMode) {
-		theEntry.score /= 10;
+        theEntry.score = 0;
+//		theEntry.score /= 10;
 	}
     strcpy(highScoreText, buf);
     if (theEntry.score > 0) {
@@ -1348,7 +1361,7 @@ void victory(boolean superVictory, boolean hasAmulet) {
 		theEntry.score /= 10;
 	}
 
-	if (!DEBUGGING && !rogue.playbackMode) {
+	if (!DEBUGGING && !rogue.playbackMode && !rogue.wizardMode) { // Wizard mode gives you no high score -- gsr
 		qualified = saveHighScore(theEntry);
 	} else {
 		qualified = false;
@@ -1367,7 +1380,7 @@ void victory(boolean superVictory, boolean hasAmulet) {
 }
 
 void enableEasyMode() {
-	if (rogue.easyMode) {
+	if (rogue.easyMode || rogue.wizardMode) {
 		message("Alas, all hope of salvation is lost. You shed scalding tears at your plight.", false);
 		return;
 	}
@@ -1379,9 +1392,14 @@ void enableEasyMode() {
 		rogue.easyMode = true;
 		refreshDungeonCell(player.xLoc, player.yLoc);
 		refreshSideBar(-1, -1, false);
+/*		message("Wracked by spasms, your body contorts into an ALL-POWERFUL THETA!!!", false);
+		message("You have a feeling that you will take 20% as much damage from now on.", false);
+		message("But great power comes at a great price -- your legacy will never be known.", false);*/
+
 		message("Wracked by spasms, your body contorts into an ALL-POWERFUL AMPERSAND!!!", false);
 		message("You have a feeling that you will take 20% as much damage from now on.", false);
-		message("But great power comes at a great price -- specifically, a 90% income tax rate.", false);
+		message("But great power comes at a great price -- your legacy will never be known.", false);
+
 	} else {
 		message("The evil dissipates, hissing, from the air around you.", false);
 	}

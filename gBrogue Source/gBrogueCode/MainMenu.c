@@ -672,7 +672,10 @@ void mainBrogueJunction() {
 	char path[BROGUE_FILENAME_MAX], buf[100], seedDefault[100];
 	char maxSeed[20];
 	short i, j, k;
+	boolean enabledWizardMode = false;
 	boolean seedTooBig;
+
+	rogue.wizardMode = false;
 
 	// clear screen and display buffer
 	for (i=0; i<COLS; i++) {
@@ -740,11 +743,19 @@ void mainBrogueJunction() {
 									}
 								}
 							}
+							// Wizard mode -- alphanumeric for "wizardmode" -- gse
+                            if (strstr(buf, "9495736633"))
+                            {
+                                enabledWizardMode = true;
+                                rogue.nextGameSeed = 0;
+							}
+
 							if (seedTooBig) {
 								rogue.nextGameSeed = ULONG_MAX;
 							} else {
 								sscanf(buf, "%lu", &rogue.nextGameSeed);
 							}
+
 						} else {
 							rogue.nextGame = NG_NOTHING;
 							break; // Don't start a new game after all.
@@ -755,7 +766,16 @@ void mainBrogueJunction() {
 				}
 
 				rogue.nextGame = NG_NOTHING;
+				rogue.wizardMode = false;
 				initializeRogue(rogue.nextGameSeed);
+                if (enabledWizardMode)
+                {
+                    rogue.wizardMode = true;
+                    player.info.displayChar = THETA_CHAR;
+                }
+                else
+                    rogue.wizardMode = false;
+
 				startLevel(rogue.depthLevel, 1); // descending into level 1
 
 				mainInputLoop();

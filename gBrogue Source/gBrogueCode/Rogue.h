@@ -44,11 +44,11 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "v1.17.12.13"
+#define BROGUE_VERSION_STRING "v1.17.12.26"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
-#define DEBUGGING						1
+#define DEBUGGING						0
 
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.
@@ -2381,6 +2381,7 @@ typedef struct playerCharacter {
 	boolean updatedMapToSafeTerrainThisTurn;// so it's updated no more than once per turn
 	boolean updatedMapToShoreThisTurn;		// so it's updated no more than once per turn
 	boolean easyMode;					// enables easy mode
+	boolean wizardMode;                 // enables wizard mode -- gsr
 	boolean inWater;					// helps with the blue water filter effect
 	boolean heardCombatThisTurn;		// so you get only one "you hear combat in the distance" per turn
 	boolean creaturesWillFlashThisTurn;	// there are creatures out there that need to flash before the turn ends

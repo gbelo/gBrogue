@@ -2585,11 +2585,11 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
         // -------------------------------------
         // Additional debug commands -- gsr
         case DEBUG_GSR_WISH:
-            if (DEBUGGING)
+            if (DEBUGGING || rogue.wizardMode)
                 debugWish(buf);
             break;
         case DEBUG_GSR_WISH_AGAIN:
-            if (DEBUGGING)
+            if (DEBUGGING || rogue.wizardMode)
                 debugWish(rogue.lastWishText);
             break;
 		default:
