@@ -548,7 +548,7 @@ boolean forceWeaponHit(creature *attacker, creature *defender, short distance) {
         && !cellHasTerrainFlag(newLoc[0], newLoc[1], T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION)
         && !(pmap[newLoc[0]][newLoc[1]].flags & (HAS_MONSTER | HAS_PLAYER))) {
 //        sprintf(buf, "you launch %s backward with the force of your blow", monstName);
-        sprintf(buf, "%s is launched backward upon impact", monstName); // don't discriminate against xxx of force -- gsr
+        sprintf(buf, "%s %s launched backward upon impact", monstName, defender == &player ? "are" : "is"); // don't discriminate against xxx of force -- gsr
         buf[DCOLS] = '\0';
         combatMessage(buf, messageColorFromVictim(defender));
         autoID = true;
@@ -590,7 +590,7 @@ boolean forceWeaponHit(creature *attacker, creature *defender, short distance) {
             return true;
 
 
-        if (!(defender->info.flags & (MONST_IMMUNE_TO_WEAPONS | MONST_INVULNERABLE))
+        if (defender != &player && !(defender->info.flags & (MONST_IMMUNE_TO_WEAPONS | MONST_INVULNERABLE))
             && inflictDamage(NULL, defender, forceDamage, &white, false)) {
 
             if (canDirectlySeeMonster(defender)) {
@@ -605,9 +605,10 @@ boolean forceWeaponHit(creature *attacker, creature *defender, short distance) {
             }
         } else {
             if (canDirectlySeeMonster(defender)) {
-                sprintf(buf, "%s slams against %s",
+                sprintf(buf, "%s slam%s against %s", monstName, defender == &player ? "" : "s", buf2);
+/*                sprintf(buf, "%s slams against %s",
                         monstName,
-                        buf2);
+                        buf2);*/
                 buf[DCOLS] = '\0';
                 combatMessage(buf, messageColorFromVictim(defender));
                 autoID = true;
