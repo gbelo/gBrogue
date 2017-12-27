@@ -530,7 +530,7 @@ short runicWeaponChance(item *theItem, boolean customEnchantLevel, float enchant
 }
 
 //boolean forceWeaponHit(creature *defender, item *theItem) {
-boolean forceWeaponHit(creature *defender, short distance) {//item *theItem) {
+boolean forceWeaponHit(creature *attacker, creature *defender, short distance) {//item *theItem) {
 
 	short oldLoc[2], newLoc[2], forceDamage;
 	char buf[DCOLS*3], buf2[COLS], monstName[DCOLS];
@@ -542,8 +542,8 @@ boolean forceWeaponHit(creature *defender, short distance) {//item *theItem) {
 
     oldLoc[0] = defender->xLoc;
     oldLoc[1] = defender->yLoc;
-    newLoc[0] = defender->xLoc + clamp(defender->xLoc - player.xLoc, -DCOLS, DCOLS);
-    newLoc[1] = defender->yLoc + clamp(defender->yLoc - player.yLoc, -DROWS, DROWS);
+    newLoc[0] = defender->xLoc + clamp(defender->xLoc - attacker->xLoc, -DCOLS, DCOLS);
+    newLoc[1] = defender->yLoc + clamp(defender->yLoc - attacker->yLoc, -DROWS, DROWS);
     if (canDirectlySeeMonster(defender)
         && !cellHasTerrainFlag(newLoc[0], newLoc[1], T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION)
         && !(pmap[newLoc[0]][newLoc[1]].flags & (HAS_MONSTER | HAS_PLAYER))) {
@@ -857,7 +857,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
 				}
 				break;*/
 			case W_FORCE:
-                autoID = forceWeaponHit(defender, staffForceDistance(theItem->enchant1));
+                autoID = forceWeaponHit(&player, defender, staffForceDistance(theItem->enchant1));
 				break;
 			case W_MERCY:
 				heal(defender, 50, false);
@@ -1074,7 +1074,7 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
         case A_FORCE:
             if (rand_percent(armorReprisalPercent(enchant)))
             {
-                runicDiscovered = forceWeaponHit(attacker, staffForceDistance(rogue.armor->enchant1));
+                runicDiscovered = forceWeaponHit(&player, attacker, staffForceDistance(rogue.armor->enchant1));
                 if (runicDiscovered || runicKnown)
                 {
                     sprintf(returnString, "your %s pulses and %s is pushed away!", armorName, attackerName);

@@ -4731,7 +4731,7 @@ boolean updateBolt(bolt *theBolt, creature *caster, short x, short y,
                         *autoID = true;
                     }
                     flash(&white, 2, monst->xLoc, monst->yLoc);
-                    forceWeaponHit(monst, staffForceDistance(theBolt->magnitude));
+                    forceWeaponHit(caster, monst, staffForceDistance(theBolt->magnitude));
                 }
                 break;
             default:
