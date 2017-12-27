@@ -3932,7 +3932,7 @@ void printGameInfoScreen()
 
 	// Feats
         y = 2;
-        printString("-- Available feats --", mapToWindowX(2), y, &itemMessageColor, &black, dbuf);
+        printString("-- Eligible feats --", mapToWindowX(2), y, &itemMessageColor, &black, dbuf);
         y+=2;
         for (i = 0; i < FEAT_COUNT; i++) {
             //printf("\nConduct %i (%s) is %s.", i, featTable[i].name, rogue.featRecord[i] ? "true" : "false");

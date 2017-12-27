@@ -1,9 +1,9 @@
-# gBrogue (v1.17.10.24)
+# gBrogue (v1.17.12.26)
 gBrogue: A community-driven fork of Brogue
 
 gBrogue is based on the roguelike game Brogue. It's mostly designed to build upon Brogue's particular advantages over other roguelikes. Brogue provides you with a lot of information, but not overwhelmingly so; is easy to navigate, use, and understand; and presents more varied and interesting level designs than many other roguelikes. This modest fork strives to crank these to 11 while also adding some twists and turns, with increments guided by community feedback.
 
-It's currently based upon Brogue v1.7.4. gBrogue v1.17.10.24 marks the first version with a real "v1.0" tag, meaning that the design philosophy and overall approach is sound enough to build upon.
+It's currently based upon Brogue v1.7.4. gBrogue v1.17.10.24 marked the first version with a real "v1.0" tag, meaning that the design philosophy and overall approach is sound enough to build upon.
 
 ___
 
