@@ -462,6 +462,7 @@ void initializeRogue(unsigned long seed) {
 	//theItem = generateItem(ARMOR, LEATHER_ARMOR);
 	theItem = generateItem(ARMOR, CLOAK);
 	theItem->enchant1 = 0;
+	theItem->enchant2 = 0;
 	theItem->flags &= ~(ITEM_CURSED | ITEM_RUNIC);
 	identify(theItem);
 	theItem = addItemToPack(theItem);

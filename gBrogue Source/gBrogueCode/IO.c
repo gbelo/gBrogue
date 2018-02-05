@@ -4318,7 +4318,6 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
 		"Shielded",
         "Invisible",
         "", // STATUS_AGGRAVATING
-        "Eating", // gsr
         "Respirated",
 	};
 

@@ -81,7 +81,7 @@ unsigned long pickItemCategory(unsigned long theCategory) {
 // Probability of different item categories
 //	short probabilities[13] =						{50,	42,		52,		3,		3,		10,		8,		2,		3,      2,        0,		0,		0};
 //	short probabilities[13] =						{50,	42,		52,		3,		0,		7,		8,		2,		3,      3,        0,		0,		0};
-	short probabilities[14] =						{50,	55,		65,		25,              2,		0,		6,		6,		3,		2,      2,        0,		0,		0};
+	short probabilities[14] =						{50,	55,		65,		25,              2,		0,		3,		3,		3,		2,      2,        0,		0,		0};
 	unsigned short correspondingCategories[14] =	{GOLD,	SCROLL,	POTION,	THROWING_WEAPON, STAFF,	WAND,	WEAPON,	ARMOR,	FOOD,	RING,   CHARM,    AMULET,	GEM,	KEY};
 
 	sum = 0;
@@ -554,10 +554,10 @@ void populateItems(short upstairsX, short upstairsY) {
 	 else {
         rogue.lifePotionFrequency += 34; // irrelevant now -- gsr
 		rogue.strengthPotionFrequency += 17; // irrelevant now -- gsr
-		rogue.vitalityPotionFrequency += 20; // gsr
+		rogue.vitalityPotionFrequency += 15; // changed 2018.02.05 -- gsr //20; // gsr
 		rogue.enchantScrollFrequency += 25;
 		numberOfItems = 1;//3;
-		while (rand_percent(60)) {
+		while (rand_percent(45)) {//60)) {
 			numberOfItems++;
 		}
 		if (rogue.depthLevel == 1) {
@@ -2484,8 +2484,8 @@ void itemDetails(char *buf, item *theItem) {
                             case A_RESPIRATION:
                                 strcpy(buf2, "When worn, it will maintain a pocket of fresh air around you, rendering you immune to the effects of steam and all toxic gases. ");
                                 break;
-                            case A_DAMPENING:
-                                strcpy(buf2, "When worn, it will safely absorb the concussive impact of any explosions (though you may still be burned). ");
+                            case A_FREE_ACTION://A_DAMPENING:
+                                strcpy(buf2, "When worn, it will nullify the effects of paralysis and slowing. ");
                                 break;
 							case A_BURDEN:
 								strcpy(buf2, "10% of the time it absorbs a blow, it will permanently become heavier. ");
@@ -3469,7 +3469,7 @@ void equip(item *theItem) {
 		equipItem(theItem, false);
 
 		itemName(theItem, buf2, true, true, NULL);
-		sprintf(buf1, "Now %s %s.", (theItem->category & WEAPON ? "wielding" : "wearing"), buf2);
+		sprintf(buf1, "Now %s %s.", (theItem->category & WEAPON ? "wielding" : "putting on"), buf2), //"wearing"), buf2); -- donning isn't immediate anymore -- gsr
 		confirmMessages();
 		messageWithColor(buf1, &itemMessageColor, false);
 
@@ -3977,6 +3977,16 @@ boolean polymorph(creature *monst) {
 }
 
 void slow(creature *monst, short turns) {
+    // Free action
+    if (monst == &player
+                && rogue.armor
+                && rogue.armor->enchant2 == A_FREE_ACTION
+                && !(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED) && !player.status[STATUS_DONNING])
+                {
+                    message("you feel your muscles relax momentarily.", false);
+                    autoIdentify(rogue.armor);
+                }
+
 	if (!(monst->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE))) {
 		monst->status[STATUS_SLOWED] = monst->maxStatus[STATUS_SLOWED] = turns;
 		monst->status[STATUS_HASTED] = 0;
@@ -4288,14 +4298,14 @@ boolean projectileReflects(creature *attacker, creature *defender) {
     float netReflectionLevel;
 
 	// immunity armor always reflects its vorpal enemy's projectiles
-	if (defender == &player && rogue.armor && (rogue.armor->flags & ITEM_RUNIC) && rogue.armor->enchant2 == A_IMMUNITY
+	if (defender == &player && rogue.armor && (rogue.armor->flags & ITEM_RUNIC) && rogue.armor->enchant2 == A_IMMUNITY && !player.status[STATUS_DONNING]
 		&& monsterIsInClass(attacker, rogue.armor->vorpalEnemy)
         && monstersAreEnemies(attacker, defender)) {
 
 		return true;
 	}
 
-	if (defender == &player && rogue.armor && (rogue.armor->flags & ITEM_RUNIC) && rogue.armor->enchant2 == A_REFLECTION) {
+	if (defender == &player && rogue.armor && (rogue.armor->flags & ITEM_RUNIC) && rogue.armor->enchant2 == A_REFLECTION && !player.status[STATUS_DONNING]) {
 		netReflectionLevel = netEnchant(rogue.armor);
 	} else {
 		netReflectionLevel = 0;
@@ -4979,7 +4989,7 @@ boolean zap(short originLoc[2], short targetLoc[2], bolt *theBolt, boolean hideD
 			}
             if (monst == &player
                 && rogue.armor
-                && rogue.armor->enchant2 == A_REFLECTION
+                && rogue.armor->enchant2 == A_REFLECTION && !player.status[STATUS_DONNING]
                 && !(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED)) {
 
                 autoIdentify(rogue.armor);
@@ -7505,7 +7515,7 @@ void drinkPotion(item *theItem) {
 			break;
 		case POTION_PARALYSIS:
 			spawnDungeonFeature(player.xLoc, player.yLoc, &dungeonFeatureCatalog[DF_PARALYSIS_GAS_CLOUD_POTION], true, false);
-			message("your muscles stiffen as a cloud of pink gas bursts from the open flask!", false);
+			message("A cloud of irritating pink gas bursts from the open flask!", false);
 			break;
         case POTION_POISON_GAS:
             message("caustic gas billows out of the open flask!", false);
@@ -8011,7 +8021,7 @@ void equipItem(item *theItem, boolean force) {
 		recalculateEquipmentBonuses();
 	} else if (theItem->category & ARMOR) {
         if (!force) {
-            player.status[STATUS_DONNING] = player.maxStatus[STATUS_DONNING] = theItem->armor / 10;
+            player.status[STATUS_DONNING] = player.maxStatus[STATUS_DONNING] = 8;// -- Let's up the ante a bit. --gsr // / 10;
         }
 		rogue.armor = theItem;
 		recalculateEquipmentBonuses();

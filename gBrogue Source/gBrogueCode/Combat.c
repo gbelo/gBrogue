@@ -343,7 +343,7 @@ boolean playerImmuneToMonster(creature *monst) {
 	if (monst != &player
 		&& rogue.armor
 		&& (rogue.armor->flags & ITEM_RUNIC)
-		&& (rogue.armor->enchant2 == A_IMMUNITY)
+		&& (rogue.armor->enchant2 == A_IMMUNITY && !player.status[STATUS_DONNING])
 		&& monsterIsInClass(monst, rogue.armor->vorpalEnemy)) {
 
 		return true;
@@ -590,15 +590,21 @@ boolean forceWeaponHit(creature *attacker, creature *defender, short distance) {
             return true;
 
 
-        if (defender != &player && !(defender->info.flags & (MONST_IMMUNE_TO_WEAPONS | MONST_INVULNERABLE))
+        if (!(defender->info.flags & (MONST_IMMUNE_TO_WEAPONS | MONST_INVULNERABLE))
             && inflictDamage(NULL, defender, forceDamage, &white, false)) {
 
             if (canDirectlySeeMonster(defender)) {
                 knowFirstMonsterDied = true;
+
                 sprintf(buf, "%s %s on impact with %s",
                         monstName,
-                        (defender->info.flags & MONST_INANIMATE) ? "is destroyed" : "dies",
+                        (defender->info.flags & MONST_INANIMATE) ? "is destroyed" : (defender == &player ? "collapse" : "dies"),
                         buf2);
+
+/*                sprintf(buf, "%s %s on impact with %s",
+                        monstName,
+                        (defender->info.flags & MONST_INANIMATE) ? "is destroyed" : "dies",
+                        buf2);*/
                 buf[DCOLS] = '\0';
                 combatMessage(buf, messageColorFromVictim(defender));
                 autoID = true;
@@ -1332,14 +1338,14 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
 			}
 			if (armorRunicString[0]) {
 				message(armorRunicString, false);
-				if (rogue.armor && (rogue.armor->flags & ITEM_RUNIC) && rogue.armor->enchant2 == A_BURDEN) {
+				if (rogue.armor && (rogue.armor->flags & ITEM_RUNIC) && rogue.armor->enchant2 == A_BURDEN && !player.status[STATUS_DONNING]) {
 					strengthCheck(rogue.armor);
 				}
 			}
 		}
 
         // moved from above -- gsr
-		if (defender == &player && rogue.armor && (rogue.armor->flags & ITEM_RUNIC)) {
+		if (defender == &player && rogue.armor && (rogue.armor->flags & ITEM_RUNIC) && !player.status[STATUS_DONNING]) {
 			applyArmorRunicEffect(armorRunicString, attacker, &damage, true);
 		}
 

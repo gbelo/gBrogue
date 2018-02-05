@@ -48,7 +48,7 @@
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
-#define DEBUGGING						0
+#define DEBUGGING						1
 
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.
@@ -865,7 +865,7 @@ enum armorEnchants {
 	A_IMMUNITY,
 	A_REFLECTION,
     A_RESPIRATION,
-    A_DAMPENING,
+    A_FREE_ACTION,//A_DAMPENING,
 
 	A_FORCE,
 	A_SHADOWS,
@@ -1071,6 +1071,7 @@ enum monsterTypes {
 	MK_TENTACLE_HORROR,
 	MK_GOLEM,
 	MK_DRAGON,
+	MK_FORCE_TOTEM,
 
 	MK_GOBLIN_CHIEFTAN,
 	MK_BLACK_JELLY,
@@ -1355,7 +1356,7 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 
 #define ringWisdomMultiplier(enchant)       (int) (10 * pow(1.3, min(27, (enchant))) + FLOAT_FUDGE)
 #define ringPropulsionBonus(enchant)        ((int) (4 * (enchant)))
-#define ringSpeedBonus(enchant)             ((int) (1 * (enchant)))
+#define ringSpeedBonus(enchant)             ((int) (5 * (enchant)))
 #define ringStealthBonus(enchant)           ((int) ((enchant)))
 
 #define charmHealing(enchant)               ((int) (clamp(20 * (enchant), 0, 100) + FLOAT_FUDGE))

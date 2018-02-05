@@ -737,7 +737,7 @@ const floorTileType tileCatalog[NUMBER_TILETYPES] = {
 	// hell's decor
     {OMEGA_CHAR,	&lavaLightColor,		&firstStairsBackColor,	30,	0,	DF_PLAIN_FIRE,	0,			DF_REPEL_CREATURES, 0,			PHOENIX_LIGHT,		(T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_PROMOTES_ON_STEP | TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY | TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED), "a foreboding archway",		"Bright lights of all sorts of shades of red swirl around inside this archway."},
     {WALL_CHAR,		&netherWallForeColor,   &netherWallBackColor,			0,	0,	DF_PLAIN_FIRE,	0,			0,				0,		NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a magmatite wall",			"The rough magmatite wall is firm and warm to the touch."},
-    {WALL_CHAR,		&wallBackColor,			&lavaLightColor,		0,	0,	DF_PLAIN_FIRE,	0,			0,				0,				PHOENIX_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a rough granite wall",	"Magmatite has split open, revealing semi-solid magma."},
+    {WALL_CHAR,		&wallBackColor,			&lavaLightColor,		0,	0,	DF_PLAIN_FIRE,	0,			0,				0,				PHOENIX_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a rough magma wall",	"Magmatite has split open, revealing semi-solid magma."},
 
     // unused for now
     {OMEGA_CHAR,	&doorForeColor,			&netherWallBackColor,	25,	50,	0,		DF_SHOW_DOOR,			DF_RUBBLE,	0,				NO_LIGHT,		(T_OBSTRUCTS_VISION | T_OBSTRUCTS_GAS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP | TM_VISUALLY_DISTINCT), "a pile of rubble",	"you push your way through the loose rock."},
@@ -1669,7 +1669,7 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 	{0,	"you",	PLAYER_CHAR,	&playerInLightColor,30,	0,		100,	{1, 2, 1},		20,	100,	100,	DF_RED_BLOOD,	0,		0,		0,              {0},
 		(MONST_MALE | MONST_FEMALE)},
 
-    {0, "pet dog",		PET_DOG_CHAR,	&white,	13,		17,		80,		{1, 3, 1},		20,	95, 	100,	DF_RED_BLOOD,	0,		1,		DF_URINE,       {BOLT_FORCE}, (MONST_FEMALE | MONST_MALE | MONST_NO_POLYMORPH)},
+    {0, "pet dog",		PET_DOG_CHAR,	&white,	13,		17,		80,		{1, 3, 1},		20,	95, 	100,	DF_RED_BLOOD,	0,		1,		DF_URINE,       {0}, (MONST_FEMALE | MONST_MALE | MONST_NO_POLYMORPH)},
 	{0,	"adventurer",	PLAYER_CHAR,	&white,30,	0,		100,	{1, 2, 1},		20,	100,	100,	DF_RED_BLOOD,	0,		0,		0,              {0},
 		(MONST_MALE | MONST_FEMALE | MONST_NO_POLYMORPH | MONST_CAST_SPELLS_SLOWLY | MONST_CARRY_ITEM_100 | MONST_DISTANT_FOLLOWER | MONST_WILL_NOT_USE_STAIRS | MONST_CAST_SPELLS_SLOWLY)},
 
@@ -1790,6 +1790,10 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 	{0, "dragon",		'D',	&dragonColor,	150,	90,     250,	{25, 50, 4},	20,	50,		200,	DF_GREEN_BLOOD,	0,		0,		0,              {BOLT_DRAGONFIRE},
 		(MONST_IMMUNE_TO_FIRE | MONST_CARRY_ITEM_100), (MA_ATTACKS_ALL_ADJACENT)},
 
+	{0, "force totem",	TOTEM_CHAR,	&gray,		70,		0,		0,		{0, 0, 0},		0,	100,	400,	DF_RUBBLE_BLOOD,LICH_LIGHT,0,	0,              {BOLT_FORCE},
+		(MONST_IMMUNE_TO_WEBS | MONST_NEVER_SLEEPS | MONST_IMMOBILE | MONST_INANIMATE | MONST_WILL_NOT_USE_STAIRS), (0)},
+
+
 	// bosses
 	{0, "goblin warlord",'g',	&blue,			30,		17,		100,	{3, 6, 1},		20,	100,	100,	DF_RED_BLOOD,	0,		0,		0,              {0},
 		(MONST_MAINTAINS_DISTANCE | MONST_CARRY_ITEM_25), (MA_CAST_SUMMON | MA_ATTACKS_PENETRATE | MA_AVOID_CORRIDORS)},
@@ -1818,7 +1822,7 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
     {0, "mirrored totem",TOTEM_CHAR, &beckonColor,80,	0,		0,		{0, 0, 0},		0,	100,	100,	DF_RUBBLE_BLOOD,0,      100,	DF_MIRROR_TOTEM_STEP, {BOLT_BECKONING},
 		(MONST_IMMUNE_TO_WEBS | MONST_NEVER_SLEEPS | MONST_IMMOBILE | MONST_INANIMATE | MONST_ALWAYS_HUNTING | MONST_WILL_NOT_USE_STAIRS | MONST_GETS_TURN_ON_ACTIVATION | MONST_ALWAYS_USE_ABILITY | MONST_REFLECT_4 | MONST_IMMUNE_TO_WEAPONS | MONST_IMMUNE_TO_FIRE), (0)},
 
-	// legendary allies
+	// legendary "allies"
 	{0,	"unicorn",		UNICORN_CHAR, &white,   40,		60,		175,	{2, 10, 2},		20,	50,		100,	DF_RED_BLOOD,	UNICORN_LIGHT,1,DF_UNICORN_POOP, {BOLT_HEALING, BOLT_SHIELDING},
 		(MONST_MAINTAINS_DISTANCE | MONST_MALE | MONST_FEMALE), (0)},
 	{0,	"ifrit",		'I',	&ifritColor,	40,		75,     175,	{5, 13, 2},		1,	50,		100,	DF_ASH_BLOOD,	IFRIT_LIGHT,0,	0,              {BOLT_DISCORD},
@@ -1830,7 +1834,7 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
     {0,	"mangrove dryad",'M',	&tanColor,      70,		60,     175,	{2, 8, 2},		6,	100,	100,	DF_ASH_BLOOD,	0,      0,      0,              {BOLT_ANCIENT_SPIRIT_VINES},
 		(MONST_IMMUNE_TO_WEBS | MONST_ALWAYS_USE_ABILITY | MONST_MAINTAINS_DISTANCE | MONST_MALE | MONST_FEMALE), (0)},
     {0,	"soul of Hadrian",	PLAYER_CHAR,	&turquoise,80,	60,		100,	{6, 16, 1},		20,	100,	50,	DF_RED_BLOOD,	0,		0,		0,              {0},
-		(MONST_MALE | MONST_NO_POLYMORPH | MONST_CAST_SPELLS_SLOWLY | MONST_CARRY_ITEM_100), {MA_ATTACKS_PENETRATE}},
+		(MONST_MALE | MONST_NO_POLYMORPH | MONST_CAST_SPELLS_SLOWLY | MONST_CARRY_ITEM_100), {MA_ATTACKS_PENETRATE}}, // unused, i think
 
     // "post-game" new baddies -- gsr
     //	name			ch		color			HP		def		acc		damage			reg	move	attack	blood			light	DFChance DFType         bolts       behaviorF, abilityF
@@ -2060,6 +2064,10 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 		"consuming", "Consuming",
 		{"claws", "tail-whips", "bites", {0}}},
 
+	{"This monolithic totem is minimalist in design; $HESHE is simply thick pole with a diamond adorning affixed on top. $HESHE vibrates constantly but subtly.",
+		"gazing at", "Gazing",
+		{"hits", {0}}},
+
 	{"Taller, stronger and smarter than other goblins, the warlord commands the loyalty of $HISHER kind and can summon them into battle.",
 		"chanting over", "Chanting",
 		{"slashes", "cuts", "stabs", "skewers", {0}},
@@ -2259,6 +2267,7 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_DAR_BLADEMASTER,2,		{MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS},	{{0, 1, 1}, {0, 1, 1}},			15,		17,		10},
     {MK_PINK_JELLY,     2,		{MK_PINK_JELLY, MK_DAR_PRIESTESS},      {{0, 1, 1}, {1, 2, 1}},			17,		23,		7},
 	{MK_KRAKEN,			0,		{0},									{{0}},							15,		30,		5,		DEEP_WATER},
+	{MK_FORCE_TOTEM,	0,		{0},									{{0}},							12,		25,		5},
 	{MK_PHANTOM,		0,		{0},									{{0}},							16,		23,		10},
 	{MK_WRAITH,			1,		{MK_WRAITH},							{{1, 4, 1}},					16,		23,		8},
 	{MK_IMP,			0,		{0},									{{0}},							17,		30,		10},
@@ -2603,24 +2612,24 @@ const itemTable foodTable[NUMBER_FOOD_KINDS] = {
 
 const itemTable weaponTable[NUMBER_WEAPON_KINDS] = {
 	{"dagger",				"", "",  8, 11,		11,	{3,	4,	1},		true, false, "A simple iron dagger with a well-worn wooden handle. Daggers will deal quintuple damage upon a successful sneak attack instead of triple damage."},
-	{"kris",				"", "",  9, 33,		15,	{5,	6,	1},		true, false, "The jagged blade of this dagger leaves you feeling intimidated. It will deal quintuple damage upon a successful sneak attack instead of triple damage."},
+	{"kris",				"", "",  9, 33,		15,	{5,	6,	1},		true, false, "The jagged blade of this dagger is as deadly as it is jarring. It will deal quintuple damage upon a successful sneak attack instead of triple damage."},
 
 	{"short sword",		    "", "", 10, 30,		12, {4,	7,	1},		true, false, "Though not the most impressive of blades, this short sword is still formidable."},
  	{"sword",				"", "", 10, 44,		14, {7,	9,	1},		true, false, "The razor-sharp length of steel blade shines reassuringly."},
 	{"broadsword",			"", "",  7, 99,		19,	{14, 22, 1},	true, false, "This towering blade inflicts heavy damage by investing its heft into every cut."},
 
     {"whip",			    "", "", 10, 44,		14, {3,	5,	1},		true, false, "This lash from this coil of braided leather can tear bark from trees, and it will reach opponents up to five spaces away."},
-    {"chain whip",			"", "",  7, 65,		18, {10, 14,1},		true, false, "Weighty but flexible, this whip is composed of a series of strong metal rods joined end by rings. It will reach opponents up to five spaces away."},
+    {"barbed whip",			"", "",  7, 65,		18, {10, 14,1},		true, false, "Weighty but flexible, this whip is composed of a series of strong metal rods joined end by rings. It will reach opponents up to five spaces away."},
 
     {"rapier",				"", "", 10, 44,		15, {3,	5,	1},		true, false, "This blade is thin and flexible, designed for deft and rapid maneuvers. It inflicts less damage than comparable weapons, but permits you to attack twice as quickly. If there is one space between you and an enemy and you step directly toward it, you will perform a devastating lunge attack, which deals treble damage and never misses."},
-    {"epee",	    		"", "", 10, 44,		17, {6,	9,	1},		true, false, "More rigid and hefty than a rapier, a properly wielded epee is a very devastating dueling weapon. It inflicts less damage than comparable weapons, but permits you to attack twice as quickly. If there is one space between you and an enemy and you step directly toward it, you will perform a devastating lunge attack, which deals treble damage and never misses."},
+    {"estoc",	    		"", "", 10, 44,		17, {6,	9,	1},		true, false, "More rigid and hefty than a rapier, a properly wielded estoc is a very devastating dueling weapon. It inflicts less damage than comparable weapons, but permits you to attack twice as quickly. If there is one space between you and an enemy and you step directly toward it, you will perform a devastating lunge attack, which deals treble damage and never misses."},
 
     {"nunchaku",			"", "", 10, 35,		14, {5, 7,	1},		true, false, "A pair of wooden sticks attached with a short rope. As you hold one stick, the other can be whirled in synchronicity with your movement, allowing you a free attack whenever moving between two spaces that are adjacent to an enemy."},
     {"flail",				"", "",  8, 44,		17, {10,13,	1},		true, false, "The spiked iron ball can be whirled at the end of its chain in synchronicity with your movement, allowing you a free attack whenever moving between two spaces that are adjacent to an enemy."},
 
 	{"club",				"", "", 10, 41,		13, {9,  15, 1},	true, false, "The stone club is one of the simplest weapons available. Because of its heft, it takes two turns when it hits."},
 	{"mace",				"", "", 10, 66,		16, {16, 20, 1},	true, false, "The iron flanges at the head of this weapon inflict substantial damage with every weighty blow. Because of its heft, it takes two turns when it hits."},
-	{"war hammer",			"", "", 10, 110,		20, {25, 35, 1},	true, false, "Few creatures can withstand the crushing blow of this towering mass of lead and steel, but only the strongest of adventurers can effectively wield it. Because of its heft, it takes two turns when it hits."},
+	{"war hammer",			"", "", 10, 110,	20, {25, 35, 1},	true, false, "Few creatures can withstand the crushing blow of this towering mass of lead and steel, but only the strongest of adventurers can effectively wield it. Because of its heft, it takes two turns when it hits."},
 
 	{"spear",				"", "", 10, 33,		13, {4, 5, 1},		true, false, "A slender wooden rod tipped with sharpened iron. The reach of the spear permits you to simultaneously attack an adjacent enemy and the enemy directly behind it."},
 	{"war pike",			"", "",  5, 88,		18, {11, 15, 1},	true, false, "A long steel pole ending in a razor-sharp point. The reach of the pike permits you to simultaneously attack an adjacent enemy and the enemy directly behind it."},
@@ -2674,7 +2683,7 @@ const char armorRunicNames[NUMBER_ARMOR_ENCHANT_KINDS][30] = {
 	"immunity",
 	"reflection",
     "respiration",
-    "dampening",
+    "free action",//"dampening",
 	"force", // gsr
 	"shadows", // gsr
 	"water walking",
@@ -2727,7 +2736,7 @@ itemTable potionTable[NUMBER_POTION_KINDS] = {
 //	{"life",				itemColors[0], "",	0,	500,	0,{0,0,0}, false, false, "A swirling elixir that will instantly heal you, cure you of ailments, and permanently increase your maximum health."}, // frequency is dynamically adjusted
 //    {"strength",			itemColors[1], "",	0,	400,	0,{0,0,0}, false, false, "This powerful medicine will course through your muscles, permanently increasing your strength by one point."}, // frequency is dynamically adjusted
     {"empowerment",			itemColors[0], "",	0,	50,	0,{0,0,0}, false, false, "This powerful elixir will permanently increase your strength by one point, instantly heal you, cure you of all ailments, and permanently increase your maximum health. It can also be thrown at an ally (or an unfriendly creature!) to empower it similarly."}, // frequency is dynamically adjusted
-	{"telepathy",           itemColors[1], "",	20,	35,	0,{0,0,0}, false, false, "After drinking this, your mind will become attuned to the psychic signature of distant creatures, enabling you to sense biological presences through walls. Its effects will not reveal inanimate objects, such as totems, turrets and traps.\n\nThrowing it directly at a creature will form a one-way telepathic bond, allowing you to permanently track its movements.\n\nShattering it on the ground or against a wall will psychically reveal to you a potion of the level around the point of impact."},
+	{"telepathy",           itemColors[1], "",	15,	35,	0,{0,0,0}, false, false, "After drinking this, your mind will become attuned to the psychic signature of distant creatures, enabling you to sense biological presences through walls. Its effects will not reveal inanimate objects, such as totems, turrets and traps.\n\nThrowing it directly at a creature will form a one-way telepathic bond, allowing you to permanently track its movements.\n\nShattering it on the ground or against a wall will psychically reveal to you a potion of the level around the point of impact."},
 	{"levitation",			itemColors[2], "",	15,	25,	0,{0,0,0}, false, false, "Drinking this curious liquid will cause you to hover in the air, able to drift effortlessly over lava, water, chasms and traps. Flames, gases and spiderwebs fill the air, however, and cannot be bypassed while airborne. Creatures that dwell in water or mud will be unable to attack you while you levitate.\n\nWhen thrown at a creature, this concoction will also allow it to float or fly for a long time."},
 	{"detect magic",		itemColors[3], "",	15,	50,	0,{0,0,0}, false, false, "This drink will sensitize your mind to the radiance of magic. Items imbued with helpful enchantments will be marked on the map with a full magical sigil; items corrupted by curses or intended to inflict harm on the bearer will be marked on the map with a hollow sigil. The Amulet of Yendor, if in the vicinity, will be revealed by its unique aura."},
 	{"speed",				itemColors[4], "",	20,	50,	0,{0,0,0}, false, false, "Quaffing the contents of this flask will enable you to move at blinding speed for several minutes. Throwing it at a creature will grant it the same effect.\n\nSince the flask contains an energetic compound, shattering it on the ground will produce a tiny ember."},
@@ -2736,8 +2745,8 @@ itemTable potionTable[NUMBER_POTION_KINDS] = {
     {"healing",				itemColors[7], "",  25,	50,	0,{0,0,0}, false, false, "When this flask is shattered, a thick cloud of healing spores will emerge. When consumed directly, the concentrated substance will heal you significantly and rid you of many negative status ailments. It can also be thrown at an ally to heal its wounds instead."},
     {"respiration",			itemColors[8], "",  15,	20,	0,{0,0,0}, false, false, "When consumed, the contents of this flask will render you immune to harmful gases temporarily. If shattered, it will dissipate gas surrounding the immediate area around the point of impact."},
 //    {"caustic gas",         itemColors[9], "",	    15,	200,	0,{0,0,0}, false, false, "Uncorking or shattering this pressurized glass will cause its contents to explode into a deadly cloud of caustic purple gas. You might choose to fling this potion at distant enemies instead of uncorking it by hand."},
-	{"paralysis",			itemColors[9], "",	10, 25,	0,{0,0,0}, false, false, "Upon exposure to open air, the liquid in this flask will vaporize into a numbing pink haze. Anyone who inhales the cloud will be paralyzed instantly, unable to move for some time after the cloud dissipates. This item can be thrown at distant enemies to catch them within the effect of the gas."},
-	{"chaos",       		itemColors[10], "",	10,	10,	0,{0,0,0}, false, false, "This flask contains a mysterious compound that has a variety of effects. If consumed, you will drunkenly wander through a rainbow wonderland, temporarily unable to discern the form of any creatures or items you see and lose control of your movements.\n\nShattering it will release a cloud of confusion gas.\n\nBut when thrown directly at a creature, it will absorb the compound and transform into another creature at random. The tamest of creatures might turn into the most fearsome, and the horror of the transformation will turn any affected allies against you."},
+	{"paralysis",			itemColors[9], "",	15, 25,	0,{0,0,0}, false, false, "Upon exposure to open air, the liquid in this flask will vaporize into a numbing pink haze. Anyone who inhales the cloud will be paralyzed instantly, unable to move for some time after the cloud dissipates. This item can be thrown at distant enemies to catch them within the effect of the gas."},
+	{"chaos",       		itemColors[10], "",	15,	10,	0,{0,0,0}, false, false, "This flask contains a mysterious compound that has a variety of effects. If consumed, you will drunkenly wander through a rainbow wonderland, temporarily unable to discern the form of any creatures or items you see and lose control of your movements.\n\nShattering it will release a cloud of confusion gas.\n\nBut when thrown directly at a creature, it will absorb the compound and transform into another creature at random. The tamest of creatures might turn into the most fearsome, and the horror of the transformation will turn any affected allies against you."},
 //	{"confusion",			itemColors[12], "",	15,	45,	0,{0,0,0}, false, false, "This unstable chemical will quickly vaporize into a glittering cloud upon contact with open air, causing any creature that inhales it to lose control of the direction of its movements until the effect wears off (although its ability to aim projectile attacks will not be affected). Its vertiginous intoxication can cause creatures and adventurers to careen into one another or into chasms or lava pits, so extreme care should be taken when under its effect. Its contents can be weaponized by throwing the flask at distant enemies."},
 	{"incineration",		itemColors[11], "",	20,	50,	0,{0,0,0}, false, false, "This flask contains an unstable compound which will burst violently into flame upon exposure to open air. You might throw the flask at distant enemies -- or into a deep lake, to cleanse the cavern with scalding steam."},
 //	{"darkness",			itemColors[14], "",	7,	15,	0,{0,0,0}, false, false, "Drinking this potion will plunge you into darkness. At first, you will be completely blind to anything not illuminated by an independent light source, but over time your vision will regain its former strength. Throwing the potion will create a cloud of supernatural darkness, and enemies will have difficulty seeing or following you if you take refuge under its cover."},
@@ -2746,6 +2755,7 @@ itemTable potionTable[NUMBER_POTION_KINDS] = {
     {"caustic gas",         itemColors[12], "",	15,	20,0,{0,0,0}, false, false, "Uncorking or shattering this pressurized glass will cause its contents to explode into a deadly cloud of caustic, flammable purple gas. You might choose to fling this potion at distant enemies instead of uncorking it by hand."},
 };
 
+// There aren't any wands, and so this is kinda useless --gsr
 itemTable wandTable[NUMBER_WAND_KINDS] = {
 	{"teleportation",	itemMetals[0], "",	3,	80,	BOLT_TELEPORT,      {3,5,1}, false, false, "A blast from this wand will teleport a creature to a random place on the level. This can be particularly effective against aquatic or mud-bound creatures, which are helpless on dry land."},
 	{"slowness",		itemMetals[1], "",	3,	80,	BOLT_SLOW,          {2,5,1}, false, false, "This wand will cause a creature to move at half its ordinary speed for 30 turns."},
@@ -2839,7 +2849,7 @@ const feat featTable[FEAT_COUNT] = {
     {"Companion",       "Journey with an ally through 20 depths.", false},
     {"Specialist",      "Enchant an item up to or above +16.", false},
 //    {"Jellymancer",     "Obtain at least 90 jelly allies simultaneously.", false},
-    {"Jellymancer",     "Obtain at least 90 jelly allies simultaneously.", false},
+    {"Jellymancer",     "Obtain at least 90 jelly allies simultaneously.", false}, // should replace this -- gsr
     {"Indomitable",     "Ascend without taking damage.", true},
     {"Mystic",          "Ascend without eating.", true},
     {"Dragonslayer",    "Kill a dragon with a melee attack.", false},

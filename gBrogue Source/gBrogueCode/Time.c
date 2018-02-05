@@ -58,10 +58,7 @@ void exposeCreatureToFire(creature *monst) {
 void updateFlavorText() {
 	char buf[DCOLS * 3];
 	if (rogue.disturbed && !rogue.gameHasEnded) {
-        if (rogue.armor
-            && (rogue.armor->flags & ITEM_RUNIC)
-            && rogue.armor->enchant2 == A_RESPIRATION
-            && tileCatalog[pmap[player.xLoc][player.yLoc].layers[highestPriorityLayer(player.xLoc, player.yLoc, false)]].flags & T_RESPIRATION_IMMUNITIES) {
+        if ( ( (rogue.armor && (rogue.armor->flags & ITEM_RUNIC) && rogue.armor->enchant2 == A_RESPIRATION && !player.status[STATUS_DONNING]) || player.status[STATUS_UNBREATHING]) && tileCatalog[pmap[player.xLoc][player.yLoc].layers[highestPriorityLayer(player.xLoc, player.yLoc, false)]].flags & T_RESPIRATION_IMMUNITIES) {
 
             flavorMessage("A pocket of cool, clean air swirls around you.");
 		} else if (player.status[STATUS_LEVITATING]) {
@@ -78,7 +75,7 @@ void updatePlayerUnderwaterness() {
         if (!cellHasTerrainFlag(player.xLoc, player.yLoc, T_IS_DEEP_WATER) || player.status[STATUS_LEVITATING]
 //            || cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))) {
             || cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))
-            || (rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING)) {
+            || (rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING && !player.status[STATUS_DONNING])) {
 
             rogue.inWater = false;
             updateMinersLightRadius();
@@ -88,7 +85,7 @@ void updatePlayerUnderwaterness() {
     } else {
         if (cellHasTerrainFlag(player.xLoc, player.yLoc, T_IS_DEEP_WATER) && !player.status[STATUS_LEVITATING]
             && !cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))
-            && !(rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING)) {
+            && !(rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING && !player.status[STATUS_DONNING])) {
 
             rogue.inWater = true;
             updateMinersLightRadius();
@@ -291,12 +288,12 @@ void applyInstantTileEffectsToCreature(creature *monst) {
 			rogue.disturbed = true;
 			for (layer = 0; layer < NUMBER_TERRAIN_LAYERS && !(tileCatalog[pmap[*x][*y].layers[layer]].flags & T_CAUSES_EXPLOSIVE_DAMAGE); layer++);
 			message(tileCatalog[pmap[*x][*y].layers[layer]].flavorText, false);
-            if (rogue.armor && (rogue.armor->flags & ITEM_RUNIC) && rogue.armor->enchant2 == A_DAMPENING) {
+/*            if (rogue.armor && (rogue.armor->flags & ITEM_RUNIC) && rogue.armor->enchant2 == A_DAMPENING) {
                 itemName(rogue.armor, buf2, false, false, NULL);
                 sprintf(buf, "Your %s pulses and absorbs the damage.", buf2);
                 messageWithColor(buf, &goodMessageColor, false);
                 autoIdentify(rogue.armor);
-            } else if (inflictDamage(NULL, &player, damage, &yellow, false)) {
+            } else*/ if (inflictDamage(NULL, &player, damage, &yellow, false)) {
 				strcpy(buf2, tileCatalog[pmap[*x][*y].layers[layerWithFlag(*x, *y, T_CAUSES_EXPLOSIVE_DAMAGE)]].description);
 				sprintf(buf, "Killed by %s", buf2);
 				gameOver(buf, true);
@@ -332,7 +329,7 @@ void applyInstantTileEffectsToCreature(creature *monst) {
         && cellHasTerrainFlag(*x, *y, T_RESPIRATION_IMMUNITIES)
         && rogue.armor
         && (rogue.armor->flags & ITEM_RUNIC)
-        && rogue.armor->enchant2 == A_RESPIRATION) {
+        && rogue.armor->enchant2 == A_RESPIRATION && !player.status[STATUS_DONNING]) {
         if (!(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED)) {
             message("Your armor trembles and a pocket of clean air swirls around you.", false);
             autoIdentify(rogue.armor);
@@ -385,6 +382,19 @@ void applyInstantTileEffectsToCreature(creature *monst) {
         if (cellHasTerrainFlag(*x, *y, T_CAUSES_PARALYSIS)
             && !(monst->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE))
             && !(monst->bookkeepingFlags & MB_SUBMERGED)) {
+
+        // Free action
+            if (monst == &player
+                && rogue.armor
+                && rogue.armor->enchant2 == A_FREE_ACTION && !player.status[STATUS_DONNING])
+                {
+                    if (!(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED))
+                    {
+                        message("you feel your muscles stiffen just momentarily.", false);
+                        autoIdentify(rogue.armor);
+                    }
+                    return; // paralysis doesn't affect us
+                }
 
             if (canDirectlySeeMonster(monst) && !monst->status[STATUS_PARALYZED]) {
                 flashMonster(monst, &pink, 100);
@@ -449,7 +459,7 @@ void applyGradualTileEffectsToCreature(creature *monst, short ticks) {
 		&& !(monst->info.flags & MONST_IMMUNE_TO_WATER)) {
 		if (monst == &player) {
 
-            if (rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING)
+            if (rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING && !player.status[STATUS_DONNING])
             {
                 if (!(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED))
                 {
@@ -496,7 +506,7 @@ void applyGradualTileEffectsToCreature(creature *monst, short ticks) {
 		damage = max(1, damage);
 		for (layer = 0; layer < NUMBER_TERRAIN_LAYERS && !(tileCatalog[pmap[x][y].layers[layer]].flags & T_CAUSES_DAMAGE); layer++);
 		if (monst == &player) {
-            if (rogue.armor && (rogue.armor->flags & ITEM_RUNIC) && rogue.armor->enchant2 == A_RESPIRATION) {
+            if (rogue.armor && (rogue.armor->flags & ITEM_RUNIC) && rogue.armor->enchant2 == A_RESPIRATION && !player.status[STATUS_DONNING]) {
                 if (!(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED)) {
                     message("Your armor trembles and a pocket of clean air swirls around you.", false);
                     autoIdentify(rogue.armor);
@@ -1967,7 +1977,7 @@ void monstersApproachStairs() {
 
 void decrementPlayerStatus() {
 
-    char buf[COLS];
+    char buf[COLS], buf2[COLS];
 
     // Handle hunger.
     if (!player.status[STATUS_PARALYZED]) {
@@ -2037,9 +2047,17 @@ void decrementPlayerStatus() {
 		updateEncumbrance();
 	}
 
+	// *** TODO: a fringe case -- if you finish putting on an armor of water walking while in water, you don't get the message until you take a step but it does apply the runic --gsr
     if (player.status[STATUS_DONNING]) {
         player.status[STATUS_DONNING]--;
         recalculateEquipmentBonuses();
+        if (!player.status[STATUS_DONNING])
+        {
+			itemName(rogue.armor, buf2, false, false, NULL);
+            sprintf(buf, "you finish putting on your %s.", buf2);
+            messageWithColor(buf, &itemMessageColor, false);
+            equipItem(rogue.armor, true);
+        }
     }
 
 	if (player.status[STATUS_IMMUNE_TO_FIRE] > 0 && !--player.status[STATUS_IMMUNE_TO_FIRE]) {
@@ -2440,7 +2458,7 @@ void playerTurnEnded() {
                         messageWithColor(buf, &itemMessageColor, true);
                     }
                     if (rogue.armor && rogue.armor->flags & ITEM_RUNIC
-                        && rogue.armor->enchant2 == A_IMMUNITY
+                        && rogue.armor->enchant2 == A_IMMUNITY && !player.status[STATUS_DONNING]
                         && !(rogue.armor->flags & ITEM_RUNIC_HINTED)
                         && monsterIsInClass(monst, rogue.armor->vorpalEnemy)) {
 
