@@ -568,9 +568,9 @@ void populateItems(short upstairsX, short upstairsY) {
 		}
 
         // rewards on special floors! -- gsr
-		else if (rogue.depthLevel == BIG_LEVEL)
+		else if (rogue.depthLevel == rogue.bigLevelDepth)
             numberOfItems += rand_range(10, 16);
-        else if (rogue.depthLevel == NARROW_LEVEL)
+        else if (rogue.depthLevel == rogue.narrowLevelDepth)
             numberOfItems += rand_range(6, 12);
 
 		numberOfGoldPiles = min(5, (int) (rogue.depthLevel / 4 + FLOAT_FUDGE));

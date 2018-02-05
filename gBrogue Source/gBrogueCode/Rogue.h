@@ -146,10 +146,14 @@
 #define DEEPEST_LEVEL           26 + 25/GEMS_PER_LEVEL + 2  // 26 levels, 25 levels (one lumenstone each, Moloch lair, tranquil level thing) //40          // how deep the universe goes
 
 
-#define NARROW_LEVEL            13         // special levels -- gsr
-#define BIG_LEVEL               6
+// special levels -- gsr
+#define BIG_LEVEL_MIN               6
+#define BIG_LEVEL_MAX               8
+#define NARROW_LEVEL_MIN            11
+#define NARROW_LEVEL_MAX            15
+#define GUARANTEED_ADVENTURER_LEVEL_MIN 20
+#define GUARANTEED_ADVENTURER_LEVEL_MAX 25
 #define MOLOCH_LAIR_LEVEL       DEEPEST_LEVEL - 1
-#define GUARANTEED_ADVENTURER_LEVEL 22
 
 //#define MACHINES_FACTOR         1.0         // use this to adjust machine frequency
 #define MACHINES_FACTOR         1.2         // use this to adjust machine frequency // --gsr
@@ -2500,6 +2504,11 @@ typedef struct playerCharacter {
 
 	// Some more variables -- gsr
 	char lastWishText[5000];
+
+	// For special levels, which can deviate in depth a bit
+	short bigLevelDepth;
+    short narrowLevelDepth;
+	short guaranteedAdventurerDepth;
 
 } playerCharacter;
 

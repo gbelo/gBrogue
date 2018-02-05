@@ -442,6 +442,11 @@ void initializeRogue(unsigned long seed) {
 	= rogue.stealthBonus = rogue.transference = rogue.wisdomBonus = rogue.reaping = 0;
 	rogue.lightMultiplier = 1;
 
+	rogue.bigLevelDepth = rand_range(BIG_LEVEL_MIN, BIG_LEVEL_MAX);
+	rogue.narrowLevelDepth = rand_range(NARROW_LEVEL_MIN, NARROW_LEVEL_MAX);
+	rogue.guaranteedAdventurerDepth = rand_range(GUARANTEED_ADVENTURER_LEVEL_MIN, GUARANTEED_ADVENTURER_LEVEL_MAX);
+
+
 	theItem = generateItem(FOOD, RATION);
 	theItem = addItemToPack(theItem);
 
@@ -872,9 +877,9 @@ void startLevel(short oldLevelNumber, short stairDirection) {
             messageWithColor("An overwhelming sense of peace and tranquility settles upon you.", &lightBlue, false);
         }
         // gsr
-        else if (rogue.depthLevel == NARROW_LEVEL)
+        else if (rogue.depthLevel == rogue.narrowLevelDepth)
             messageWithColor("This floor leaves you feeling claustrophobic.", &white, false);
-        else if (rogue.depthLevel == BIG_LEVEL)
+        else if (rogue.depthLevel == rogue.bigLevelDepth)
             messageWithColor("This floor leaves you with a stark feeling of insignificance.", &white, false);
         else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL)
             messageWithColor("You sense a devastating demonic presence...", &pink, false);

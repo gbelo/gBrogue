@@ -1010,9 +1010,9 @@ void populateMonsters() {
 	}
 
 
-	if (rogue.depthLevel == BIG_LEVEL) // make the big room explorable without TOO much trouble..
+	if (rogue.depthLevel == rogue.bigLevelDepth) // make the big room explorable without TOO much trouble..
         numberOfMonsters /= 1.1;
-	else if (rogue.depthLevel == NARROW_LEVEL) // don't crowd the narrow level -- gsr
+	else if (rogue.depthLevel == rogue.narrowLevelDepth) // don't crowd the narrow level -- gsr
         numberOfMonsters /= 2;
     // "Our" Moloch, on the second to last floor, near down stairs to the final floor -- gsr
     else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL && !rogue.moloch)
@@ -1026,7 +1026,7 @@ void populateMonsters() {
         rogue.moloch = monst;
     }
     // Generate a fellow adventurer -- gsr
-    if ((rogue.depthLevel > 10 && rand_percent(2)) || rogue.depthLevel == GUARANTEED_ADVENTURER_LEVEL)
+    if ((rogue.depthLevel > 10 && rand_percent(2)) || rogue.depthLevel == rogue.guaranteedAdventurerDepth)
         generateFellowAdventurer();
 
 

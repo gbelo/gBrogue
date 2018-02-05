@@ -2192,7 +2192,7 @@ const mutation mutationCatalog[NUMBER_MUTATORS] = {
         "A rare mutation causes $HIMHER to poison $HISHER victims and sap their strength with every attack."},
     {"reflective",  &darkTurquoise, 100,            100,        100,            100,    100,    -1, 0,      CRYSTAL_WALL_LIGHT,      MONST_REFLECT_4, 0,         (MONST_REFLECT_4 | MONST_ALWAYS_USE_ABILITY|MONST_IMMUNE_TO_WEAPONS), 0,
         "A rare mutation has coated $HISHER flesh with reflective scales."},
-    {"glass",       &white,    25,            110,         150,           10,     200,    -1, 0,      0,                    MONST_REFLECT_4, 0,         (MONST_REFLECT_4|MONST_ALWAYS_USE_ABILITY|MONST_IMMUNE_TO_WEAPONS), 0,
+    {"glass",       &white,    25,            110,         150,           10,     300,    -1, 0,      0,                    MONST_REFLECT_4, 0,         (MONST_REFLECT_4|MONST_ALWAYS_USE_ABILITY|MONST_IMMUNE_TO_WEAPONS), 0,
         "A rare mutation has replaced $HISHER flesh with sharp but fragile shards of glass."},
     {"everburning", &orange, 50,             200,        100,            100,    50,     -1, 0,      LAVA_LIGHT,      (MONST_FIERY|MONST_IMMUNE_TO_FIRE|MONST_FLITS), 0, (MONST_FIERY|MONST_FLIES), 0,
         "A rare mutation has caused $HISHER flesh to burn continuously. $HESHE seems to be unconcerned with the flames that surround $HIMHER."},

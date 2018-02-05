@@ -2341,9 +2341,9 @@ void designRandomRoom(short **grid, boolean attachHallway, short doorSites[4][2]
     }
 
     // Special levels
-    if (rogue.depthLevel == NARROW_LEVEL)
+    if (rogue.depthLevel == rogue.narrowLevelDepth)
         designNarrowRoom(grid);
-    else if (rogue.depthLevel == BIG_LEVEL)
+    else if (rogue.depthLevel == rogue.bigLevelDepth)
         designBigRoom(grid);
     else if (rogue.depthLevel == AMULET_LEVEL)
         designCrossRoom(grid);
@@ -2535,9 +2535,9 @@ void carveDungeon(short **grid) {
     }
 
 
-    if (rogue.depthLevel == BIG_LEVEL) // Special levels handled here -- gsr
+    if (rogue.depthLevel == rogue.bigLevelDepth) // Special levels handled here -- gsr
         attachRooms(grid, &theDP, 35, 0);
-    else if (rogue.depthLevel == NARROW_LEVEL)
+    else if (rogue.depthLevel == rogue.narrowLevelDepth)
         attachRooms(grid, &theDP, 35, 0);
     else
         attachRooms(grid, &theDP, 35, 35);
@@ -2596,9 +2596,9 @@ void liquidType(short *deep, short *shallow, short *shallowWidth) {
     }
 
     // In these levels, give the player some ability to stealth it out -- gsr
-    else if (rogue.depthLevel == BIG_LEVEL)
+    else if (rogue.depthLevel == rogue.bigLevelDepth)
         rand = 2;
-    else if (rogue.depthLevel == NARROW_LEVEL)
+    else if (rogue.depthLevel == rogue.narrowLevelDepth)
         rand = 4;
 
     else if (rogue.depthLevel == AMULET_LEVEL) // no pits leading downward -- must take stairs!
@@ -3010,7 +3010,7 @@ void digDungeon() {
 
 	// Now design the lakes and then fill them with various liquids (lava, water, chasm, brimstone).
     short **lakeMap = allocGrid();
-    if (rogue.depthLevel != NARROW_LEVEL)
+    if (rogue.depthLevel != rogue.narrowLevelDepth)
     {
         designLakes(lakeMap);
         fillLakes(lakeMap);
@@ -3029,7 +3029,7 @@ void digDungeon() {
 	}
 
 	// Now add some treasure machines.
-	if (rogue.depthLevel != NARROW_LEVEL) //gsr
+	if (rogue.depthLevel != rogue.narrowLevelDepth) //gsr
         addMachines();
 
 	if (D_INSPECT_LEVELGEN) {
@@ -3803,7 +3803,7 @@ void initializeLevel() {
 	}
 
     //if (getQualifyingGridLocNear(downLoc, levels[n].downStairsLoc[0], levels[n].downStairsLoc[1], grid, false)) {
-    if (getQualifyingGridLocNear(downLoc, rogue.depthLevel == NARROW_LEVEL ? DCOLS : levels[n].downStairsLoc[0], levels[n].downStairsLoc[1], grid, false)) { // in narrow level, stairs are on opposite ends! -- gsr
+    if (getQualifyingGridLocNear(downLoc, rogue.depthLevel == rogue.narrowLevelDepth ? DCOLS : levels[n].downStairsLoc[0], levels[n].downStairsLoc[1], grid, false)) { // in narrow level, stairs are on opposite ends! -- gsr
         prepareForStairs(downLoc[0], downLoc[1], grid);
     } else {
         getQualifyingLocNear(downLoc, levels[n].downStairsLoc[0], levels[n].downStairsLoc[1], false, 0,
@@ -3830,7 +3830,7 @@ void initializeLevel() {
     levels[n].downStairsLoc[1] = downLoc[1];
 
 	//if (getQualifyingGridLocNear(upLoc, levels[n].upStairsLoc[0], levels[n].upStairsLoc[1], grid, false)) {
-	if (getQualifyingGridLocNear(upLoc, rogue.depthLevel == NARROW_LEVEL ? 0 : levels[n].upStairsLoc[0], levels[n].upStairsLoc[1], grid, false)) { // in narrow level, stairs are on opposite ends! -- gsr
+	if (getQualifyingGridLocNear(upLoc, rogue.depthLevel == rogue.narrowLevelDepth ? 0 : levels[n].upStairsLoc[0], levels[n].upStairsLoc[1], grid, false)) { // in narrow level, stairs are on opposite ends! -- gsr
 		prepareForStairs(upLoc[0], upLoc[1], grid);
 	} else { // Hopefully this never happens.
 		getQualifyingLocNear(upLoc, levels[n].upStairsLoc[0], levels[n].upStairsLoc[1], false, 0,
