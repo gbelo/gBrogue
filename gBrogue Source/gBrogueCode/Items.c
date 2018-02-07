@@ -660,7 +660,7 @@ void populateItems(short upstairsX, short upstairsY) {
 		scrollTable[SCROLL_ENCHANTING].frequency = rogue.enchantScrollFrequency;
 //		potionTable[POTION_STRENGTH].frequency = rogue.strengthPotionFrequency;
 //        potionTable[POTION_LIFE].frequency = rogue.lifePotionFrequency;
-        potionTable[POTION_VITALITY].frequency = rogue.vitalityPotionFrequency;
+        potionTable[POTION_EMPOWERMENT].frequency = rogue.vitalityPotionFrequency;
 
 		// Adjust the desired item category if necessary.
 		if ((rogue.foodSpawned + foodTable[RATION].strengthRequired / 3) * 4
@@ -678,7 +678,7 @@ void populateItems(short upstairsX, short upstairsY) {
             theKind = POTION_LIFE;
         }*/ else if (rogue.vitalityPotionsSpawned * 2.5 < rogue.depthLevel + randomDepthOffset) {
             theCategory = POTION;
-            theKind = POTION_VITALITY;
+            theKind = POTION_EMPOWERMENT;
         }
 
 		// Generate the item.
@@ -693,7 +693,7 @@ void populateItems(short upstairsX, short upstairsY) {
 		// Choose a placement location not in a hallway.
 		do {
 //			if ((theItem->category & FOOD) || ((theItem->category & POTION) && theItem->kind == POTION_STRENGTH)) {
-			if ((theItem->category & FOOD) || ((theItem->category & POTION) && theItem->kind == POTION_VITALITY)) {
+			if ((theItem->category & FOOD) || ((theItem->category & POTION) && theItem->kind == POTION_EMPOWERMENT)) {
 				randomMatchingLocation(&x, &y, FLOOR, NOTHING, -1); // food and gain strength don't follow the heat map
 			} else {
 				getItemSpawnLoc(itemSpawnHeatMap, &x, &y, &totalHeat);
@@ -714,7 +714,7 @@ void populateItems(short upstairsX, short upstairsY) {
 		} else if (theItem->category & POTION && theItem->kind == POTION_STRENGTH) {
 			if (D_MESSAGE_ITEM_GENERATION) printf("\n(!s) Depth %i: generated a strength potion at %i frequency", rogue.depthLevel, rogue.strengthPotionFrequency);
 			rogue.strengthPotionFrequency -= 50;
-		}*/ else if (theItem->category & POTION && theItem->kind == POTION_VITALITY) {
+		}*/ else if (theItem->category & POTION && theItem->kind == POTION_EMPOWERMENT) {
 			if (D_MESSAGE_ITEM_GENERATION) printf("\n(!s) Depth %i: generated a vitality potion at %i frequency", rogue.depthLevel, rogue.vitalityPotionFrequency);
 			rogue.vitalityPotionFrequency -= 50;
 			rogue.vitalityPotionsSpawned++;
@@ -756,7 +756,7 @@ void populateItems(short upstairsX, short upstairsY) {
 	scrollTable[SCROLL_ENCHANTING].frequency	= 0;	// No enchant scrolls or strength/life potions can spawn except via initial
 //	potionTable[POTION_STRENGTH].frequency      = 0;	// item population or blueprints that create them specifically.
 //  potionTable[POTION_LIFE].frequency          = 0;
-	potionTable[POTION_VITALITY].frequency      = 0;	// item population or blueprints that create them specifically.
+	potionTable[POTION_EMPOWERMENT].frequency      = 0;	// item population or blueprints that create them specifically.
 
 	if (D_MESSAGE_ITEM_GENERATION) printf("\n---- Depth %i: %lu gold generated so far.", rogue.depthLevel, rogue.goldGenerated);
 }
@@ -990,6 +990,50 @@ char nextAvailableInventoryCharacter() {
 	return 0;
 }
 
+// Applies for weapons and armor. This just produces a message when a runic is inactive.
+void disenchantAffectRunes(item *theItem)
+{
+    char buf[COLS], buf2[COLS];
+    if ((theItem->flags & ITEM_RUNIC)
+        && theItem->enchant2 < NUMBER_GOOD_ARMOR_ENCHANT_KINDS
+        && theItem->enchant1 == 0) {
+
+//        theItem->enchant2 = 0;
+//        theItem->flags &= ~(ITEM_RUNIC | ITEM_RUNIC_HINTED | ITEM_RUNIC_IDENTIFIED);
+
+
+        if (theItem->flags & ITEM_IDENTIFIED) {
+            identify(theItem);
+			itemName(theItem, buf2, false, false, NULL);
+            sprintf(buf, "the runes on your %s no longer glow!", buf2);
+			messageWithColor(buf, &itemMessageColor, false);
+        }
+    }
+
+}
+// Applies for weapons and armor. This just produces a message when a runic is inactive.
+void enchantAffectRunes(item *theItem)
+{
+    char buf[COLS], buf2[COLS];
+    if ((theItem->flags & ITEM_RUNIC)
+        && theItem->enchant2 < NUMBER_GOOD_ARMOR_ENCHANT_KINDS
+        && theItem->enchant1 == 1) {
+
+//        theItem->enchant2 = 0;
+//        theItem->flags &= ~(ITEM_RUNIC | ITEM_RUNIC_HINTED | ITEM_RUNIC_IDENTIFIED);
+
+
+        if (theItem->flags & ITEM_IDENTIFIED) {
+            identify(theItem);
+			itemName(theItem, buf2, false, false, NULL);
+            sprintf(buf, "the runes on your %s begin to shine!", buf2);
+			messageWithColor(buf, &itemMessageColor, false);
+        }
+    }
+
+}
+
+// Positive runics are simpply INACTIVE if enchantment < +1; can be re-enchanted to restore runics, so this routine is never used. -- gsr
 void checkForDisenchantment(item *theItem) {
 	char buf[COLS], buf2[COLS];
 
@@ -999,6 +1043,7 @@ void checkForDisenchantment(item *theItem) {
 
         theItem->enchant2 = 0;
         theItem->flags &= ~(ITEM_RUNIC | ITEM_RUNIC_HINTED | ITEM_RUNIC_IDENTIFIED);
+
 
         if (theItem->flags & ITEM_IDENTIFIED) {
             identify(theItem);
@@ -1970,7 +2015,7 @@ void itemDetails(char *buf, item *theItem) {
 		strcat(buf, tableForItemCategory(theItem->category, NULL)[theItem->kind].description);
 
 //        if (theItem->category == POTION && theItem->kind == POTION_LIFE) {
-        if (theItem->category == POTION && theItem->kind == POTION_VITALITY) {
+        if (theItem->category == POTION && theItem->kind == POTION_EMPOWERMENT) {
             sprintf(buf2, "\n\nIt will increase your maximum health by %s%i%%%s.",
                     goodColorEscape,
                     (player.info.maxHP + 10) * 100 / player.info.maxHP - 100,
@@ -2238,7 +2283,8 @@ void itemDetails(char *buf, item *theItem) {
 				// runic?
 				if (theItem->flags & ITEM_RUNIC) {
 					if ((theItem->flags & ITEM_RUNIC_IDENTIFIED) || rogue.playbackOmniscience) {
-						sprintf(buf2, "\n\nGlowing runes of %s adorn the %s. ",
+						sprintf(buf2, "\n\n%s runes of %s adorn the %s. ",
+								(theItem->enchant1 > 0 || (theItem->enchant2 >= NUMBER_GOOD_WEAPON_ENCHANT_KINDS)) ? "Glowing" : "Faded",
 								weaponRunicNames[theItem->enchant2],
 								theName);
 						strcat(buf, buf2);
@@ -2250,7 +2296,7 @@ void itemDetails(char *buf, item *theItem) {
 									buf3);
 							strcat(buf, buf2);
 						} else if (theItem->enchant2 == W_MULTIPLICITY) {
-							if ((theItem->flags & ITEM_IDENTIFIED) || rogue.playbackOmniscience) {
+							if ((theItem->flags & ITEM_IDENTIFIED && theItem->enchant1>0) || rogue.playbackOmniscience) {
 								sprintf(buf2, "%i%% of the time that it hits an enemy, %i spectral %s%s will spring into being with accuracy and attack power equal to your own, and will dissipate %i turns later. (If the %s is enchanted, %i image%s will appear %i%% of the time, and will last %i turns.)",
 										runicWeaponChance(theItem, false, 0),
 										weaponImageCount(enchant),
@@ -2268,7 +2314,7 @@ void itemDetails(char *buf, item *theItem) {
 							}
 							strcat(buf, buf2);
 						} else {
-							if ((theItem->flags & ITEM_IDENTIFIED) || rogue.playbackOmniscience) {
+							if ((theItem->flags & ITEM_IDENTIFIED && theItem->enchant1>0) || rogue.playbackOmniscience) {
                                 if (runicWeaponChance(theItem, false, 0) < 2
                                     && rogue.strength - player.weaknessAmount < theItem->strengthRequired) {
 
@@ -2325,7 +2371,7 @@ void itemDetails(char *buf, item *theItem) {
 										strcat(buf, buf2);
 										break;
                                     case W_DOUBLE_EDGE:
-										strcpy(buf2, " by 50% of its maximum health. ");
+										strcpy(buf2, " to it. ");
 										strcat(buf, buf2);
 										break;
 									default:
@@ -2456,10 +2502,13 @@ void itemDetails(char *buf, item *theItem) {
                                 sprintf(buf2, "It allows you to walk over deep water, although certain sea-dwelling monsters will be able to strike and grab you from below the surface. ");
 								break;
 							case A_FRAILTY:
-                                sprintf(buf2, "25% of the time it absorbs a blow, it will degrade -- regardless of any protection against corrosion that has been bestowed upon it. ");
+                                sprintf(buf2, "25%% of the time it absorbs a blow, it will degrade -- regardless of any protection against corrosion that has been bestowed upon it. ");
+								break;
+							case A_DOOM:
+                                sprintf(buf2, "While worn, you will be inflicted with a wide variety of negative status effects. ");
 								break;
 							case A_REFLECTION:
-                                if (theItem->flags & ITEM_IDENTIFIED) {
+                                if (theItem->flags & ITEM_IDENTIFIED && theItem->enchant1>0) {
                                     if (theItem->enchant1 > 0) {
                                         short reflectChance = reflectionChance(enchant);
                                         short reflectChance2 = reflectionChance(enchant + enchantIncrement(theItem));
@@ -2504,7 +2553,8 @@ void itemDetails(char *buf, item *theItem) {
 						}
 						strcat(buf, buf2);
 					} else if (theItem->flags & ITEM_IDENTIFIED) {
-						sprintf(buf2, "\n\nGlowing runes of an indecipherable language spiral around the %s. ",
+						sprintf(buf2, "\n\n%s runes of an indecipherable language spiral around the %s. ",
+                                (theItem->enchant1 > 0 || (theItem->enchant2 >= NUMBER_GOOD_ARMOR_ENCHANT_KINDS)) ? "Glowing" : "Faded",
 								theName);
 						strcat(buf, buf2);
 					}
@@ -3429,7 +3479,7 @@ void equip(item *theItem) {
 					}
 					return;
 				} else {
-					if (theItem2->flags & ITEM_CURSED) {
+					if (theItem2->flags & ITEM_CURSED && !(theItem->category == ARMOR && player.status[STATUS_DONNING])) { // We don't curse armor until we're fully wearing it --gsr
 						itemName(theItem2, buf1, false, false, NULL);
 						sprintf(buf2, "You can't remove your %s: it appears to be cursed.", buf1);
 						confirmMessages();
@@ -6203,7 +6253,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                         spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_BLOODFLOWER_POD_BURST], true, false);
                         spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_BLOODFLOWER_POD_BURST], true, false);
                     }*/
-                case POTION_VITALITY:
+                case POTION_EMPOWERMENT:
 				    if (hitMonsterAtSpot && monst)
                     {
                         flashMonster(monst, boltCatalog[BOLT_EMPOWERMENT].backColor, 100);
@@ -6291,7 +6341,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                         hadEffect = true;
                     }
 					break;
-				case POTION_POISON_GAS:
+				case POTION_CAUSTIC_GAS:
 					strcpy(buf, "the flask shatters and a deadly purple cloud billows out!");
 					spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_POISON_GAS_CLOUD_POTION], true, false);
 					message(buf, false);
@@ -6894,6 +6944,15 @@ void apply(item *theItem, boolean recordCommands) {
             return; // don't want to double-record commands
 			break;
 		case SCROLL:
+            // Can't read scrolls in the darkness! -- gsr
+            // ... actually, decided against this. If you have an item that curses you WITH darkness, you can't read a scroll to uncurse it.
+            /*
+            if (player.status[STATUS_DARKNESS])
+            {
+                message("With your vision stunted, you can't make out the runes on this scroll.", false);
+                return;
+            }*/
+
 			command[c] = '\0';
             if (!commandsRecorded) {
                 recordKeystrokeSequence(command);
@@ -7162,10 +7221,12 @@ void readScroll(item *theItem) {
                     if (theItem->quiverNumber) {
                         theItem->quiverNumber = rand_range(1, 60000);
                     }
+                    enchantAffectRunes(theItem);
 					break;
 				case ARMOR:
 					theItem->strengthRequired = max(0, theItem->strengthRequired - 1);
 					theItem->enchant1++;
+                    enchantAffectRunes(theItem);
 					break;
 				case RING:
 					theItem->enchant1++;
@@ -7472,9 +7533,9 @@ void drinkPotion(item *theItem) {
             }
 			break;*/
 		case POTION_CHAOS:
-			player.status[STATUS_HALLUCINATING] = player.maxStatus[STATUS_HALLUCINATING] = 50;
-			player.status[STATUS_CONFUSED] = player.maxStatus[STATUS_CONFUSED] = 50;
-			message("colors are everywhere! The walls are singing! Your own movements seem out of your control!", false);
+			player.status[STATUS_HALLUCINATING] = player.maxStatus[STATUS_HALLUCINATING] = 300;
+			player.status[STATUS_CONFUSED] = player.maxStatus[STATUS_CONFUSED] = 10;
+			message("colors are everywhere! The walls are singing! Your feel disoriented!", false);
 			break;
 		/*case POTION_LIFE:
             sprintf(buf, "%syour maximum health increases by %i%%.",
@@ -7495,7 +7556,7 @@ void drinkPotion(item *theItem) {
 			sprintf(buf, "newfound strength surges through your body.");
 			messageWithColor(buf, &advancementMessageColor, false);
 			break;*/
-		case POTION_VITALITY:
+		case POTION_EMPOWERMENT:
 			sprintf(buf, "newfound strength surges through your body!");
 			messageWithColor(buf, &advancementMessageColor, false);
             sprintf(buf, "%syour maximum health increases by %i%%!",
@@ -7517,7 +7578,7 @@ void drinkPotion(item *theItem) {
 			spawnDungeonFeature(player.xLoc, player.yLoc, &dungeonFeatureCatalog[DF_PARALYSIS_GAS_CLOUD_POTION], true, false);
 			message("A cloud of irritating pink gas bursts from the open flask!", false);
 			break;
-        case POTION_POISON_GAS:
+        case POTION_CAUSTIC_GAS:
             message("caustic gas billows out of the open flask!", false);
             spawnDungeonFeature(player.xLoc, player.yLoc, &dungeonFeatureCatalog[DF_POISON_GAS_CLOUD_POTION], true, false);
             message(buf, false);
@@ -7643,7 +7704,7 @@ void dipItemIntoPotion(item *theItem) {
 			spawnDungeonFeature(player.xLoc, player.yLoc, &dungeonFeatureCatalog[DF_PARALYSIS_GAS_CLOUD_POTION], true, false);
 			message("your muscles stiffen as a cloud of pink gas bursts from the open flask!", false);
 			break;
-        case POTION_POISON_GAS:
+        case POTION_CAUSTIC_GAS:
             message("caustic gas billows out of the open flask!", false);
             spawnDungeonFeature(player.xLoc, player.yLoc, &dungeonFeatureCatalog[DF_POISON_GAS_CLOUD_POTION], true, false);
             message(buf, false);
@@ -7674,7 +7735,7 @@ short magicCharDiscoverySuffix(short category, short kind) {
 //				case POTION_HALLUCINATION:
 				case POTION_INCINERATION:
 //				case POTION_DESCENT:
-				case POTION_POISON_GAS:
+				case POTION_CAUSTIC_GAS:
 				case POTION_PARALYSIS:
                 case POTION_CHAOS:
 //				case POTION_CONFUSION:
@@ -7736,7 +7797,7 @@ uchar itemMagicChar(item *theItem) {
 				case POTION_INCINERATION:
 //				case POTION_DESCENT:
 //				case POTION_POISON:
-                case POTION_POISON_GAS:
+                case POTION_CAUSTIC_GAS:
                 case POTION_METHANE:
 				case POTION_PARALYSIS:
 //				case POTION_CONFUSION:

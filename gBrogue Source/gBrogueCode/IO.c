@@ -2437,7 +2437,8 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
 		case SEARCH_KEY:
 			recordKeystroke(SEARCH_KEY, false, false);
 			considerCautiousMode();
-			search(rogue.awarenessBonus < 0 ? 40 : 80);
+			//search(rogue.awarenessBonus < 0 ? 40 : 80);
+            search( (rogue.awarenessBonus < 0 || player.status[STATUS_DARKNESS]) ? 40 : 80); // darkness significantly affects searching
 			playerTurnEnded();
 			break;
 		case INVENTORY_KEY:
@@ -3800,7 +3801,7 @@ void printDiscoveries(short category, short count, unsigned short itemCharacter,
 	for (i = 0; i < count; i++) {
 
 	    // Dummied out items (i.e. never spawning, i.e. frequency is 0) will not be displayed -- gsr
-        if (theTable[i].frequency == 0 && !(category == SCROLL && i == SCROLL_ENCHANTING) &&  !(category == POTION && i == POTION_VITALITY)) // gsr
+        if (theTable[i].frequency == 0 && !(category == SCROLL && i == SCROLL_ENCHANTING) &&  !(category == POTION && i == POTION_EMPOWERMENT)) // gsr
             continue;
 
 /*

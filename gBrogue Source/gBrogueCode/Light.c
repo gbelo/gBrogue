@@ -137,14 +137,17 @@ void updateMinersLightRadius() {
 		lightRadius = max(lightRadius, (rogue.lightMultiplier * 2 + 2));
 	}
 
+    // How darkness affects LOS -- gsr
 	if (player.status[STATUS_DARKNESS]) {
-		fraction = (double) pow(1.0 - (((double) player.status[STATUS_DARKNESS]) / player.maxStatus[STATUS_DARKNESS]), 3);
+            fraction = 0.25; // Flat percentage across the board; it's debilitating but not completely unsalvageable -- gsr
+		/*fraction = (double) pow(1.0 - (((double) player.status[STATUS_DARKNESS]) / player.maxStatus[STATUS_DARKNESS]), 3);
 		if (fraction < 0.05) {
 			fraction = 0.05;
-		}
+		}*/
 	} else {
 		fraction = 1;
 	}
+
 	lightRadius = lightRadius * fraction;
 
 	if (lightRadius < 2) {
@@ -287,7 +290,7 @@ boolean playerInDarkness() {
 
     // special armor that makes you dark when you're up against walls! -- gsr
     if (rogue.armor && (rogue.armor->flags & ITEM_RUNIC)
-        && rogue.armor->enchant2 == A_SHADOWS && !player.status[STATUS_DONNING]
+        && rogue.armor->enchant2 == A_SHADOWS && !player.status[STATUS_DONNING] && rogue.armor->enchant1 > 0
         && againstAWall(player.xLoc, player.yLoc))
         {
             if (!(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED))

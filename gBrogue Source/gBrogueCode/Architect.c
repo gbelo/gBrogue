@@ -2135,18 +2135,37 @@ void designBigRoom(short **grid) {
 
 void designNarrowRoom(short **grid) {
     short width, height, minX, maxX, minY, maxY, x, y, radius;
+    double t = 0;
+    boolean reflectY = false;
+
+    // Constants for the Bezier curve given below -- roughly a sideways S shape.
+    short   c1 = rand_range(DCOLS*1/4, DCOLS),
+            c2 = rand_range(0, DCOLS*3/4),
+
+            c3 = rand_range(-DROWS/2, 0),
+            c4 = rand_range(DROWS, DROWS*3/4);
 
     fillGrid(grid, 0);
     minX = 5;
     maxX = DCOLS - 5;
-    minY = 9;
-    maxY = DROWS - 9;
+    minY = 5;
+    maxY = DROWS - 5;
     x = minX;
     y = minY;
     radius = 3;
 
-    while (x < maxX)
+    char buf[255];
+
+
+    while (t < 1)
     {
+        // Bezier curve is a parameterized curve.
+        x = pow(1-t,3)*5     +3*pow(1-t,2)*t*c1  +3*(1-t)*pow(t,2)*c2    +pow(t,3)*75;
+        y = pow(1-t,3)*15    +3*pow(1-t,2)*t*c3  +3*(1-t)*pow(t,2)*c4    +pow(t,3)*15;
+
+        x = clamp(x, minX, maxX);
+        y = clamp(y, minY, maxY);
+
         if (grid[x][y] || 1) {
 //            colorOverDungeon(&darkGray);
 //            hiliteGrid(grid, &white, 100);
@@ -2157,9 +2176,10 @@ void designNarrowRoom(short **grid) {
 //            hiliteGrid(grid, &green, 50);
 //            temporaryMessage("Added a chunk:", true);
         }
-        x += rand_range(radius - 1, radius + 1);
-        y += rand_range(-radius + 2, radius + 2);
-        y = clamp(y + rand_range(-radius, radius), minY + 4, maxY - 4);
+        t+=0.01;
+
+//        x += rand_range(radius - 1, radius + 1);
+//        y += rand_range(-radius + 2, radius + 2);
     }
 
 /*    fillGrid(grid, 0);

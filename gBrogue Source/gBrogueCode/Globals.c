@@ -531,7 +531,6 @@ const floorTileType tileCatalog[NUMBER_TILETYPES] = {
     {FLOOR_CHAR,	&floorForeColor,		&floorBackColor,		95,	0,	DF_PLAIN_FIRE,	DF_DISCOVER_PARALYSIS_VENT, DF_PARALYSIS_VENT_SPEW,0,NO_LIGHT,	(0), (TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET | TM_IS_WIRED),                                 "the ground",			""},
 	{VENT_CHAR,		&pink,                  0,              		30,	0,	DF_PLAIN_FIRE,	0,			DF_PARALYSIS_VENT_SPEW,0,		NO_LIGHT,		(0), (TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                                     "an inactive gas vent",	"A dormant gas vent is connected to a reserve of paralytic gas."},
 
-
 	// Confusion traps are a pain -- gsr
 	{FLOOR_CHAR,	&floorForeColor,		&floorBackColor,		95,	0,	DF_STEAM_PUFF,DF_SHOW_CONFUSION_GAS_TRAP, 0,0,NO_LIGHT,		(T_IS_DF_TRAP), (TM_IS_SECRET),                                                                     "the ground",			""},
 	{TRAP_CHAR,		&white,         		0,              		30,	0,	DF_STEAM_PUFF,0,	0,			0,				NO_LIGHT,		(T_IS_DF_TRAP), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                                        "a steam trap",		"A hidden pressure plate accompanies a reserve of scalding steam."},
@@ -1235,7 +1234,7 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 		{0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(SCROLL),	SCROLL_ENCHANTING, 0,       2,				0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},
 //        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_STRENGTH,0,              2,				0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},
 //        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_LIFE,0,              2,				0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},
-        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_VITALITY,0,              2,				0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},
+        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_EMPOWERMENT,0,              2,				0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},
 		{0,			0,          0,              {1,1},		1,			0,          0,          0,				2,				0,			0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)}}},
     // Commutation altars
 	{{13, AMULET_LEVEL},{10, 30},	20,		4,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
@@ -1291,7 +1290,7 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
         {0,			0,	0,		{0,2},		1,			0,	0, MK_GOBLIN_MYSTIC, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
         {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(SCROLL),	SCROLL_ENCHANTING, MK_GOBLIN_CHIEFTAN, 2,   0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
 //        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_STRENGTH, MK_GOBLIN_CHIEFTAN, 2,         0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
-        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_VITALITY, MK_GOBLIN_CHIEFTAN, 2,         0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
+        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_EMPOWERMENT, MK_GOBLIN_CHIEFTAN, 2,         0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
         {0,         0,          0,              {5, 8},     5,          0,          -1,         0,              2,              HORDE_MACHINE_GOBLIN_WARREN,    0,  (MF_GENERATE_HORDE | MF_NOT_IN_HALLWAY | MF_MONSTER_SLEEPING)},
         {0,			0,			0,				{2,3},		2,			(WEAPON|ARMOR),	-1,		0,				1,				0,			0,			(MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
         {DF_HAY,	0,			0,				{10, 15},	1,			0,			-1,			0,				1,				0,			0,			(MF_NOT_IN_HALLWAY)},
@@ -1302,7 +1301,7 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
         {0,         CRYSTAL_WALL,DUNGEON,       {0,0},      0,          0,			-1,			0,				0,				0,			0,			(MF_BUILD_IN_WALLS | MF_EVERYWHERE)},
         {0,         PEDESTAL, DUNGEON, {1,1},	1,			(SCROLL),	SCROLL_ENCHANTING,0,	2,              0,              (ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
 //        {0,         PEDESTAL, DUNGEON, {1,1},	1,			(POTION),	POTION_STRENGTH,0,          2,              0,              (ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
-        {0,         PEDESTAL, DUNGEON, {1,1},	1,			(POTION),	POTION_VITALITY,0,          2,              0,              (ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
+        {0,         PEDESTAL, DUNGEON, {1,1},	1,			(POTION),	POTION_EMPOWERMENT,0,          2,              0,              (ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
         {0,         MACHINE_GLYPH,DUNGEON,      {30, 35},	20,			0,			-1,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING)},
         {0,         STATUE_INERT,DUNGEON,       {3, 5},     3,          0,          -1,         MK_SENTINEL,    2,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
         {0,         STATUE_INERT,DUNGEON,       {10, 15},   8,          0,          -1,         MK_SENTINEL,    2,              0,          0,          MF_BUILD_IN_WALLS},
@@ -2692,6 +2691,7 @@ const char armorRunicNames[NUMBER_ARMOR_ENCHANT_KINDS][30] = {
 	"frailty", // gsr
 	"teleportation", // gsr
     "immolation",
+    "doom", // gsr
 };
 
 itemTable scrollTable[NUMBER_SCROLL_KINDS] = {
@@ -2746,7 +2746,7 @@ itemTable potionTable[NUMBER_POTION_KINDS] = {
     {"respiration",			itemColors[8], "",  15,	20,	0,{0,0,0}, false, false, "When consumed, the contents of this flask will render you immune to harmful gases temporarily. If shattered, it will dissipate gas surrounding the immediate area around the point of impact."},
 //    {"caustic gas",         itemColors[9], "",	    15,	200,	0,{0,0,0}, false, false, "Uncorking or shattering this pressurized glass will cause its contents to explode into a deadly cloud of caustic purple gas. You might choose to fling this potion at distant enemies instead of uncorking it by hand."},
 	{"paralysis",			itemColors[9], "",	15, 25,	0,{0,0,0}, false, false, "Upon exposure to open air, the liquid in this flask will vaporize into a numbing pink haze. Anyone who inhales the cloud will be paralyzed instantly, unable to move for some time after the cloud dissipates. This item can be thrown at distant enemies to catch them within the effect of the gas."},
-	{"chaos",       		itemColors[10], "",	15,	10,	0,{0,0,0}, false, false, "This flask contains a mysterious compound that has a variety of effects. If consumed, you will drunkenly wander through a rainbow wonderland, temporarily unable to discern the form of any creatures or items you see and lose control of your movements.\n\nShattering it will release a cloud of confusion gas.\n\nBut when thrown directly at a creature, it will absorb the compound and transform into another creature at random. The tamest of creatures might turn into the most fearsome, and the horror of the transformation will turn any affected allies against you."},
+	{"chaos",       		itemColors[10], "",	15,	10,	0,{0,0,0}, false, false, "This flask contains a mysterious compound that has a variety of effects. If consumed, you will drunkenly wander through a rainbow wonderland, temporarily unable to discern the form of any creatures or items you see and lose control of your movements.\n\nShattering it will release a cloud of hallucinogenic gas.\n\nBut when thrown directly at a creature, it will absorb the compound and transform into another creature at random. The tamest of creatures might turn into the most fearsome, and the horror of the transformation will turn any affected allies against you."},
 //	{"confusion",			itemColors[12], "",	15,	45,	0,{0,0,0}, false, false, "This unstable chemical will quickly vaporize into a glittering cloud upon contact with open air, causing any creature that inhales it to lose control of the direction of its movements until the effect wears off (although its ability to aim projectile attacks will not be affected). Its vertiginous intoxication can cause creatures and adventurers to careen into one another or into chasms or lava pits, so extreme care should be taken when under its effect. Its contents can be weaponized by throwing the flask at distant enemies."},
 	{"incineration",		itemColors[11], "",	20,	50,	0,{0,0,0}, false, false, "This flask contains an unstable compound which will burst violently into flame upon exposure to open air. You might throw the flask at distant enemies -- or into a deep lake, to cleanse the cavern with scalding steam."},
 //	{"darkness",			itemColors[14], "",	7,	15,	0,{0,0,0}, false, false, "Drinking this potion will plunge you into darkness. At first, you will be completely blind to anything not illuminated by an independent light source, but over time your vision will regain its former strength. Throwing the potion will create a cloud of supernatural darkness, and enemies will have difficulty seeing or following you if you take refuge under its cover."},

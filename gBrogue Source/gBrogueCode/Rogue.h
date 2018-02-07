@@ -33,6 +33,14 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+/* TO DO:
+    - Narrow room improvements
+    - Reevaluate some potions/scrolls
+    - Fix that incineration/on fire bug
+    - Think about duration of status ailments
+    - Runes reappearing when enchantment > 0 again?
+
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -767,7 +775,7 @@ enum foodKind {
 enum potionKind {
 //	POTION_LIFE,
 //	POTION_STRENGTH,
-	POTION_VITALITY,
+	POTION_EMPOWERMENT,
 	POTION_TELEPATHY,
     POTION_LEVITATION,
 	POTION_DETECT_MAGIC,
@@ -785,7 +793,7 @@ enum potionKind {
 //	POTION_DARKNESS, // gsr
 //	POTION_DESCENT, // gsr
 //	POTION_LICHEN,
-	POTION_POISON_GAS, // gsr
+	POTION_CAUSTIC_GAS, // gsr
 	NUMBER_POTION_KINDS
 };
 
@@ -881,6 +889,7 @@ enum armorEnchants {
 	A_FRAILTY,
 	A_TELEPORTATION,
     A_IMMOLATION,
+    A_DOOM, // A particularly nasty one.
 	NUMBER_ARMOR_ENCHANT_KINDS,
 };
 

@@ -75,7 +75,7 @@ void updatePlayerUnderwaterness() {
         if (!cellHasTerrainFlag(player.xLoc, player.yLoc, T_IS_DEEP_WATER) || player.status[STATUS_LEVITATING]
 //            || cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))) {
             || cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))
-            || (rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING && !player.status[STATUS_DONNING])) {
+            || (rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING && !player.status[STATUS_DONNING] && rogue.armor->enchant1 > 0)) {
 
             rogue.inWater = false;
             updateMinersLightRadius();
@@ -85,7 +85,7 @@ void updatePlayerUnderwaterness() {
     } else {
         if (cellHasTerrainFlag(player.xLoc, player.yLoc, T_IS_DEEP_WATER) && !player.status[STATUS_LEVITATING]
             && !cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))
-            && !(rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING && !player.status[STATUS_DONNING])) {
+            && !(rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING && !player.status[STATUS_DONNING] && rogue.armor->enchant1 > 0)) {
 
             rogue.inWater = true;
             updateMinersLightRadius();
@@ -362,7 +362,7 @@ void applyInstantTileEffectsToCreature(creature *monst) {
         }
 
         // confusion gas
-        if (cellHasTerrainFlag(*x, *y, T_CAUSES_CONFUSION) && !(monst->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE))) {
+        /*if (cellHasTerrainFlag(*x, *y, T_CAUSES_CONFUSION) && !(monst->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE))) {
             if (monst == &player) {
                 rogue.disturbed = true;
             }
@@ -376,6 +376,28 @@ void applyInstantTileEffectsToCreature(creature *monst) {
                 message(buf2, false);
             }
             monst->status[STATUS_CONFUSED] = monst->maxStatus[STATUS_CONFUSED] = max(monst->status[STATUS_CONFUSED], 25);
+        }*/
+        // now a hallucinogenic! -- gsr
+        if (cellHasTerrainFlag(*x, *y, T_CAUSES_CONFUSION) && !(monst->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE))) {
+            if (monst == &player) {
+                rogue.disturbed = true;
+            }
+            if (canDirectlySeeMonster(monst) && !(monst->status[STATUS_CONFUSED] && monst->status[STATUS_DISCORDANT])) {
+                if (monst->creatureState == MONSTER_SLEEPING) {
+                    monst->creatureState = MONSTER_TRACKING_SCENT;
+                }
+                flashMonster(monst, &confusionGasColor, 100);
+                monsterName(buf, monst, true);
+                sprintf(buf2, "%s %s very disoriented!", buf, (monst == &player ? "feel": "looks"));
+                if (!monst->status[STATUS_HALLUCINATING])
+                    message(buf2, false);
+            }
+//            monst->status[STATUS_CONFUSED] = monst->maxStatus[STATUS_CONFUSED] = max(monst->status[STATUS_CONFUSED], 5);
+            // You hallucinate longer than they're discordant. Sorry, them's the rules.
+            if (monst == &player)
+                monst->status[STATUS_HALLUCINATING] = monst->maxStatus[STATUS_HALLUCINATING] = max(monst->status[STATUS_HALLUCINATING], 200);
+            else
+                monst->status[STATUS_DISCORDANT] = monst->maxStatus[STATUS_DISCORDANT] = max(monst->status[STATUS_DISCORDANT], 25);
         }
 
         // paralysis gas
@@ -459,7 +481,7 @@ void applyGradualTileEffectsToCreature(creature *monst, short ticks) {
 		&& !(monst->info.flags & MONST_IMMUNE_TO_WATER)) {
 		if (monst == &player) {
 
-            if (rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING && !player.status[STATUS_DONNING])
+            if (rogue.armor && rogue.armor->enchant2 == A_WATER_WALKING && !player.status[STATUS_DONNING] && rogue.armor->enchant1 > 0)
             {
                 if (!(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED))
                 {
@@ -1999,6 +2021,8 @@ void decrementPlayerStatus() {
 		player.status[STATUS_DARKNESS]--;
 		updateMinersLightRadius();
 		//updateVision();
+		if (!player.status[STATUS_DARKNESS])
+		message("your vision becomes more clear.", false);
 	}
 
 	if (player.status[STATUS_UNBREATHING] > 0 && !--player.status[STATUS_UNBREATHING]) {
@@ -2043,7 +2067,7 @@ void decrementPlayerStatus() {
 
 	if (player.status[STATUS_WEAKENED] > 0 && !--player.status[STATUS_WEAKENED]) {
 		player.weaknessAmount = 0;
-		message("strength returns to your muscles as the weakening toxin wears off.", false);
+		message("strength returns to your muscles.", false);// as the weakening toxin wears off.", false);
 		updateEncumbrance();
 	}
 
@@ -2095,6 +2119,28 @@ void decrementPlayerStatus() {
 		spawnPeriodicHorde();
 		rogue.monsterSpawnFuse = rand_range(125, 175);
 	}
+
+	// Armor of doom! --gsr
+    if (rogue.armor && rogue.armor->flags & ITEM_RUNIC
+        && rogue.armor->enchant2 == A_DOOM
+        && !player.status[STATUS_DONNING])
+        {
+            player.status[STATUS_DARKNESS] = player.maxStatus[STATUS_DARKNESS] = max(2, player.maxStatus[STATUS_DARKNESS]);
+            player.status[STATUS_HALLUCINATING] = player.maxStatus[STATUS_HALLUCINATING] = max(2, player.maxStatus[STATUS_HALLUCINATING]);
+            player.status[STATUS_AGGRAVATING] = player.maxStatus[STATUS_AGGRAVATING] = max(20, player.maxStatus[STATUS_AGGRAVATING]);
+            player.status[STATUS_WEAKENED] = player.maxStatus[STATUS_WEAKENED] = max(2, player.maxStatus[STATUS_WEAKENED]);
+            player.weaknessAmount = max(1, player.weaknessAmount);
+            updateMinersLightRadius();
+            updateVision(true);
+
+            if (!(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED))
+            {
+                message("You feel very, very bad.", false);
+                autoIdentify(rogue.armor);
+            }
+        }
+
+
 }
 
 void autoRest() {
@@ -2231,7 +2277,8 @@ void playerTurnEnded() {
 		}
 
 		if (rogue.awarenessBonus > -30) {
-			search(rogue.awarenessBonus + 30);
+//			search(rogue.awarenessBonus + 30);
+			search((rogue.awarenessBonus + 30) * (player.status[STATUS_DARKNESS] ? 0.25 : 1) ); // affected by darkness --gsr
 		}
 
 		if (rogue.staleLoopMap) {

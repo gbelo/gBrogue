@@ -377,7 +377,8 @@ void specialHit(creature *attacker, creature *defender, short damage) {
 			itemName(rogue.armor, buf2, false, false, NULL);
             sprintf(buf, "your %s weakens!", buf2);
 			messageWithColor(buf, &itemMessageColor, false);
-            checkForDisenchantment(rogue.armor);
+//            checkForDisenchantment(rogue.armor);
+            disenchantAffectRunes(rogue.armor); // Runics don't disappear forever anymore. --gsr
 		}
 		if (attacker->info.abilityFlags & MA_HIT_HALLUCINATE) {
 			if (!player.status[STATUS_HALLUCINATING]) {
@@ -386,7 +387,7 @@ void specialHit(creature *attacker, creature *defender, short damage) {
 			if (!player.status[STATUS_HALLUCINATING]) {
 				player.maxStatus[STATUS_HALLUCINATING] = 0;
 			}
-			player.status[STATUS_HALLUCINATING] += 20;
+			player.status[STATUS_HALLUCINATING] = 300;//+= 20;
 			player.maxStatus[STATUS_HALLUCINATING] = max(player.maxStatus[STATUS_HALLUCINATING], player.status[STATUS_HALLUCINATING]);
 		}
 		// gsr
@@ -397,8 +398,9 @@ void specialHit(creature *attacker, creature *defender, short damage) {
 			if (!player.status[STATUS_DARKNESS]) {
 				player.maxStatus[STATUS_DARKNESS] = 0;
 			}
-			player.status[STATUS_DARKNESS] += 30;
+			player.status[STATUS_DARKNESS] = 300; //+= 30;
 			player.maxStatus[STATUS_DARKNESS] = max(player.maxStatus[STATUS_DARKNESS], player.status[STATUS_DARKNESS]);
+            updateMinersLightRadius();
 			updateVision(true);
 		}
 
@@ -673,6 +675,11 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
 		return;
 	}
 
+    // No enchantment means no (positive) runics. Sorry! --gsr
+    	if (theItem->enchant2 < NUMBER_GOOD_WEAPON_ENCHANT_KINDS && rogue.armor->enchant1 < 1) // good runic
+            return;
+
+
 	enchant = netEnchant(theItem);
 
 	if (theItem->enchant2 == W_SLAYING) {
@@ -935,6 +942,10 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
 		return; // just in case
 	}
 
+    // No enchantment means no (positive) runics. Sorry! --gsr
+    	if (rogue.armor->enchant2 < NUMBER_GOOD_ARMOR_ENCHANT_KINDS && rogue.armor->enchant1 < 1) // good runic
+            return;
+
 	enchant = netEnchant(rogue.armor);
 
 	runicKnown = rogue.armor->flags & ITEM_RUNIC_IDENTIFIED;
@@ -946,6 +957,7 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
 
 	switch (rogue.armor->enchant2) {
 		case A_MULTIPLICITY:
+
 			if (melee && !(attacker->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE)) && rand_percent(33)) {
 				for (i = 0; i < armorImageCount(enchant); i++) {
 					monst = cloneMonster(attacker, false, true);
@@ -987,6 +999,7 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
 			}
 			break;
 		case A_MUTUALITY:
+
 			if (*damage > 0) {
 				count = 0;
 				for (i=0; i<8; i++) {
@@ -1047,13 +1060,13 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
                 rogue.armor->enchant1--;
                 equipItem(rogue.armor, true);
                 sprintf(returnString, "your %s weakens!", armorName);
-                checkForDisenchantment(rogue.armor);
+//                checkForDisenchantment(rogue.armor);
                 runicDiscovered = true;
             }
             break;
         // gsr
 		case A_TELEPORTATION:
-            if (rand_percent(10)) {
+            if (rand_percent(5)) {
                 teleport(&player, -1, -1, true);
                 sprintf(returnString, "your %s pulses and you find yourself standing somewhere else!", armorName);
                 if (!runicKnown) {
@@ -1378,7 +1391,8 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
 			itemName(rogue.weapon, buf2, false, false, NULL);
 			sprintf(buf, "your %s weakens!", buf2);
 			messageWithColor(buf, &itemMessageColor, false);
-            checkForDisenchantment(rogue.weapon);
+//            checkForDisenchantment(rogue.weapon);
+            disenchantAffectRunes(rogue.weapon); // Runics don't disappear forever anymore. --gsr
 		}
 
 		return true;
