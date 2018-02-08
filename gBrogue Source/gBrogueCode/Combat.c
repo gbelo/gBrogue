@@ -403,6 +403,18 @@ void specialHit(creature *attacker, creature *defender, short damage) {
             updateMinersLightRadius();
 			updateVision(true);
 		}
+		if (attacker->info.abilityFlags & MA_HIT_SLOWS) {
+			if (!player.status[STATUS_SLOWED]) {
+				combatMessage("your notice yourself slowing down", 0);
+			}
+			if (!player.status[STATUS_SLOWED]) {
+				player.maxStatus[STATUS_SLOWED] = 0;
+			}
+			player.status[STATUS_SLOWED] = 30; //+= 30;
+			player.maxStatus[STATUS_SLOWED] = max(player.maxStatus[STATUS_SLOWED], player.status[STATUS_SLOWED]);
+            updateMinersLightRadius();
+			updateVision(true);
+		}
 
 		if (attacker->info.abilityFlags & MA_HIT_STEAL_FLEE
 			&& !(attacker->carriedItem)
@@ -466,6 +478,11 @@ void specialHit(creature *attacker, creature *defender, short damage) {
 
 		weaken(defender, 300);
 	}
+	// Hallucination = discord for creatures --gsr
+    if (attacker->info.abilityFlags & MA_HIT_HALLUCINATE && defender != &player) {
+        defender->status[STATUS_DISCORDANT] = 300;//+= 20;
+        defender->maxStatus[STATUS_DISCORDANT] = max(defender->maxStatus[STATUS_DISCORDANT], defender->status[STATUS_DISCORDANT]);
+    }
 }
 
 short runicWeaponChance(item *theItem, boolean customEnchantLevel, float enchantLevel) {

@@ -403,7 +403,7 @@ void initializeRogue(unsigned long seed) {
     rogue.absoluteTurnNumber = 0;
 	rogue.foodSpawned = 0;
     rogue.lifePotionsSpawned = 0;
-	rogue.vitalityPotionsSpawned = 0;
+	rogue.empowermentPotionsSpawned = 0;
 	rogue.gold = 0;
 	rogue.goldGenerated = 0;
 	rogue.disturbed = false;

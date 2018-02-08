@@ -77,11 +77,11 @@ creature *generateMonster(short monsterID, boolean itemPossible, boolean mutatio
         && rogue.depthLevel > 10) {
 
 
+        // let's give these guys lots of mutations --gsr
         if (rogue.depthLevel <= AMULET_LEVEL) {
-            mutationChance = clamp(rogue.depthLevel - 10, 1, 10);
+            mutationChance = pow(1.18, rogue.depthLevel); // 10);
         } else {
-            mutationChance = 10 * (pow(1.17, rogue.depthLevel - AMULET_LEVEL) + FLOAT_FUDGE);
-            mutationChance = min(mutationChance, 75);
+            mutationChance = 75;
         }
 
         if (rand_percent(mutationChance)) {
@@ -4485,11 +4485,11 @@ void generateFellowAdventurer()
 			itemKind = chooseKind(armorTable, NUMBER_ARMOR_KINDS);
 			monst->info.defense = randClump(armorTable[itemKind].range);
 
-        // Potions of vitality
+        // Potions of empowerment
             for (i = 0; i < rogue.depthLevel; i++)
             {
-                // Found a potion of vitality on this floor...
-                if (rand_percent(75))
+                // Found a potion of empowerment on this floor...
+                if (rand_percent(60))
                 {
                     monst->info.maxHP += 10;
                     monst->info.damage.lowerBound += 1;

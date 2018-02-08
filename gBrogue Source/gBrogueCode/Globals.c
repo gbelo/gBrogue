@@ -1670,7 +1670,7 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 
     {0, "pet dog",		PET_DOG_CHAR,	&white,	13,		17,		80,		{1, 3, 1},		20,	95, 	100,	DF_RED_BLOOD,	0,		1,		DF_URINE,       {0}, (MONST_FEMALE | MONST_MALE | MONST_NO_POLYMORPH)},
 	{0,	"adventurer",	PLAYER_CHAR,	&white,30,	0,		100,	{1, 2, 1},		20,	100,	100,	DF_RED_BLOOD,	0,		0,		0,              {0},
-		(MONST_MALE | MONST_FEMALE | MONST_NO_POLYMORPH | MONST_CAST_SPELLS_SLOWLY | MONST_CARRY_ITEM_100 | MONST_DISTANT_FOLLOWER | MONST_WILL_NOT_USE_STAIRS | MONST_CAST_SPELLS_SLOWLY)},
+		(MONST_MALE | MONST_FEMALE | MONST_NO_POLYMORPH | MONST_CARRY_ITEM_100 | MONST_DISTANT_FOLLOWER | MONST_WILL_NOT_USE_STAIRS | MONST_CAST_SPELLS_SLOWLY)},
 
 	{0, "rat",			'r',	&gray,			6,		0,		80,		{1, 3, 1},		20,	90,	100,	DF_RED_BLOOD,	0,		1,		DF_URINE,       {0}},
 	{0, "kobold",		'k',	&goblinColor,	7,		0,		80,		{1, 4, 1},		20,	100,	100,	DF_RED_BLOOD,	0,		0,		0,              {0}},
@@ -1765,6 +1765,8 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 		(MONST_TURRET), (MA_CAUSES_WEAKNESS)},
 	{0, "nymph",		'n',	&green,			15,		10,     100,	{1, 2, 1},		20,	90,	100,	DF_GREEN_BLOOD,	SUN_LIGHT,	0,	0,              {},
 		(MONST_IMMUNE_TO_WATER | MONST_IMMUNE_TO_WEBS | MONST_FEMALE), (MA_AVOID_CORRIDORS | MA_TRANSFERENCE | MA_HIT_STEAL_FLEE)},
+	{0, "quivering jelly",	'J',	&white,	60,		0,		115,	{4, 8, 1},		0,	100,	100,	DF_ACID_BLOOD,	0,		0,		0,              {0},
+		(0), (MA_HIT_SLOWS | MA_CLONE_SELF_ON_DEFEND)},
 	{0,	"kraken",		'K',	&krakenColor,	120,	0,		150,	{15, 20, 3},	1,	50,		100,	0,              0,		0,		0,              {0},
 		(MONST_RESTRICTED_TO_LIQUID | MONST_IMMUNE_TO_WATER | MONST_SUBMERGES | MONST_FLITS | MONST_NEVER_SLEEPS | MONST_FLEES_NEAR_DEATH), (MA_SEIZES)},
 	{0,	"lich",			'L',	&white,			35,		80,     175,	{2, 6, 1},		0,	100,	100,	DF_ASH_BLOOD,	LICH_LIGHT,	0,	0,              {BOLT_FIRE},
@@ -1797,7 +1799,7 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 	{0, "goblin warlord",'g',	&blue,			30,		17,		100,	{3, 6, 1},		20,	100,	100,	DF_RED_BLOOD,	0,		0,		0,              {0},
 		(MONST_MAINTAINS_DISTANCE | MONST_CARRY_ITEM_25), (MA_CAST_SUMMON | MA_ATTACKS_PENETRATE | MA_AVOID_CORRIDORS)},
 	{0,	"black jelly",	'J',	&black,			120,	0,		130,	{3, 8, 1},		0,	100,	100,	DF_PURPLE_BLOOD,0,		0,		0,              {0},
-		(0), (MA_CLONE_SELF_ON_DEFEND)},
+		(0), (MA_HIT_SLOWS|MA_CLONE_SELF_ON_DEFEND)},
 	{0, "vampire",		'V',	&white,			75,		60,     120,	{4, 15, 2},		6,	50,		100,	DF_RED_BLOOD,	0,		0,		DF_BLOOD_EXPLOSION, {BOLT_BLINKING, BOLT_DISCORD},
 		(MONST_FLEES_NEAR_DEATH | MONST_MALE), (MA_TRANSFERENCE | MA_DF_ON_DEATH | MA_CAST_SUMMON | MA_ENTER_SUMMONS)},
 	{0, "flamedancer",	'F',	&white,			65,		80,     120,	{3, 8, 2},		0,	100,	100,	DF_EMBER_BLOOD,	FLAMEDANCER_LIGHT,100,DF_FLAMEDANCER_CORONA, {BOLT_FIRE},
@@ -2022,6 +2024,9 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 	{"A spirit of nature who tends to the scant flora found within the dungeon, $HESHE takes on the appearance of a young maiden and waits to lure adventurers away from their possessions.",
 		"draining", "Draining",
 		{"slaps", "pokes", "drains", {0}}},
+	{"This subspecies of jelly thrives in the dungeons with a slowing touch, leaving $HISHER prey almost helpless.",
+		"transmuting", "Transmuting",
+		{"douses","slimes","touches", {0}}},
 	{"This tentacled nightmare will emerge from the subterranean waters to ensnare and devour any creature foolish enough to set foot into $HISHER lake.",
 		"devouring", "Feeding",
 		{"slaps", "smites", "batters", {0}}},
@@ -2171,35 +2176,42 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 
 const mutation mutationCatalog[NUMBER_MUTATORS] = {
     //Title         textColor       healthFactor    moveSpdMult attackSpdMult   defMult damMult DF% DFtype  light   monstFlags  abilityFlags    forbiddenFlags      forbiddenAbilities
-    {"jelly",     &pinkJellyColor,        25,         50,         50,            50,     50,     -1, 0,      0,      (0), (MA_CLONE_SELF_ON_DEFEND), (MONST_IMMUNE_TO_WEAPONS|MONST_MAINTAINS_DISTANCE|MONST_FLIES|MONST_SUBMERGES|MONST_INVISIBLE), (MA_CLONE_SELF_ON_DEFEND),
-        "$HESHE has been transformed into a writhing mass of slime through means unknown, causing $HIMHER to replicate upon taking damage while sacrificing most of $HISHER strength and agility."},
-    {"floating",     &turquoise,        100,         75,         75,            100,     100,     -1, 0,      0,      (MONST_FLIES|MONST_FLITS), (0), (MONST_FLIES|MONST_SUBMERGES|MONST_INVISIBLE),
+    {"hallucinogenic",     &pinkJellyColor,        100,         100,         100,            100,     75,     -1, 0,      0,      (0), (MA_HIT_HALLUCINATE), (MONST_MAINTAINS_DISTANCE), 0,
+        "A rare mutation has bestowed $HIMHER chemical makeup with a light touch of pantherine, causing $HIMHER to induce hallucinations on attack."},
+    {"floating",     &telepathyColor,        100,         75,         75,            100,     100,     -1, 0,      0,      (MONST_FLIES|MONST_FLITS), (0), (MONST_FLIES|MONST_SUBMERGES|MONST_INVISIBLE),
         "An unseen force causes $HIMHER to levitate, allowing $HIMHER to float over pits and lava at the cost of some navigational ability."},
     {"explosive",   &orange,        50,             100,        100,            50,     100,    0,  DF_MUTATION_EXPLOSION, EXPLOSIVE_BLOAT_LIGHT, 0, MA_DF_ON_DEATH, MONST_SUBMERGES, 0,
         "A rare mutation will cause $HIMHER to explode violently when $HESHE dies."},
     {"infested",    &purple,   50,             100,        100,            50,     100,    0,  DF_MUTATION_LICHEN, 0, 0,   MA_DF_ON_DEATH, 0,               0,
         "$HESHE has been infested by deadly lichen spores; poisonous fungus will spread from $HISHER corpse when $HESHE dies."},
-    {"agile",       &lightBlue,     100,            50,         100,            150,    100,    -1, 0,      0,      MONST_FLEES_NEAR_DEATH, 0, MONST_FLEES_NEAR_DEATH, 0,
-        "A rare mutation greatly enhances $HISHER mobility."},
-    {"juggernaut",  &brown,         300,            200,        200,            75,     200,    -1, 0,      0,      0,          0,              MONST_MAINTAINS_DISTANCE, 0,
+    {"caustic",    &poisonGasColor,   50,             100,        100,            50,     100,    0,  DF_BLOAT_DEATH, 0, 0,   MA_DF_ON_DEATH, 0,               MA_DF_ON_DEATH,
+        "A rare mutation fills $HESHE with caustic gas, which will spread when $HESHE dies."},
+    {"combustible",    &methaneColor,   50,             80,        80,            100,     100,    0,  DF_METHANE_GAS_ARMAGEDDON, 0, 0,   MA_DF_ON_DEATH, 0,               MA_DF_ON_DEATH,
+        "A rare mutation has filled $HISHER innards with explosive methane, which will release as a massive cloud when $HESHE dies."},
+    {"juggernaut",  &brown,         300,            200,        200,            75,     200,    -1, 0,      0,      0,          0,              (MONST_MAINTAINS_DISTANCE|MONST_DIES_IF_NEGATED), 0,
         "A rare mutation has hardened $HISHER flesh, increasing $HISHER health and power but compromising $HISHER speed."},
+    {"aquatic",   &shallowWaterForeColor,    80,           100,         200,            100,     100,     -1, 0,      0,      (MONST_IMMUNE_TO_WATER|MONST_SUBMERGES), (0), (MONST_FLIES|MONST_IMMUNE_TO_WATER|MONST_SUBMERGES), (0),
+        "A rare mutation has bestowed $HIMHER with gills."},
     {"grappling",   &tanColor,      150,            100,        100,            50,     100,    -1, 0,      0,      0,          MA_SEIZES,      MONST_MAINTAINS_DISTANCE, MA_SEIZES,
         "A rare mutation has caused suckered tentacles to sprout from $HISHER frame, increasing $HISHER health and allowing $HIMHER to grapple with $HISHER prey."},
     {"vampiric",    &red,           100,            100,        100,            100,    100,    -1, 0,      0,      0,          MA_TRANSFERENCE, MONST_MAINTAINS_DISTANCE, MA_TRANSFERENCE,
         "A rare mutation allows $HIMHER to heal $HIMSELFHERSELF with every attack."},
     {"toxic",       &green,         100,            100,        200,            100,    20,     -1, 0,      0,      0,          (MA_CAUSES_WEAKNESS | MA_POISONS), MONST_MAINTAINS_DISTANCE, (MA_CAUSES_WEAKNESS | MA_POISONS),
         "A rare mutation causes $HIMHER to poison $HISHER victims and sap their strength with every attack."},
-    {"reflective",  &darkTurquoise, 100,            100,        100,            100,    100,    -1, 0,      CRYSTAL_WALL_LIGHT,      MONST_REFLECT_4, 0,         (MONST_REFLECT_4 | MONST_ALWAYS_USE_ABILITY|MONST_IMMUNE_TO_WEAPONS), 0,
+    {"beguiled",       &darkPurple,         60,            100,        200,            75,    20,     -1, 0,      0,      0,          (MA_HIT_SLOWS|MA_CAUSES_WEAKNESS|MA_POISONS|MA_HIT_BLINDS|MA_HIT_HALLUCINATE), MONST_MAINTAINS_DISTANCE, 0,
+        "$HESHE has been bound against $HISHER will to a malevolent, otherworldly presence, causing $HISHER attacks to essentially condemn $HISHER victims."},
+    {"reflective",  &turquoise, 100,            100,        100,            100,    100,    -1, 0,      CRYSTAL_WALL_LIGHT,      MONST_REFLECT_4, 0,         (MONST_REFLECT_4|MONST_ALWAYS_USE_ABILITY|MONST_IMMUNE_TO_WEAPONS), 0,
         "A rare mutation has coated $HISHER flesh with reflective scales."},
-    {"glass",       &white,    25,            110,         150,           10,     300,    -1, 0,      0,                    MONST_REFLECT_4, 0,         (MONST_REFLECT_4|MONST_ALWAYS_USE_ABILITY|MONST_IMMUNE_TO_WEAPONS), 0,
+    {"blinding",   &gray,    80,           100,         100,            100,     100,     -1, 0,      0,      (0), (MA_HIT_BLINDS), (0), (MA_HIT_BLINDS),
+        "A rare mutation causes ink to seep through $HISHER appendages."},
+    {"glass",       &wallCrystalColor,    25,            110,         150,           10,     300,    -1, 0,      0,                    MONST_REFLECT_4, 0,         (MONST_REFLECT_4|MONST_ALWAYS_USE_ABILITY|MONST_IMMUNE_TO_WEAPONS), 0,
         "A rare mutation has replaced $HISHER flesh with sharp but fragile shards of glass."},
-    {"everburning", &orange, 50,             200,        100,            100,    50,     -1, 0,      LAVA_LIGHT,      (MONST_FIERY|MONST_IMMUNE_TO_FIRE|MONST_FLITS), 0, (MONST_FIERY|MONST_FLIES), 0,
-        "A rare mutation has caused $HISHER flesh to burn continuously. $HESHE seems to be unconcerned with the flames that surround $HIMHER."},
-    {"berserk",     &red,        100,            75,         50,            25,     150,     -1, 0,      0,      (MONST_ALWAYS_HUNTING|MONST_NEVER_SLEEPS), (MA_ATTACKS_ALL_ADJACENT|MA_ATTACKS_PENETRATE), (0), (0),
+    {"fireproof", &fireForeColor, 90,             100,        100,            100,    100,     -1, 0,      LAVA_LIGHT,      (MONST_IMMUNE_TO_FIRE), 0, (MONST_FIERY|MONST_IMMUNE_TO_FIRE|MONST_DIES_IF_NEGATED), 0,
+        "A rare mutation has caused $HISHER to seep fireproof mucous through $HISHER pores."},
+    {"berserk",     &explosiveAuraColor,        100,            75,         50,            25,     150,     -1, 0,      0,      (MONST_ALWAYS_HUNTING|MONST_NEVER_SLEEPS), (MA_ATTACKS_ALL_ADJACENT|MA_ATTACKS_PENETRATE), (0), (0),
         "Some sort of chaotic spirit seems to have possessed $HIMHER, sending $HIMHER into a blind primal rage."},
-    {"acidic",   &acidBackColor,    80,           100,         200,            50,     130,     -1, 0,      0,      (MONST_DEFEND_DEGRADE_WEAPON), (0), (MONST_DEFEND_DEGRADE_WEAPON|MONST_MAINTAINS_DISTANCE), (0),
-        "A rare mutation causes acid to seep through to the surface of $HISHER body, making $HIMHER corrosive to the touch."},
-
+    {"acidic",   &acidBackColor,    80,           100,         100,            100,     100,     -1, 0,      0,      (MONST_DEFEND_DEGRADE_WEAPON), (MA_HIT_DEGRADE_ARMOR), (MONST_DEFEND_DEGRADE_WEAPON|MONST_DIES_IF_NEGATED), (MA_HIT_DEGRADE_ARMOR),
+        "A rare mutation causes acid to seep through the surface of $HISHER body, making $HIMHER corrosive to the touch."},
 };
 
 #pragma mark Horde definitions
@@ -2243,8 +2255,8 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_INK_EEL,		0,		{0},	    							{{0}},      					12,		20,		7,		DEEP_WATER},
 	{MK_MAGMA_EEL,		1,		{MK_MAGMA_EEL},							{{0}},      					15,		25,		15,		LAVA},
 	{MK_ACID_MOUND,		1,		{MK_ACID_MOUND},						{{2, 4, 1}},					9,		13,		3},
-	{MK_SPIDER,			0,		{0},									{{0}},							9,		16,		10},
-	{MK_DAR_BLADEMASTER,1,		{MK_DAR_BLADEMASTER},					{{0, 1, 1}},					10,		14,		10},
+	{MK_SPIDER,			0,		{0},									{{0}},							9,		16,		2},
+	{MK_DAR_BLADEMASTER,1,		{MK_DAR_BLADEMASTER},					{{0, 1, 1}},					10,		14,		3},
 	{MK_WILL_O_THE_WISP,0,		{0},									{{0}},							10,		17,		10},
 	{MK_WRAITH,			0,		{0},									{{0}},							10,		17,		10},
 	{MK_GOBLIN_TOTEM,	4,		{MK_GOBLIN_TOTEM, MK_GOBLIN_CONJURER, MK_GOBLIN_MYSTIC, MK_GOBLIN, MK_GOBLIN_THIEF, MK_GOBLIN_DRIVER}, {{1,2,1},{1,2,1},{1,2,1},{3,5,1},{0,1,1},{0,1,1}},10,17,8,0,MT_CAMP_AREA,	HORDE_NO_PERIODIC_SPAWN},
@@ -2272,7 +2284,8 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_IMP,			0,		{0},									{{0}},							17,		30,		10},
 	{MK_DAR_BLADEMASTER,3,		{MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS, MK_DAR_BATTLEMAGE},{{1,2,1},{1,1,1},{1,1,1}},18,25,10},
 	{MK_FURY,			1,		{MK_FURY},								{{2, 4, 1}},					18,		38,		8},
-	{MK_REVENANT,		0,		{0},									{{0}},							19,		27,		10},
+	{MK_SLIME_JELLY,	0,		{0},									{{0}},							12,		25,		10},
+	{MK_REVENANT,		0,		{0},									{{0}},							19,		35,		10},
 	{MK_GOLEM,			0,		{0},									{{0}},							21,		30,		10},
 	{MK_TENTACLE_HORROR,0,		{0},									{{0}},							22,		MOLOCH_LAIR_LEVEL-1,		10},
 	{MK_PHYLACTERY,		0,		{0},									{{0}},							22,		MOLOCH_LAIR_LEVEL-1,		10},
@@ -2455,7 +2468,7 @@ const monsterClass monsterClassCatalog[MONSTER_CLASS_COUNT] = {
     {"ogre",            10,         16,         {MK_OGRE, MK_OGRE_SHAMAN, MK_OGRE_TOTEM}},
     {"dragon",          10,         -1,         {MK_DRAGON, MK_BLACK_DRAGON}},
     {"undead",          10,         -1,         {MK_ZOMBIE, MK_WRAITH, MK_VAMPIRE, MK_PHANTOM, MK_LICH, MK_REVENANT, MK_SHADOW_CENIPEDE, MK_BLACK_DRAGON, MK_DAR_APPARITION}},
-    {"jelly",           10,         15,         {MK_PINK_JELLY, MK_BLACK_JELLY, MK_ACID_JELLY, MK_INVISIBLE_JELLY}},
+    {"jelly",           10,         15,         {MK_PINK_JELLY, MK_BLACK_JELLY, MK_ACID_JELLY, MK_SLIME_JELLY, MK_INVISIBLE_JELLY}},
     {"turret",          5,          18,         {MK_ARROW_TURRET, MK_SPARK_TURRET, MK_DART_TURRET, MK_FLAME_TURRET}},
     {"infernal",        10,         -1,         {MK_FLAMEDANCER, MK_IMP, MK_REVENANT, MK_FURY, MK_PHANTOM, MK_MAGMA_EEL, MK_BLACK_DRAGON}},
     {"waterborne",      10,         17,         {MK_EEL, MK_NAGA, MK_KRAKEN}},
@@ -2609,16 +2622,17 @@ const itemTable foodTable[NUMBER_FOOD_KINDS] = {
 	{"mango",				"", "", 1, 2,	NUTRITION_MANGO, {0,0,0}, true, false, "An odd fruit to be found so deep beneath the surface of the earth, but only slightly less filling than a ration of food."}
 };
 
+// Short sword and mace never spawn. This gives us two weapons per category. Consistency!
 const itemTable weaponTable[NUMBER_WEAPON_KINDS] = {
 	{"dagger",				"", "",  8, 11,		11,	{3,	4,	1},		true, false, "A simple iron dagger with a well-worn wooden handle. Daggers will deal quintuple damage upon a successful sneak attack instead of triple damage."},
-	{"kris",				"", "",  9, 33,		15,	{5,	6,	1},		true, false, "The jagged blade of this dagger is as deadly as it is jarring. It will deal quintuple damage upon a successful sneak attack instead of triple damage."},
+	{"kris",				"", "",  9, 33,		15,	{5,	6,	1},		true, false, "This jagged blade is as deadly as it is jarring. It will deal quintuple damage upon a successful sneak attack instead of triple damage."},
 
-	{"short sword",		    "", "", 10, 30,		12, {4,	7,	1},		true, false, "Though not the most impressive of blades, this short sword is still formidable."},
+	{"short sword",		    "", "",  0, 30,		12, {4,	7,	1},		true, false, "Though not the most impressive of blades, this short sword is still formidable."},
  	{"sword",				"", "", 10, 44,		14, {7,	9,	1},		true, false, "The razor-sharp length of steel blade shines reassuringly."},
 	{"broadsword",			"", "",  7, 99,		19,	{14, 22, 1},	true, false, "This towering blade inflicts heavy damage by investing its heft into every cut."},
 
     {"whip",			    "", "", 10, 44,		14, {3,	5,	1},		true, false, "This lash from this coil of braided leather can tear bark from trees, and it will reach opponents up to five spaces away."},
-    {"barbed whip",			"", "",  7, 65,		18, {10, 14,1},		true, false, "Weighty but flexible, this whip is composed of a series of strong metal rods joined end by rings. It will reach opponents up to five spaces away."},
+    {"barbed whip",			"", "",  7, 65,		19, {10, 14,1},		true, false, "A copious number of sharp iron barbs is embedded in this hefty leather whip. It will reach opponents up to five spaces away."},
 
     {"rapier",				"", "", 10, 44,		15, {3,	5,	1},		true, false, "This blade is thin and flexible, designed for deft and rapid maneuvers. It inflicts less damage than comparable weapons, but permits you to attack twice as quickly. If there is one space between you and an enemy and you step directly toward it, you will perform a devastating lunge attack, which deals treble damage and never misses."},
     {"estoc",	    		"", "", 10, 44,		17, {6,	9,	1},		true, false, "More rigid and hefty than a rapier, a properly wielded estoc is a very devastating dueling weapon. It inflicts less damage than comparable weapons, but permits you to attack twice as quickly. If there is one space between you and an enemy and you step directly toward it, you will perform a devastating lunge attack, which deals treble damage and never misses."},
@@ -2627,7 +2641,7 @@ const itemTable weaponTable[NUMBER_WEAPON_KINDS] = {
     {"flail",				"", "",  8, 44,		17, {10,13,	1},		true, false, "The spiked iron ball can be whirled at the end of its chain in synchronicity with your movement, allowing you a free attack whenever moving between two spaces that are adjacent to an enemy."},
 
 	{"club",				"", "", 10, 41,		13, {9,  15, 1},	true, false, "The stone club is one of the simplest weapons available. Because of its heft, it takes two turns when it hits."},
-	{"mace",				"", "", 10, 66,		16, {16, 20, 1},	true, false, "The iron flanges at the head of this weapon inflict substantial damage with every weighty blow. Because of its heft, it takes two turns when it hits."},
+	{"mace",				"", "",  0, 66,		16, {16, 20, 1},	true, false, "The iron flanges at the head of this weapon inflict substantial damage with every weighty blow. Because of its heft, it takes two turns when it hits."},
 	{"war hammer",			"", "", 10, 110,	20, {25, 35, 1},	true, false, "Few creatures can withstand the crushing blow of this towering mass of lead and steel, but only the strongest of adventurers can effectively wield it. Because of its heft, it takes two turns when it hits."},
 
 	{"spear",				"", "", 10, 33,		13, {4, 5, 1},		true, false, "A slender wooden rod tipped with sharpened iron. The reach of the spear permits you to simultaneously attack an adjacent enemy and the enemy directly behind it."},
@@ -2702,16 +2716,17 @@ itemTable scrollTable[NUMBER_SCROLL_KINDS] = {
 	{"recharging",			itemTitles[4], "",	8,	37,	0,{0,0,0}, false, false, "The power bound up in this parchment will instantly recharge all of your staffs and charms."},
 //	{"protect armor",		itemTitles[5], "",	10,	40,	0,{0,0,0}, false, false, "The armor worn by the reader of this scroll will be permanently proofed against degradation from acid."},
 //	{"protect weapon",		itemTitles[6], "",	10,	40,	0,{0,0,0}, false, false, "The weapon held by the reader of this scroll will be permanently proofed against degradation from acid."},
-	{"protect equipment",	itemTitles[5], "",	10,	100,	0,{0,0,0}, false, false, "All weapons and armor worn or held by the reader of this scroll will be permanently proofed against degradation from acid."},
+	{"protect equipment",	itemTitles[5], "",	10,	100,	0,{0,0,0}, false, false, "Any weapon in hand and armor worn by the reader of this scroll will be permanently proofed against degradation from acid."},
     {"sanctuary",           itemTitles[6], "",  10, 50,    0,{0,0,0}, false, false, "When recited over plain ground, the sacred rite of protection memorialized on this scroll will imbue the area with powerful warding glyphs. Monsters will not willingly set foot on the affected area."},
 	{"magic mapping",		itemTitles[7], "",	12,	50,	0,{0,0,0}, false, false, "When this scroll is read, a purple-hued image of crystal clarity will be etched into your memory, alerting you to the precise layout of the level and revealing all hidden secrets. The locations of items and creatures will remain unknown."},
-	{"negation",			itemTitles[8], "",	8,	40,	0,{0,0,0}, false, false, "This scroll contains a powerful anti-magic. When it is released, all creatures (including yourself) and all items lying on the ground within your field of view will be exposed to its blast and stripped of magic -- and creatures animated purely by magic will die. Potions, scrolls, items being held by other creatures and items in your inventory will not be affected."},
-	{"shattering",			itemTitles[9],"",	4,	50,	0,{0,0,0}, false, false, "The blast of sorcery unleashed by this scroll will alter the physical structure of nearby stone, causing it to dissolve away over the ensuing minutes."},
+	{"negation",			itemTitles[8], "",	0,	40,	0,{0,0,0}, false, false, "This scroll contains a powerful anti-magic. When it is released, all creatures (including yourself) and all items lying on the ground within your field of view will be exposed to its blast and stripped of magic -- and creatures animated purely by magic will die. Potions, scrolls, items being held by other creatures and items in your inventory will not be affected."},
+	{"shattering",			itemTitles[9],"",	6,	50,	0,{0,0,0}, false, false, "The blast of sorcery unleashed by this scroll will alter the physical structure of nearby stone, causing it to dissolve away over the ensuing minutes."},
     {"discord",             itemTitles[10], "",	15,	40,	0,{0,0,0}, false, false, "Reading this scroll will unleash a powerful blast of mind magic. Any creatures within line of sight will turn against their companions and attack indiscriminately for 30 turns."},
-	{"great identify",		itemTitles[11], "",	2,	200,	0,{0,0,0}, false, false, "This extremely rare parchment will reveal the secrets of every item in the reader's pack."},
+	{"great identify",		itemTitles[11], "",	2,	200,	0,{0,0,0}, false, false, "This extremely rare parchment will reveal the secrets of every item in the reader's pack when read aloud."},
 	{"summon familiar",		itemTitles[12], "",	2,	180,	0,{0,0,0}, false, false, "The incantation on this scroll will beckon a creature from another plane, drawing it through to existence to assist the reader."},
-	{"aggravate monsters",	itemTitles[13], "",	15,	3,		0,{0,0,0}, false, false, "When read aloud, this scroll will unleash a piercing shriek that will awaken all monsters and alert them to the reader's location."},
-	{"summon monsters",		itemTitles[14], "",	10,	3,		0,{0,0,0}, false, false, "The incantation on this scroll will call out to creatures in other planes of existence, drawing them through the fabric of reality to confront the reader."},
+ 	{"chaos",		        itemTitles[13], "",	2,	200,	0,{0,0,0}, false, false, "This scroll will cause absolute chaos all around, transporting every creature on the level to a random location. It might flush out hidden monsters, or it could make for a last resort. It could also be combined with telepathic power to indirectly map out portions of the current level."},
+	{"aggravate monsters",	itemTitles[14], "",	15,	3,		0,{0,0,0}, false, false, "When read aloud, this scroll will unleash a piercing shriek that will awaken all monsters and alert them to the reader's location."},
+	{"summon monsters",		itemTitles[15], "",	10,	3,		0,{0,0,0}, false, false, "The incantation on this scroll will call out to creatures in other planes of existence, drawing them through the fabric of reality to confront the reader."},
 };
 
 itemTable charmTable[NUMBER_CHARM_KINDS] = {
@@ -2746,7 +2761,7 @@ itemTable potionTable[NUMBER_POTION_KINDS] = {
     {"respiration",			itemColors[8], "",  15,	20,	0,{0,0,0}, false, false, "When consumed, the contents of this flask will render you immune to harmful gases temporarily. If shattered, it will dissipate gas surrounding the immediate area around the point of impact."},
 //    {"caustic gas",         itemColors[9], "",	    15,	200,	0,{0,0,0}, false, false, "Uncorking or shattering this pressurized glass will cause its contents to explode into a deadly cloud of caustic purple gas. You might choose to fling this potion at distant enemies instead of uncorking it by hand."},
 	{"paralysis",			itemColors[9], "",	15, 25,	0,{0,0,0}, false, false, "Upon exposure to open air, the liquid in this flask will vaporize into a numbing pink haze. Anyone who inhales the cloud will be paralyzed instantly, unable to move for some time after the cloud dissipates. This item can be thrown at distant enemies to catch them within the effect of the gas."},
-	{"chaos",       		itemColors[10], "",	15,	10,	0,{0,0,0}, false, false, "This flask contains a mysterious compound that has a variety of effects. If consumed, you will drunkenly wander through a rainbow wonderland, temporarily unable to discern the form of any creatures or items you see and lose control of your movements.\n\nShattering it will release a cloud of hallucinogenic gas.\n\nBut when thrown directly at a creature, it will absorb the compound and transform into another creature at random. The tamest of creatures might turn into the most fearsome, and the horror of the transformation will turn any affected allies against you."},
+	{"hallucination",       itemColors[10], "",	15,	10,	0,{0,0,0}, false, false, "This flask contains a mysterious compound that has a variety of effects based on altering reality. If consumed, you will drunkenly wander through a rainbow wonderland, temporarily unable to discern the form of any creatures or items you see.\n\nShattering it will release a cloud of hallucinogenic gas, which will cause discord among creatures.\n\nBut when thrown directly at a creature, that creature will absorb the compound and transform into another creature at random. The tamest of creatures might turn into the most fearsome, and the horror of the transformation will turn any affected allies against you."},
 //	{"confusion",			itemColors[12], "",	15,	45,	0,{0,0,0}, false, false, "This unstable chemical will quickly vaporize into a glittering cloud upon contact with open air, causing any creature that inhales it to lose control of the direction of its movements until the effect wears off (although its ability to aim projectile attacks will not be affected). Its vertiginous intoxication can cause creatures and adventurers to careen into one another or into chasms or lava pits, so extreme care should be taken when under its effect. Its contents can be weaponized by throwing the flask at distant enemies."},
 	{"incineration",		itemColors[11], "",	20,	50,	0,{0,0,0}, false, false, "This flask contains an unstable compound which will burst violently into flame upon exposure to open air. You might throw the flask at distant enemies -- or into a deep lake, to cleanse the cavern with scalding steam."},
 //	{"darkness",			itemColors[14], "",	7,	15,	0,{0,0,0}, false, false, "Drinking this potion will plunge you into darkness. At first, you will be completely blind to anything not illuminated by an independent light source, but over time your vision will regain its former strength. Throwing the potion will create a cloud of supernatural darkness, and enemies will have difficulty seeing or following you if you take refuge under its cover."},
@@ -2771,15 +2786,16 @@ itemTable wandTable[NUMBER_WAND_KINDS] = {
 itemTable staffTable[NUMBER_STAFF_KINDS] = {
 	{"lightning",		itemWoods[0], "",	15,	530,	BOLT_LIGHTNING,     {2,4,1}, false, false, "This staff conjures forth deadly arcs of electricity, which deal damage to any number of creatures in a straight line. The bolt of electricity will also bounce off one solid obstacle in a random direction."},
 	{"firebolt",		itemWoods[1], "",	15,	430,	BOLT_FIRE,          {2,4,1}, false, false, "This staff unleashes bursts of magical fire. It will ignite flammable terrain, and will damage and burn a creature that it hits. Creatures with an immunity to fire will be unaffected by the bolt."},
-	{"poison",			itemWoods[2], "",	10,	420,	BOLT_POISON,        {2,4,1}, false, false, "The vile blast of this twisted bit of wood will imbue its target with a deadly venom. Each turn, a creature that is poisoned will suffer one point of damage per dose of poison it has received, and poisoned creatures will not regenerate lost health until the poison clears."},
+	{"poison",			itemWoods[2], "",	8,	420,	BOLT_POISON,        {2,4,1}, false, false, "The vile blast of this twisted bit of wood will imbue its target with a deadly venom. Each turn, a creature that is poisoned will suffer one point of damage per dose of poison it has received, and poisoned creatures will not regenerate lost health until the poison clears."},
 	{"tunneling",		itemWoods[3], "",	15,	300,	BOLT_TUNNELING,     {2,4,1}, false, false, "Bursts of magic from this staff will pass harmlessly through creatures but will reduce walls and other inanimate obstructions to rubble."},
 	{"blinking",		itemWoods[4], "",	11,	420,	BOLT_BLINKING,      {2,4,1}, false, false, "This staff will allow you to teleport in the chosen direction. Creatures and inanimate obstructions will block the teleportation. Be careful around dangerous terrain, as nothing will prevent you from teleporting to a fiery death in a lake of lava."},
 	{"obstruction",		itemWoods[5], "",	10,	400,	BOLT_OBSTRUCTION,   {2,4,1}, false, false, "A mass of impenetrable green crystal will spring forth from the point at which this staff is aimed, obstructing any who wish to move through the affected area and temporarily entombing any who are already there. The crystal will dissolve into the air as time passes. Higher level staffs will create larger obstructions."},
-	{"discord",			itemWoods[6], "",	3,	300,	BOLT_DISCORD,       {2,4,1}, false, false, "The purple light from this staff will alter the perception of a creature to lash out indiscriminately. Strangers and allies alike will turn on the victim."},
+	{"discord",			itemWoods[6], "",	5,	300,	BOLT_DISCORD,       {2,4,1}, false, false, "The purple light from this staff will alter the perception of a creature to lash out indiscriminately. Strangers and allies alike will turn on the victim."},
 	{"conjuration",		itemWoods[7], "",	3,	500,	BOLT_CONJURATION,   {2,4,1}, false, false, "A flick of this staff summons a number of phantom blades to fight on your behalf."},
-	{"force",   		itemWoods[8], "",	3,	500,	BOLT_FORCE,         {2,4,1}, false, false, "The heavyweight beam from this staff will send a monster backward, with distance depending on the staff's enchantment. Targeted creatures could very well slam into walls or other creatures -- or perhaps even pushed into lava or traps."},
-
-    {"domination",		itemWoods[9], "",	0,	950,	BOLT_DOMINATION,    {1,2,1}, false, false, "This staff can forever bind an enemy to the caster's will, turning it into a steadfast ally. However, the magic works only against enemies that are near death."},
+	{"force",   		itemWoods[8], "",	10,	500,	BOLT_FORCE,         {2,4,1}, false, false, "The heavyweight beam from this staff will send a monster backward, with distance depending on the staff's enchantment. Targeted creatures could very well slam into walls or other creatures -- or perhaps even pushed into lava or traps."},
+	{"slowness",		itemWoods[9], "",	12,	100,	BOLT_SLOW,          {2,4,1}, false, false, "This staff will cause a creature to move at half its ordinary speed for some time."},
+	{"beckoning",		itemWoods[10], "",	12,	50,	    BOLT_BECKONING,     {2,4,1}, false, false, "The force of this staff will yank the targeted creature into direct proximity. This may be used to draw fleeing monsters or reckless allies toward you."},
+    {"domination",		itemWoods[11], "",	0,	950,	BOLT_DOMINATION,    {1,2,1}, false, false, "This staff can forever bind an enemy to the caster's will, turning it into a steadfast ally. However, the magic works only against enemies that are near death."},
 };
 
 itemTable ringTable[NUMBER_RING_KINDS] = {
@@ -2912,6 +2928,7 @@ const char monsterAbilityFlagDescriptions[32][COLS] = {
     "attacks enemies at a distance",            // MA_ATTACKS_EXTEND
     "avoids attacking in corridors in a group", // MA_AVOID_CORRIDORS
     "can blind opponents",                      // MA_HIT_BLINDS
+    "can slow down opponents",                  // MA_HIT_SLOWS
 };
 
 const char monsterBookkeepingFlagDescriptions[32][COLS] = {

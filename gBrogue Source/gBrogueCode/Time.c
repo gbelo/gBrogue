@@ -389,7 +389,7 @@ void applyInstantTileEffectsToCreature(creature *monst) {
                 flashMonster(monst, &confusionGasColor, 100);
                 monsterName(buf, monst, true);
                 sprintf(buf2, "%s %s very disoriented!", buf, (monst == &player ? "feel": "looks"));
-                if (!monst->status[STATUS_HALLUCINATING])
+                if (!(monst->status[STATUS_HALLUCINATING] || monst->status[STATUS_DISCORDANT]))
                     message(buf2, false);
             }
 //            monst->status[STATUS_CONFUSED] = monst->maxStatus[STATUS_CONFUSED] = max(monst->status[STATUS_CONFUSED], 5);

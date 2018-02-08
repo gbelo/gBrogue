@@ -34,12 +34,19 @@
 //
 
 /* TO DO:
-    - Narrow room improvements
     - Reevaluate some potions/scrolls
     - Fix that incineration/on fire bug
-    - Think about duration of status ailments
-    - Runes reappearing when enchantment > 0 again?
-
+    - Jellymancer feat
+    - Warnings in compiling
+    - Compilation: Linux, iPad..
+    - Fellow adventurers leaving loot
+    - Grammar on inactive runic armor/weapons
+    - SHIFT+dir(?) to move without using weapon (whip) or picking up item
+    - Ally commands
+    - Staff of beckoning?
+    - More detail on high score screen https://www.reddit.com/r/brogueforum/comments/6iosq7/idea_show_inventory_and_last_screenshot_on_high/
+    - Poison vs. vampiric?
+    - SCROLL OF CHAOS
 */
 
 #include <stdio.h>
@@ -787,7 +794,7 @@ enum potionKind {
 //	POTION_CAUSTIC,
 	POTION_PARALYSIS,
 //	POTION_HALLUCINATION, //  gsr
-	POTION_CHAOS, //  gsr
+	POTION_HALLUCINATION, //  gsr
 //	POTION_CONFUSION, // gsr
 	POTION_INCINERATION,
 //	POTION_DARKNESS, // gsr
@@ -810,7 +817,7 @@ enum weaponKind {
     CHAIN_WHIP,
 
     RAPIER,
-    EPEE,
+    ESTOC,
 
     NUNCHAKU,
     FLAIL,
@@ -920,6 +927,8 @@ enum staffKind {
 //	STAFF_HASTE,
 //	STAFF_PROTECTION,
     STAFF_FORCE,    // new! --gsr
+    STAFF_SLOWNESS,
+    STAFF_BECKONING,
     STAFF_DOMINATION,
 	NUMBER_STAFF_KINDS
 };
@@ -1013,6 +1022,7 @@ enum scrollKind {
     SCROLL_DISCORD,
     SCROLL_GREAT_IDENTIFY,
 	SCROLL_SUMMON_FAMILIAR,
+	SCROLL_TORNADO,
 	SCROLL_AGGRAVATE_MONSTER,
 	SCROLL_SUMMON_MONSTER,
 	NUMBER_SCROLL_KINDS
@@ -1072,6 +1082,7 @@ enum monsterTypes {
 	MK_ACID_TURRET,
 	MK_DART_TURRET,
 	MK_NYMPH,
+	MK_SLIME_JELLY,
 	MK_KRAKEN,
 	MK_LICH,
 	MK_PHYLACTERY,
@@ -1120,7 +1131,7 @@ enum monsterTypes {
 	NUMBER_MONSTER_KINDS
 };
 
-#define NUMBER_MUTATORS             14
+#define NUMBER_MUTATORS             18
 
 #define	NUMBER_HORDES				168
 
@@ -1364,6 +1375,7 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 #define staffHasteDuration(enchant)			((int) (2 + (enchant) * 4 + FLOAT_FUDGE))
 #define staffBladeCount(enchant)			((int) ((enchant) * 3 / 2 + FLOAT_FUDGE))
 #define staffDiscordDuration(enchant)		((int) ((enchant) * 4 + FLOAT_FUDGE))
+#define staffSlowDuration(enchant)		    ((int) ((enchant) * 5 + FLOAT_FUDGE))
 #define staffProtection(enchant)			((int) (50 * pow(1.53, (double) (enchant) - 2) + FLOAT_FUDGE))
 #define staffEntrancementDuration(enchant)	((int) ((enchant) * 3 + FLOAT_FUDGE))
 
@@ -2174,8 +2186,9 @@ enum monsterAbilityFlags {
     MA_ATTACKS_EXTEND               = Fl(14),   // monster attacks from a distance in a cardinal direction, like a whip
     MA_AVOID_CORRIDORS              = Fl(15),   // monster will avoid corridors when hunting
     MA_HIT_BLINDS       			= Fl(16),	// monster blinds (darkness) character
+    MA_HIT_SLOWS                    = Fl(17),	// monster attacks cause slowness
 
-	SPECIAL_HIT						= (MA_HIT_HALLUCINATE | MA_HIT_STEAL_FLEE | MA_HIT_DEGRADE_ARMOR | MA_HIT_BLINDS | MA_POISONS | MA_TRANSFERENCE | MA_CAUSES_WEAKNESS),
+	SPECIAL_HIT						= (MA_HIT_HALLUCINATE | MA_HIT_STEAL_FLEE | MA_HIT_DEGRADE_ARMOR | MA_HIT_BLINDS | MA_POISONS | MA_TRANSFERENCE | MA_CAUSES_WEAKNESS | MA_HIT_SLOWS),
 	LEARNABLE_ABILITIES				= (MA_TRANSFERENCE | MA_CAUSES_WEAKNESS | MA_ATTACKS_PENETRATE | MA_POISONS | MA_SEIZES | MA_ATTACKS_ALL_ADJACENT),
 
     MA_NON_NEGATABLE_ABILITIES      = (MA_ATTACKS_PENETRATE | MA_ATTACKS_ALL_ADJACENT),
@@ -2477,8 +2490,8 @@ typedef struct playerCharacter {
 	short strengthPotionFrequency;
 	short enchantScrollFrequency;
 
-	short vitalityPotionFrequency;
-    short vitalityPotionsSpawned;
+	short empowermentPotionFrequency;
+    short empowermentPotionsSpawned;
 
 
 	// ring bonuses:

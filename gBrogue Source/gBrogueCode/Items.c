@@ -81,12 +81,14 @@ unsigned long pickItemCategory(unsigned long theCategory) {
 // Probability of different item categories
 //	short probabilities[13] =						{50,	42,		52,		3,		3,		10,		8,		2,		3,      2,        0,		0,		0};
 //	short probabilities[13] =						{50,	42,		52,		3,		0,		7,		8,		2,		3,      3,        0,		0,		0};
-	short probabilities[14] =						{50,	55,		65,		25,              2,		0,		3,		3,		3,		2,      2,        0,		0,		0};
+	short probabilities[14] =         			    {50,	55,		45,		25,              2,		0,		2,		2,		3,		2,      2,        0,		0,		0};
 	unsigned short correspondingCategories[14] =	{GOLD,	SCROLL,	POTION,	THROWING_WEAPON, STAFF,	WAND,	WEAPON,	ARMOR,	FOOD,	RING,   CHARM,    AMULET,	GEM,	KEY};
+
+
 
 	sum = 0;
 
-	for (i=0; i<13; i++) {
+	for (i=0; i<14; i++) {
 		if (theCategory <= 0 || theCategory & correspondingCategories[i]) {
 			sum += probabilities[i];
 		}
@@ -155,7 +157,7 @@ item *makeItemInto(item *theItem, unsigned long itemCategory, short itemKind) {
                     theItem->flags |= ITEM_ATTACKS_EXTEND;
                     break;
 				case RAPIER:
-                case EPEE:
+                case ESTOC:
 					theItem->flags |= (ITEM_ATTACKS_QUICKLY | ITEM_LUNGE_ATTACKS);
 					break;
                 case FLAIL:
@@ -554,17 +556,17 @@ void populateItems(short upstairsX, short upstairsY) {
 	 else {
         rogue.lifePotionFrequency += 34; // irrelevant now -- gsr
 		rogue.strengthPotionFrequency += 17; // irrelevant now -- gsr
-		rogue.vitalityPotionFrequency += 15; // changed 2018.02.05 -- gsr //20; // gsr
+		rogue.empowermentPotionFrequency += 15; // changed 2018.02.05 -- gsr //20; // gsr
 		rogue.enchantScrollFrequency += 25;
-		numberOfItems = 1;//3;
-		while (rand_percent(45)) {//60)) {
+		numberOfItems = 3;
+		while (rand_percent(40)) { //60)) {
 			numberOfItems++;
 		}
 		if (rogue.depthLevel == 1) {
 			numberOfItems += 1;
 		}
 		if (rogue.depthLevel <= 2) {
-			numberOfItems += 2;//3; // extra items to kickstart your career as a rogue
+			numberOfItems += 1;//3; // extra items to kickstart your career as a rogue
 		}
 
         // rewards on special floors! -- gsr
@@ -660,7 +662,7 @@ void populateItems(short upstairsX, short upstairsY) {
 		scrollTable[SCROLL_ENCHANTING].frequency = rogue.enchantScrollFrequency;
 //		potionTable[POTION_STRENGTH].frequency = rogue.strengthPotionFrequency;
 //        potionTable[POTION_LIFE].frequency = rogue.lifePotionFrequency;
-        potionTable[POTION_EMPOWERMENT].frequency = rogue.vitalityPotionFrequency;
+        potionTable[POTION_EMPOWERMENT].frequency = rogue.empowermentPotionFrequency;
 
 		// Adjust the desired item category if necessary.
 		if ((rogue.foodSpawned + foodTable[RATION].strengthRequired / 3) * 4
@@ -676,7 +678,7 @@ void populateItems(short upstairsX, short upstairsY) {
 		}/* else if (rogue.lifePotionsSpawned * 4 + 3 < rogue.depthLevel + randomDepthOffset) {
             theCategory = POTION;
             theKind = POTION_LIFE;
-        }*/ else if (rogue.vitalityPotionsSpawned * 2.5 < rogue.depthLevel + randomDepthOffset) {
+        }*/ else if (rogue.empowermentPotionsSpawned * 2.5 < rogue.depthLevel + randomDepthOffset) {
             theCategory = POTION;
             theKind = POTION_EMPOWERMENT;
         }
@@ -715,9 +717,9 @@ void populateItems(short upstairsX, short upstairsY) {
 			if (D_MESSAGE_ITEM_GENERATION) printf("\n(!s) Depth %i: generated a strength potion at %i frequency", rogue.depthLevel, rogue.strengthPotionFrequency);
 			rogue.strengthPotionFrequency -= 50;
 		}*/ else if (theItem->category & POTION && theItem->kind == POTION_EMPOWERMENT) {
-			if (D_MESSAGE_ITEM_GENERATION) printf("\n(!s) Depth %i: generated a vitality potion at %i frequency", rogue.depthLevel, rogue.vitalityPotionFrequency);
-			rogue.vitalityPotionFrequency -= 50;
-			rogue.vitalityPotionsSpawned++;
+			if (D_MESSAGE_ITEM_GENERATION) printf("\n(!s) Depth %i: generated a vitality potion at %i frequency", rogue.depthLevel, rogue.empowermentPotionFrequency);
+			rogue.empowermentPotionFrequency -= 50;
+			rogue.empowermentPotionsSpawned++;
 		}
 
 		// Place the item.
@@ -2562,7 +2564,8 @@ void itemDetails(char *buf, item *theItem) {
 
 				// equipped? cursed?
 				if (theItem->flags & ITEM_EQUIPPED) {
-					sprintf(buf2, "\n\nYou are wearing the %s%s. ",
+					sprintf(buf2, "\n\nYou are %s the %s%s. ", // donning actually matters now --gsr
+							player.status[STATUS_DONNING] ? "currently putting on" : "wearing",
 							theName,
 							((theItem->flags & ITEM_CURSED) ? ", and because it is cursed, you are powerless to remove it" : ""));
 					strcat(buf, buf2);
@@ -2674,12 +2677,18 @@ void itemDetails(char *buf, item *theItem) {
 								staffHasteDuration(theItem->enchant1 + 1));
 						break;*/
 					case STAFF_OBSTRUCTION:
+                    case STAFF_BECKONING:
 						strcpy(buf2, "");
 						break;
 					case STAFF_DISCORD:
 						sprintf(buf2, "This staff will cause discord in the target for %i turns. (If the staff is enchanted, this will increase to %i turns.)",
 								staffDiscordDuration(theItem->enchant1),
 								staffDiscordDuration(theItem->enchant1 + 1));
+						break;
+					case STAFF_SLOWNESS:
+						sprintf(buf2, "This staff will cause the target to move more slowly for %i turns. (If the staff is enchanted, this will increase to %i turns.)",
+								staffSlowDuration(theItem->enchant1),
+								staffSlowDuration(theItem->enchant1 + 1));
 						break;
 					case STAFF_CONJURATION:
 						sprintf(buf2, "%i phantom blades will be called into service. (If the staff is enchanted, this will increase to %i blades.)",
@@ -3519,7 +3528,7 @@ void equip(item *theItem) {
 		equipItem(theItem, false);
 
 		itemName(theItem, buf2, true, true, NULL);
-		sprintf(buf1, "Now %s %s.", (theItem->category & WEAPON ? "wielding" : "putting on"), buf2), //"wearing"), buf2); -- donning isn't immediate anymore -- gsr
+		sprintf(buf1, "Now %s %s.", (theItem->category & WEAPON ? "wielding" : (theItem->category & ARMOR ? "putting on" : "wearing")), buf2), //"wearing"), buf2); -- donning isn't immediate anymore -- gsr
 		confirmMessages();
 		messageWithColor(buf1, &itemMessageColor, false);
 
@@ -6298,7 +6307,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                             }
                         }
                         colorFlash(&telepathyMultiplier, 0, 0, 3, telepathyRadius, x, y);
-                        strcpy(buf, "the flask shatters, and you receive an incomplete yet powerful vision.");
+                        strcpy(buf, "the flask shatters, and you receive an incomplete but precise vision.");
 
                         message(buf, false);
                         hadEffect = true;
@@ -6321,7 +6330,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                     }
                     hadEffect = true;
 					break;
-				case POTION_CHAOS:
+				case POTION_HALLUCINATION:
 				    if (hitMonsterAtSpot && monst)
                     {
                         if (polymorph(monst))
@@ -7176,6 +7185,16 @@ void readScroll(item *theItem) {
 			break;
 		case SCROLL_TELEPORT:
 			teleport(&player, -1, -1, true);
+            message("you find yourself standing somewhere else.", false);
+			break;
+        case SCROLL_TORNADO:
+			teleport(&player, -1, -1, true);
+            for (monst = monsters->nextCreature; monst != NULL; monst = monst->nextCreature)
+            {
+                teleport(monst, -1, -1, true);
+                wakeUp(monst);
+            }
+            message("you feel completely disoriented.", false);
 			break;
 		case SCROLL_REMOVE_CURSE:
 			for (tempItem = packItems->nextItem; tempItem != NULL; tempItem = tempItem->nextItem) {
@@ -7192,7 +7211,7 @@ void readScroll(item *theItem) {
 			break;
 		case SCROLL_ENCHANTING:
 			if (!(theItem->flags & ITEM_IDENTIFIED))
-                messageWithColor("this is a scroll of enchantment.", &itemMessageColor, true);
+                messageWithColor("this is a scroll of enchanting.", &itemMessageColor, true);
 			identify(theItem);
 
 			if (!numberOfMatchingPackItems((WEAPON | ARMOR | RING | STAFF | WAND | CHARM), 0, 0, false)) {
@@ -7532,7 +7551,7 @@ void drinkPotion(item *theItem) {
                 player.bookkeepingFlags |= MB_IS_FALLING;
             }
 			break;*/
-		case POTION_CHAOS:
+		case POTION_HALLUCINATION:
 			player.status[STATUS_HALLUCINATING] = player.maxStatus[STATUS_HALLUCINATING] = 300;
 			player.status[STATUS_CONFUSED] = player.maxStatus[STATUS_CONFUSED] = 10;
 			message("colors are everywhere! The walls are singing! Your feel disoriented!", false);
@@ -7737,7 +7756,7 @@ short magicCharDiscoverySuffix(short category, short kind) {
 //				case POTION_DESCENT:
 				case POTION_CAUSTIC_GAS:
 				case POTION_PARALYSIS:
-                case POTION_CHAOS:
+                case POTION_HALLUCINATION:
 //				case POTION_CONFUSION:
 //				case POTION_LICHEN:
 //				case POTION_DARKNESS:
