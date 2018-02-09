@@ -1566,6 +1566,7 @@ boolean buildAMachine(enum machineTypes bp,
                         || feature->monsterID) {
 
 						if (feature->flags & MF_GENERATE_HORDE) {
+
 							monst = spawnHorde(0,
 											   featX,
 											   featY,

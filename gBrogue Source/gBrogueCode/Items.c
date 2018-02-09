@@ -3881,7 +3881,7 @@ void negate(creature *monst) {
 		monst->status[STATUS_HASTED] = 0;
 		monst->status[STATUS_CONFUSED] = 0;
 		monst->status[STATUS_ENTRANCED] = 0;
-		monst->status[STATUS_DISCORDANT] = 0;
+		monst->status[STATUS_HALLUCINATING] = 0;
 		monst->status[STATUS_SHIELDED] = 0;
 		monst->status[STATUS_INVISIBLE] = 0;
 		if (monst == &player) {
@@ -4286,7 +4286,7 @@ void discordBlast(const char *emitterName, const short distance) {
                 if (canSeeMonster(monst)) {
                     flashMonster(monst, &discordColor, 100);
                 }
-                monst->status[STATUS_DISCORDANT] = monst->maxStatus[STATUS_DISCORDANT] = 30;
+                monst->status[STATUS_HALLUCINATING] = monst->maxStatus[STATUS_HALLUCINATING] = 30;
             }
         }
         monst = nextMonst;
@@ -4660,7 +4660,7 @@ boolean updateBolt(bolt *theBolt, creature *caster, short x, short y,
                 if (monst != &player && !(monst->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE))) {
                     if (rand_percent(wandDominate(monst))) {
                         // domination succeeded
-                        monst->status[STATUS_DISCORDANT] = 0;
+                        monst->status[STATUS_HALLUCINATING] = 0;
                         becomeAllyWith(monst);
                         //refreshSideBar(-1, -1, false);
                         refreshDungeonCell(monst->xLoc, monst->yLoc);
@@ -4770,7 +4770,7 @@ boolean updateBolt(bolt *theBolt, creature *caster, short x, short y,
                 break;
             case BE_DISCORD:
                 if (!(monst->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE))) {
-                    monst->status[STATUS_DISCORDANT] = monst->maxStatus[STATUS_DISCORDANT] = max(staffDiscordDuration(theBolt->magnitude), monst->status[STATUS_DISCORDANT]);
+                    monst->status[STATUS_HALLUCINATING] = monst->maxStatus[STATUS_HALLUCINATING] = max(staffDiscordDuration(theBolt->magnitude), monst->status[STATUS_HALLUCINATING]);
                     if (canSeeMonster(monst)) {
                         if (boltCatalog[BOLT_DISCORD].backColor) {
                             flashMonster(monst, boltCatalog[BOLT_DISCORD].backColor, 100);
@@ -7553,8 +7553,7 @@ void drinkPotion(item *theItem) {
 			break;*/
 		case POTION_HALLUCINATION:
 			player.status[STATUS_HALLUCINATING] = player.maxStatus[STATUS_HALLUCINATING] = 300;
-			player.status[STATUS_CONFUSED] = player.maxStatus[STATUS_CONFUSED] = 10;
-			message("colors are everywhere! The walls are singing! Your feel disoriented!", false);
+			message("colors are everywhere! The walls are singing!", false);
 			break;
 		/*case POTION_LIFE:
             sprintf(buf, "%syour maximum health increases by %i%%.",
@@ -8491,12 +8490,13 @@ void causeFear(const char *emitterName, boolean throughWalls, boolean ignoreAlli
 
 
 // Additional debug functions -- gsr
-// Take a string from the player and try to make an item out of it
+// Take a string from the player and try to make something out of it
 void debugWish(char *wishText)
 {
     item *theItem; int i = 0, j = 0; int quantity = 1; short dropLoc[2];
     boolean success = false;
     short *enchantment = 0;
+    creature *monst;
 
     char buf[DCOLS], buf2[DCOLS];
 
@@ -8510,8 +8510,12 @@ void debugWish(char *wishText)
     else if (!getInputTextString(buf, "What do you wish for? ", DCOLS, "", "", TEXT_INPUT_NORMAL, false))
         return;
 
+    if (theItem) // This initialized the item to null. I have no freaking clue why. --gsr
+        message("...",true);
+
 	if (strlen(buf) != 0)
     {
+        // Potion
         if (strstr(buf, "potion"))
         {
             for (i = 0; i < NUMBER_POTION_KINDS; i++)
@@ -8523,6 +8527,7 @@ void debugWish(char *wishText)
                 }
             }
         }
+        // Scroll
         else if (strstr(buf, "scroll"))
         {
             for (i = 0; i < NUMBER_SCROLL_KINDS; i++)
@@ -8534,6 +8539,7 @@ void debugWish(char *wishText)
                 }
             }
         }
+        // Charm
         else if (strstr(buf, "charm"))
         {
             for (i = 0; i < NUMBER_CHARM_KINDS; i++)
@@ -8547,6 +8553,7 @@ void debugWish(char *wishText)
                 }
             }
         }
+        // Staff
         else if (strstr(buf, "staff"))
         {
             for (i = 0; i < NUMBER_STAFF_KINDS; i++)
@@ -8560,6 +8567,7 @@ void debugWish(char *wishText)
                 }
             }
         }
+        // Ring
         else if (strstr(buf, "ring"))
         {
             for (i = 0; i < NUMBER_RING_KINDS; i++)
@@ -8613,9 +8621,35 @@ void debugWish(char *wishText)
                         }
                     }
                 }
+
+            // So let's try throwing weapons.
+            if (!success)
+                for (i = 0; i < NUMBER_THROWING_WEAPON_KINDS; i++)
+                {
+                    if (strstr(buf, throwingWeaponTable[i].name))
+                    {
+                        theItem = generateItem(THROWING_WEAPON, i);
+                        success = true;
+                    }
+                }
+            // Maybe a monster!?
+            if (!success)
+                for (i = 0; i < NUMBER_MONSTER_KINDS; i++)
+                {
+                    if (strstr(buf, monsterCatalog[i].monsterName))
+                    {
+                        monst = summonMonster(i);
+                        if (monst)
+                        {
+                            monst->ticksUntilTurn = monst->info.attackSpeed + 1; // So they don't move before the player's next turn.
+                            moveMonster(monst, rand_range(-3, 3), rand_range(-3, 3));
+                            success = true;
+                        }
+                    }
+				}
         }
-        // Check for other properties of the wished item
-        if (theItem && success)
+
+        if (success && theItem)
         {
             // For enchantable items...
             if ((theItem->category & (WEAPON | ARMOR | RING | CHARM | STAFF)))
@@ -8662,9 +8696,7 @@ void debugWish(char *wishText)
 
             // Staff charges, etc.
             if (theItem->category & STAFF)
-            {
                 theItem->charges = theItem->enchant1;
-            }
         }
 
         if (success)
@@ -8672,21 +8704,29 @@ void debugWish(char *wishText)
             confirmMessages();
 //            identify(theItem);
             sprintf(rogue.lastWishText, buf); // store this wish so that we can wish for the same thing again
-            // If the player's pack is full, set the item at his feet.
-            if (MAX_PACK_ITEMS - numberOfItemsInPack() > 0)
+            if (theItem)
             {
-                itemName(theItem, buf2, true, true, NULL);
-                theItem = addItemToPack(theItem);
+                // If the player's pack is full, set the item at his feet.
+                if (MAX_PACK_ITEMS - numberOfItemsInPack() > 0)
+                {
+                    itemName(theItem, buf2, true, true, NULL);
+                    theItem = addItemToPack(theItem);
 
-                sprintf(buf, "You have been given %s (%c).", buf2, theItem->inventoryLetter);
-                messageWithColor(buf, &itemMessageColor, false);
+                    sprintf(buf, "You have been given %s (%c).", buf2, theItem->inventoryLetter);
+                    messageWithColor(buf, &itemMessageColor, false);
+                }
+                else
+                {
+                    getQualifyingLocNear(dropLoc, player.xLoc, player.yLoc, true, 0, (T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_PASSABILITY), (HAS_ITEM), false, false);
+                    placeItem(theItem, dropLoc[0], dropLoc[1]);
+                    itemName(theItem, buf2, true, true, NULL);
+                    sprintf(buf, "Your pack is full, and so %s has been placed close to you.", buf2);
+                    messageWithColor(buf, &itemMessageColor, false);
+                }
             }
-            else
+            else if (monst)
             {
-                getQualifyingLocNear(dropLoc, player.xLoc, player.yLoc, true, 0, (T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_PASSABILITY), (HAS_ITEM), false, false);
-                placeItem(theItem, dropLoc[0], dropLoc[1]);
-                itemName(theItem, buf2, true, true, NULL);
-                sprintf(buf, "Your pack is full, and so %s has been placed close to you.", buf2);
+                sprintf(buf, "Summoned %s.", monst->info.monsterName);
                 messageWithColor(buf, &itemMessageColor, false);
             }
         }

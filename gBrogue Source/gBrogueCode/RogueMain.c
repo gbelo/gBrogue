@@ -1188,6 +1188,9 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 		sprintf(buf, "Killed by a%s %s on depth %i", (isVowelish(killedBy) ? "n" : ""), killedBy,
 				rogue.depthLevel);
 	}
+	// Extra information --gsr
+        sprintf(buf, "%s\nhi!\n", buf);
+
     theEntry.score = rogue.gold;
 	if (rogue.easyMode) {
         theEntry.score = 0;

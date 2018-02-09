@@ -793,11 +793,11 @@
 1500490446 source:c:\users\greed\drive\personal\game\gbrogue\gbrogue\gbrogue source\gbroguecode\globals.c
 	"Rogue.h"
 
-1517954723 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\architect.c
+1518108632 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\architect.c
 	"Rogue.h"
 	"IncludeGlobals.h"
 
-1518053914 c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\rogue.h
+1518119982 c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\rogue.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -814,7 +814,7 @@
 	<math.h>
 	<time.h>
 
-1518054445 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\combat.c
+1518115041 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\combat.c
 	<math.h>
 	"Rogue.h"
 	"IncludeGlobals.h"
@@ -823,7 +823,7 @@
 	"Rogue.h"
 	"IncludeGlobals.h"
 
-1518054608 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\globals.c
+1518124128 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\globals.c
 	"Rogue.h"
 
 1507582844 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\grid.c
@@ -836,7 +836,7 @@
 	"Rogue.h"
 	"IncludeGlobals.h"
 
-1518045703 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\items.c
+1518117808 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\items.c
 	"Rogue.h"
 	"IncludeGlobals.h"
 	<math.h>
@@ -853,7 +853,7 @@
 	<time.h>
 	<limits.h>
 
-1518048024 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\monsters.c
+1518061623 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\monsters.c
 	<math.h>
 	"Rogue.h"
 	"IncludeGlobals.h"
@@ -878,13 +878,13 @@
 	"Rogue.h"
 	"IncludeGlobals.h"
 
-1518038048 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\roguemain.c
+1518062923 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\roguemain.c
 	"Rogue.h"
 	"IncludeGlobals.h"
 	<math.h>
 	<time.h>
 
-1518025507 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\time.c
+1518061495 source:c:\users\greed\google drive\personal\game\gbrogue\dev\gbrogue\gbrogue source\gbroguecode\time.c
 	"Rogue.h"
 	"IncludeGlobals.h"
 	<math.h>

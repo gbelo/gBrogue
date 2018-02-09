@@ -382,14 +382,14 @@ void applyInstantTileEffectsToCreature(creature *monst) {
             if (monst == &player) {
                 rogue.disturbed = true;
             }
-            if (canDirectlySeeMonster(monst) && !(monst->status[STATUS_CONFUSED] && monst->status[STATUS_DISCORDANT])) {
+            if (canDirectlySeeMonster(monst) && !(monst->status[STATUS_CONFUSED] && monst->status[STATUS_HALLUCINATING])) {
                 if (monst->creatureState == MONSTER_SLEEPING) {
                     monst->creatureState = MONSTER_TRACKING_SCENT;
                 }
                 flashMonster(monst, &confusionGasColor, 100);
                 monsterName(buf, monst, true);
                 sprintf(buf2, "%s %s very disoriented!", buf, (monst == &player ? "feel": "looks"));
-                if (!(monst->status[STATUS_HALLUCINATING] || monst->status[STATUS_DISCORDANT]))
+                if (!(monst->status[STATUS_HALLUCINATING]))
                     message(buf2, false);
             }
 //            monst->status[STATUS_CONFUSED] = monst->maxStatus[STATUS_CONFUSED] = max(monst->status[STATUS_CONFUSED], 5);
@@ -397,7 +397,7 @@ void applyInstantTileEffectsToCreature(creature *monst) {
             if (monst == &player)
                 monst->status[STATUS_HALLUCINATING] = monst->maxStatus[STATUS_HALLUCINATING] = max(monst->status[STATUS_HALLUCINATING], 200);
             else
-                monst->status[STATUS_DISCORDANT] = monst->maxStatus[STATUS_DISCORDANT] = max(monst->status[STATUS_DISCORDANT], 25);
+                monst->status[STATUS_HALLUCINATING] = monst->maxStatus[STATUS_HALLUCINATING] = max(monst->status[STATUS_HALLUCINATING], 25);
         }
 
         // paralysis gas

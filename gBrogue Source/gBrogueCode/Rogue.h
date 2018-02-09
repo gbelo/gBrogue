@@ -43,10 +43,9 @@
     - Grammar on inactive runic armor/weapons
     - SHIFT+dir(?) to move without using weapon (whip) or picking up item
     - Ally commands
-    - Staff of beckoning?
     - More detail on high score screen https://www.reddit.com/r/brogueforum/comments/6iosq7/idea_show_inventory_and_last_screenshot_on_high/
     - Poison vs. vampiric?
-    - SCROLL OF CHAOS
+    - Ring of propulsion multishot?
 */
 
 #include <stdio.h>
@@ -59,7 +58,7 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "v1.17.12.26"
+#define BROGUE_VERSION_STRING "v1.17.02.08"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
@@ -1083,6 +1082,10 @@ enum monsterTypes {
 	MK_DART_TURRET,
 	MK_NYMPH,
 	MK_SLIME_JELLY,
+	MK_FIRE_ELEMENTAL,
+	MK_WATER_ELEMENTAL,
+	MK_EARTH_ELEMENTAL,
+	MK_AIR_ELEMENTAL,
 	MK_KRAKEN,
 	MK_LICH,
 	MK_PHYLACTERY,

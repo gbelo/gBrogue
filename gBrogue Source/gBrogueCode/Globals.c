@@ -1719,7 +1719,7 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 		(MONST_MALE | MONST_FLEES_NEAR_DEATH), (MA_HIT_BLINDS)},
     {0,	"ink eel",		'e',	&black,		18,		27,		100,	{3, 7, 2},		5,	50,		100,	0,              0,		0,		0,              {0},
 		(MONST_RESTRICTED_TO_LIQUID | MONST_IMMUNE_TO_WATER | MONST_SUBMERGES | MONST_FLITS | MONST_NEVER_SLEEPS), {MA_HIT_BLINDS}},
-	{0, "magma eel",	'e',	&salamanderColor,20,	27,     700,	{8, 12, 1},		5,	75,	75,	DF_ASH_BLOOD,	SALAMANDER_LIGHT, 100, DF_SALAMANDER_FLAME, {0},
+	{0, "magma eel",	'e',	&white, 20,	27,     700,	{8, 12, 1},		5,	75,	75,	DF_ASH_BLOOD,	SALAMANDER_LIGHT, 100, DF_SALAMANDER_FLAME, {0},
 		(MONST_RESTRICTED_TO_LIQUID | MONST_IMMUNE_TO_FIRE | MONST_SUBMERGES | MONST_NEVER_SLEEPS | MONST_FIERY), {MA_ATTACKS_EXTEND} },
 
 	{0,	"bog monster",	'B',	&krakenColor,	55,		60,		5000,	{3, 4, 1},		3,	200,	100,	0,              0,		0,		0,              {0},
@@ -1767,6 +1767,16 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 		(MONST_IMMUNE_TO_WATER | MONST_IMMUNE_TO_WEBS | MONST_FEMALE), (MA_AVOID_CORRIDORS | MA_TRANSFERENCE | MA_HIT_STEAL_FLEE)},
 	{0, "quivering jelly",	'J',	&white,	60,		0,		115,	{4, 8, 1},		0,	100,	100,	DF_ACID_BLOOD,	0,		0,		0,              {0},
 		(0), (MA_HIT_SLOWS | MA_CLONE_SELF_ON_DEFEND)},
+
+	{0, "fire elemental",'E',	&salamanderColor,	40,		60,		100,	{8, 18, 1},		20,	100,	100, DF_GAS_FIRE,	EXPLOSIVE_BLOAT_LIGHT,0, DF_ARMOR_IMMOLATION, {BOLT_FIRE},
+		(MONST_FLEES_NEAR_DEATH | MONST_NEVER_SLEEPS | MONST_IMMUNE_TO_FIRE | MONST_CAST_SPELLS_SLOWLY | MONST_MAINTAINS_DISTANCE | MONST_FIERY | MONST_NEVER_MUTATED), (MA_DF_ON_DEATH)},
+	{0, "water elemental",'E',	&shallowWaterBackColor,	40,		60,		100,	{11, 18, 1},		110,	100,	50,	DF_FLOOD_DRAIN,	0,		0,		DF_FLOOD,              {},
+		(MONST_FLEES_NEAR_DEATH | MONST_IMMUNE_TO_WATER | MONST_SUBMERGES | MONST_IMMUNE_TO_FIRE | MONST_NEVER_MUTATED), (MA_DF_ON_DEATH | MA_ATTACKS_EXTEND | MA_AVOID_CORRIDORS)},
+	{0, "earth elemental",'E',	&brown,	120,	80,		150,	{15, 20, 1},		50,	150,	150,	DF_RUBBLE_BLOOD,	SENTINEL_LIGHT,		0,		DF_RUBBLE,              {0},
+		(MONST_NEVER_SLEEPS | MONST_REFLECT_4 | MONST_IMMUNE_TO_FIRE | MONST_NEVER_MUTATED), (MA_SEIZES)},
+	{0, "air elemental",'E',	&grayFungusColor,	40,		60,		100,	{10, 15, 1},		5,	70,	80,    0,	WISP_LIGHT,		0,		0,              {BOLT_BLINKING, BOLT_FORCE},
+		(MONST_FLEES_NEAR_DEATH | MONST_NEVER_SLEEPS | MONST_MAINTAINS_DISTANCE | MONST_FLITS | MONST_FLIES | MONST_IMMUNE_TO_WEBS | MONST_NEVER_MUTATED), (MA_ATTACKS_ALL_ADJACENT)},
+
 	{0,	"kraken",		'K',	&krakenColor,	120,	0,		150,	{15, 20, 3},	1,	50,		100,	0,              0,		0,		0,              {0},
 		(MONST_RESTRICTED_TO_LIQUID | MONST_IMMUNE_TO_WATER | MONST_SUBMERGES | MONST_FLITS | MONST_NEVER_SLEEPS | MONST_FLEES_NEAR_DEATH), (MA_SEIZES)},
 	{0,	"lich",			'L',	&white,			35,		80,     175,	{2, 6, 1},		0,	100,	100,	DF_ASH_BLOOD,	LICH_LIGHT,	0,	0,              {BOLT_FIRE},
@@ -2027,6 +2037,19 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 	{"This subspecies of jelly thrives in the dungeons with a slowing touch, leaving $HISHER prey almost helpless.",
 		"transmuting", "Transmuting",
 		{"douses","slimes","touches", {0}}},
+	{"fire everburning, explosive main method of attack is hurling flame",
+		"incinerating", "Incinerating",
+		{"scalds","singes","scorches","chars", {0}}},
+	{"water becomes one with the water pool",
+		"absorbing", "Absorbing",
+		{"sprays","douses","drenches", {0}}},
+	{"earth slow moving, earth make sure you're not stuck between a rock and a hard place. he can grasp onto you and is hard to destroy",
+		"eating", "Eating",
+		{"crushes","punches","slams","squeezes", {0}}},
+	{"air tornado of debris, move like the wind and throw forceful wind at you",
+		"eroding", "Eroding",
+		{"scrapes","cuts","minces","grinds", {0}}},
+
 	{"This tentacled nightmare will emerge from the subterranean waters to ensnare and devour any creature foolish enough to set foot into $HISHER lake.",
 		"devouring", "Feeding",
 		{"slaps", "smites", "batters", {0}}},
@@ -2190,7 +2213,7 @@ const mutation mutationCatalog[NUMBER_MUTATORS] = {
         "A rare mutation has filled $HISHER innards with explosive methane, which will release as a massive cloud when $HESHE dies."},
     {"juggernaut",  &brown,         300,            200,        200,            75,     200,    -1, 0,      0,      0,          0,              (MONST_MAINTAINS_DISTANCE|MONST_DIES_IF_NEGATED), 0,
         "A rare mutation has hardened $HISHER flesh, increasing $HISHER health and power but compromising $HISHER speed."},
-    {"aquatic",   &shallowWaterForeColor,    80,           100,         200,            100,     100,     -1, 0,      0,      (MONST_IMMUNE_TO_WATER|MONST_SUBMERGES), (0), (MONST_FLIES|MONST_IMMUNE_TO_WATER|MONST_SUBMERGES), (0),
+    {"aquatic",   &shallowWaterBackColor,    80,           100,         200,            100,     100,     -1, 0,      0,      (MONST_IMMUNE_TO_WATER|MONST_SUBMERGES), (0), (MONST_FLIES|MONST_IMMUNE_TO_WATER|MONST_SUBMERGES), (0),
         "A rare mutation has bestowed $HIMHER with gills."},
     {"grappling",   &tanColor,      150,            100,        100,            50,     100,    -1, 0,      0,      0,          MA_SEIZES,      MONST_MAINTAINS_DISTANCE, MA_SEIZES,
         "A rare mutation has caused suckered tentacles to sprout from $HISHER frame, increasing $HISHER health and allowing $HIMHER to grapple with $HISHER prey."},
@@ -2210,6 +2233,8 @@ const mutation mutationCatalog[NUMBER_MUTATORS] = {
         "A rare mutation has caused $HISHER to seep fireproof mucous through $HISHER pores."},
     {"berserk",     &explosiveAuraColor,        100,            75,         50,            25,     150,     -1, 0,      0,      (MONST_ALWAYS_HUNTING|MONST_NEVER_SLEEPS), (MA_ATTACKS_ALL_ADJACENT|MA_ATTACKS_PENETRATE), (0), (0),
         "Some sort of chaotic spirit seems to have possessed $HIMHER, sending $HIMHER into a blind primal rage."},
+    {"skeletal",    &lightningColor,        90,            100,         100,            100,     100,     -1, 0,      0,      (MONST_DIES_IF_NEGATED|MONST_IMMUNE_TO_FIRE|MONST_NEVER_SLEEPS), (MA_ATTACKS_ALL_ADJACENT|MA_ATTACKS_PENETRATE), (MONST_DIES_IF_NEGATED), (MA_CLONE_SELF_ON_DEFEND),
+        "$HESHE has shed $HISHER flesh, leaving only an animated skeleton."},
     {"acidic",   &acidBackColor,    80,           100,         100,            100,     100,     -1, 0,      0,      (MONST_DEFEND_DEGRADE_WEAPON), (MA_HIT_DEGRADE_ARMOR), (MONST_DEFEND_DEGRADE_WEAPON|MONST_DIES_IF_NEGATED), (MA_HIT_DEGRADE_ARMOR),
         "A rare mutation causes acid to seep through the surface of $HISHER body, making $HIMHER corrosive to the touch."},
 };
@@ -2252,7 +2277,7 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_OGRE,			0,		{0},									{{0}},							7,		13,		10},
 	{MK_LEPRECHAUN,		0,		{0},									{{0}},							7,		17,		3}, // gsr
 	{MK_EEL,			1,		{MK_EEL},								{{2, 4, 1}},					8,		22,		7,		DEEP_WATER},
-	{MK_INK_EEL,		0,		{0},	    							{{0}},      					12,		20,		7,		DEEP_WATER},
+	{MK_INK_EEL,		0,		{0},	    							{{0}},      					12,		24,		7,		DEEP_WATER},
 	{MK_MAGMA_EEL,		1,		{MK_MAGMA_EEL},							{{0}},      					15,		25,		15,		LAVA},
 	{MK_ACID_MOUND,		1,		{MK_ACID_MOUND},						{{2, 4, 1}},					9,		13,		3},
 	{MK_SPIDER,			0,		{0},									{{0}},							9,		16,		2},
@@ -2278,9 +2303,9 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_DAR_BLADEMASTER,2,		{MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS},	{{0, 1, 1}, {0, 1, 1}},			15,		17,		10},
     {MK_PINK_JELLY,     2,		{MK_PINK_JELLY, MK_DAR_PRIESTESS},      {{0, 1, 1}, {1, 2, 1}},			17,		23,		7},
 	{MK_KRAKEN,			0,		{0},									{{0}},							15,		30,		5,		DEEP_WATER},
-	{MK_FORCE_TOTEM,	0,		{0},									{{0}},							12,		25,		5},
-	{MK_PHANTOM,		0,		{0},									{{0}},							16,		23,		10},
-	{MK_WRAITH,			1,		{MK_WRAITH},							{{1, 4, 1}},					16,		23,		8},
+	{MK_FORCE_TOTEM,	0,		{0},									{{0}},							12,		MOLOCH_LAIR_LEVEL-1,		5},
+	{MK_PHANTOM,		0,		{0},									{{0}},							16,		MOLOCH_LAIR_LEVEL-1,		10},
+	{MK_WRAITH,			1,		{MK_WRAITH},							{{1, 4, 1}},					16,		MOLOCH_LAIR_LEVEL-1,		8},
 	{MK_IMP,			0,		{0},									{{0}},							17,		30,		10},
 	{MK_DAR_BLADEMASTER,3,		{MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS, MK_DAR_BATTLEMAGE},{{1,2,1},{1,1,1},{1,1,1}},18,25,10},
 	{MK_FURY,			1,		{MK_FURY},								{{2, 4, 1}},					18,		38,		8},
@@ -2295,6 +2320,13 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
     {MK_KRAKEN,			1,		{MK_KRAKEN},							{{5, 10, 2}},					28,		33,    4,		DEEP_WATER},
 	{MK_TENTACLE_HORROR,2,		{MK_TENTACLE_HORROR, MK_REVENANT},		{{1, 3, 1}, {2, 4, 1}},			32,		MOLOCH_LAIR_LEVEL-1,    2},
 	{MK_DRAGON,			1,		{MK_DRAGON},							{{3, 5, 1}},					34,		MOLOCH_LAIR_LEVEL-1,    2},
+
+	{MK_FIRE_ELEMENTAL,0,		{0},									{{0}},							1,		MOLOCH_LAIR_LEVEL-1,		1000},
+	{MK_WATER_ELEMENTAL,0,		{0},									{{0}},							1,		MOLOCH_LAIR_LEVEL-1,		1000},
+	{MK_EARTH_ELEMENTAL,0,		{0},									{{0}},							1,		MOLOCH_LAIR_LEVEL-1,		1000},
+	{MK_AIR_ELEMENTAL,0,		{0},									{{0}},							1,		MOLOCH_LAIR_LEVEL-1,		1000},
+
+
 
 	// "post-game" -- gsr
 	{MK_BLACK_DRAGON,	0,		{0},									{{0}},							NETHER_LEVEL - 2,		MOLOCH_LAIR_LEVEL-1,		3},
@@ -2454,7 +2486,6 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_GOBLIN_CONJURER,2,		{MK_GOBLIN_CONJURER, MK_GOBLIN_MYSTIC},	{{0,1,1}, {1,1,1}},				7,		15,		4,      0,              0,              HORDE_MACHINE_GOBLIN_WARREN},
 	{MK_GOBLIN_TOTEM,	4,		{MK_GOBLIN_TOTEM, MK_GOBLIN_CONJURER, MK_GOBLIN_MYSTIC, MK_GOBLIN}, {{1,2,1},{1,2,1},{1,2,1},{3,5,1}},10,17,8,0,MT_CAMP_AREA,	HORDE_MACHINE_GOBLIN_WARREN},
 	{MK_GOBLIN,			1,		{MK_GOBLIN},							{{1, 2, 1}},					3,		7,		1,		0,              0,				HORDE_MACHINE_GOBLIN_WARREN | HORDE_LEADER_CAPTIVE},
-
 };
 
 #pragma mark Monster class definitions
@@ -2730,21 +2761,21 @@ itemTable scrollTable[NUMBER_SCROLL_KINDS] = {
 };
 
 itemTable charmTable[NUMBER_CHARM_KINDS] = {
-	{"health",          "", "",	5,	90,	0,{1,2,1}, true, false, "This handful of dried bloodwort and mandrake root has been bound together with leather cord and imbued with a powerful healing magic."},
-	{"protection",		"", "",	5,	80,	0,{1,2,1}, true, false, "Four copper rings have been joined into a tetrahedron. The construct is oddly warm to the touch."},
+	{"health",          "", "",	3,	90,	0,{1,2,1}, true, false, "This handful of dried bloodwort and mandrake root has been bound together with leather cord and imbued with a powerful healing magic."},
+	{"protection",		"", "",	0,	80,	0,{1,2,1}, true, false, "Four copper rings have been joined into a tetrahedron. The construct is oddly warm to the touch."},
 	{"haste",           "", "",	5,	75,	0,{1,2,1}, true, false, "Various animals have been etched into the surface of this brass bangle. It emits a barely audible hum."},
 	{"fire immunity",	"", "",	3,	75,	0,{1,2,1}, true, false, "Eldritch flames flicker within this polished crystal bauble."},
 	{"invisibility",	"", "",	5,	70,	0,{1,2,1}, true, false, "This intricate figurine depicts a strange humanoid creature. It has a face on both sides of its head, but all four eyes are closed."},
 //	{"telepathy",		"", "",	3,	70,	0,{1,2,1}, true, false, "Seven tiny glass eyes roll freely within this glass sphere. Somehow, they always come to rest facing outward."},
 	{"levitation",      "", "",	4,	70,	0,{1,2,1}, true, false, "Sparkling dust and fragments of feather waft and swirl endlessly inside this small glass sphere."},
-    {"shattering",      "", "",	0,	70,	0,{1,2,1}, true, false, "This turquoise crystal, fixed to a leather lanyard, hums with an arcane energy that sets your teeth on edge."},
+    {"shattering",      "", "",	2,	70,	0,{1,2,1}, true, false, "This turquoise crystal, fixed to a leather lanyard, hums with an arcane energy that sets your teeth on edge."},
     {"guardian",        "", "",	5,	70,	0,{1,2,1}, true, false, "When you touch this tiny granite statue, a rhythmic booming sound echoes in your head."},
     {"fear",            "", "",	3,	70,	0,{1,2,1}, true, false, "When you gaze into the murky interior of this obsidian cube, you feel as though something predatory is watching you."},
     {"teleportation",   "", "",	4,	70,	0,{1,2,1}, true, false, "The surface of this nickel sphere has been etched with a perfect grid pattern. Somehow, the squares of the grid are all exactly the same size."},
     {"recharging",      "", "",	0,	70,	0,{1,2,1}, true, false, "A strip of bronze has been wound around a rough wooden sphere. Each time you touch it, you feel a tiny electric shock."},
 //    {"negation",        "", "",	5,	70,	0,{1,2,1}, true, false, "A featureless gray disc hangs from a leather lanyard. When you touch it, your hand briefly goes numb."},
     {"identify",        "", "",	0,	85,	0,{1,2,1}, true, false, "This pocket-sized tome is bound with worn leather. A bookmark of crimson silk flows from the top of its spine, dancing and waving subtly as if it were caught by a breeze."},
-    {"discord",         "", "",	5,	85,	0,{1,2,1}, true, false, "A series of jagged lines dance around the surface of this otherwise pristine shard of crystal."},
+    {"discord",         "", "",	0,	85,	0,{1,2,1}, true, false, "A series of jagged lines dance around the surface of this otherwise pristine shard of crystal."},
 };
 
 itemTable potionTable[NUMBER_POTION_KINDS] = {

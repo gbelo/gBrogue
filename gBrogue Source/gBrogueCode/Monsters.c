@@ -331,8 +331,8 @@ boolean monsterWillAttackTarget(const creature *attacker, const creature *defend
     if (defender->bookkeepingFlags & MB_CAPTIVE) {
         return false;
     }
-    if (attacker->status[STATUS_DISCORDANT]
-        || defender->status[STATUS_DISCORDANT]
+    if (attacker->status[STATUS_HALLUCINATING]
+        || defender->status[STATUS_HALLUCINATING]
         || attacker->status[STATUS_CONFUSED]) {
 
         return true;
@@ -362,7 +362,7 @@ boolean monstersAreEnemies(const creature *monst1, const creature *monst2) {
 	if (monst1 == monst2) {
 		return false; // Can't be enemies with yourself, even if discordant.
 	}
-	if (monst1->status[STATUS_DISCORDANT] || monst2->status[STATUS_DISCORDANT]) {
+	if (monst1->status[STATUS_HALLUCINATING] || monst2->status[STATUS_HALLUCINATING]) {
 		return true;
 	}
 	// eels and krakens attack anything in deep water
@@ -1952,6 +1952,7 @@ void decrementMonsterStatus(creature *monst) {
                 }
                 break;
             case STATUS_DISCORDANT:
+            case STATUS_HALLUCINATING:
                 if (monst->status[i] && !--monst->status[i]) {
                     if (monst->creatureState == MONSTER_FLEEING
                         && !monst->status[STATUS_MAGICAL_FEAR]
@@ -2573,10 +2574,12 @@ boolean specificallyValidBoltTarget(creature *caster, creature *target, enum bol
             }
             break;
         case BE_DISCORD:
-            if (target->status[STATUS_DISCORDANT]
-                || target == &player) {
-                // Don't cast discord if the target is already discordant, or if it is the player.
-                // (Players should never be intentionally targeted by discord. It's just a fact of monster psychology.)
+
+            if (target->status[STATUS_HALLUCINATING]
+                ){//|| target == &player) {
+                    // Nope! Discord and hallucination are synonymous. --gsr
+                                    // Don't cast discord if the target is already discordant, or if it is the player.
+                                    // (Players should never be intentionally targeted by discord. It's just a fact of monster psychology.)
                 return false;
             }
         case BE_NEGATION:
@@ -2595,7 +2598,7 @@ boolean specificallyValidBoltTarget(creature *caster, creature *target, enum bol
                     return true;
                 }
                 if (monstersAreTeammates(caster, target)
-                    && target->status[STATUS_DISCORDANT]
+                    && target->status[STATUS_HALLUCINATING]
                     && !(target->info.flags & MONST_DIES_IF_NEGATED)) {
                     // Dispel discord from allies unless it would destroy them.
                     return true;
@@ -2652,8 +2655,9 @@ boolean specificallyValidBoltTarget(creature *caster, creature *target, enum bol
             break;
         case BE_TUNNELING:
         case BE_OBSTRUCTION:
-            // Monsters will never cast these.
-            return false;
+                // Oh, yeah? Well, maybe they will! --gsr
+                    // Monsters will never cast these.
+            //return false;
             break;
         default:
             break;
@@ -3259,7 +3263,7 @@ void monstersTurn(creature *monst) {
 	}
 
 	// discordant monsters
-	if (monst->status[STATUS_DISCORDANT] && monst->creatureState != MONSTER_FLEEING) {
+	if (monst->status[STATUS_HALLUCINATING] && monst->creatureState != MONSTER_FLEEING) {
 		shortestDistance = max(DROWS, DCOLS);
 		closestMonster = NULL;
 		CYCLE_MONSTERS_AND_PLAYERS(target) {
@@ -3290,7 +3294,7 @@ void monstersTurn(creature *monst) {
 
 	// hunting
 	if ((monst->creatureState == MONSTER_TRACKING_SCENT
-		|| (monst->creatureState == MONSTER_ALLY && monst->status[STATUS_DISCORDANT]))
+		|| (monst->creatureState == MONSTER_ALLY && monst->status[STATUS_HALLUCINATING]))
 		// eels don't charge if you're not in the water
 		&& (!(monst->info.flags & MONST_RESTRICTED_TO_LIQUID) || cellHasTMFlag(player.xLoc, player.yLoc, TM_ALLOWS_SUBMERGING))) {
 

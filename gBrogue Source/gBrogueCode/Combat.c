@@ -315,7 +315,7 @@ void moralAttack(creature *attacker, creature *defender) {
 
 		if (attacker == &player
 			&& defender->creatureState == MONSTER_ALLY
-			&& !defender->status[STATUS_DISCORDANT]
+			&& !defender->status[STATUS_HALLUCINATING] //&& !defender->status[STATUS_DISCORDANT]
 			&& !attacker->status[STATUS_CONFUSED]
             && !(attacker->bookkeepingFlags & MB_IS_DYING)) {
 
@@ -480,8 +480,8 @@ void specialHit(creature *attacker, creature *defender, short damage) {
 	}
 	// Hallucination = discord for creatures --gsr
     if (attacker->info.abilityFlags & MA_HIT_HALLUCINATE && defender != &player) {
-        defender->status[STATUS_DISCORDANT] = 300;//+= 20;
-        defender->maxStatus[STATUS_DISCORDANT] = max(defender->maxStatus[STATUS_DISCORDANT], defender->status[STATUS_DISCORDANT]);
+        defender->status[STATUS_HALLUCINATING] = 300;//+= 20;
+        defender->maxStatus[STATUS_HALLUCINATING] = max(defender->maxStatus[STATUS_HALLUCINATING], defender->status[STATUS_HALLUCINATING]);
     }
 }
 
@@ -985,7 +985,7 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
                                                                                     // Also no exploding or infecting by spectral clones.
 					monst->leader = &player;
 					monst->creatureState = MONSTER_ALLY;
-                    monst->status[STATUS_DISCORDANT] = 0; // Otherwise things can get out of control...
+                    monst->status[STATUS_HALLUCINATING] = 0; // Otherwise things can get out of control...
 					monst->ticksUntilTurn = 100;
 					monst->info.monsterID = MK_SPECTRAL_IMAGE;
                     if (monst->carriedMonster) {
