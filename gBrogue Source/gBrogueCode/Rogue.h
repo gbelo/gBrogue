@@ -165,8 +165,9 @@
 #define BIG_LEVEL_MAX               8
 #define NARROW_LEVEL_MIN            11
 #define NARROW_LEVEL_MAX            15
-#define GUARANTEED_ADVENTURER_LEVEL_MIN 20
-#define GUARANTEED_ADVENTURER_LEVEL_MAX 25
+#define ELEMENTAL_LEVEL             25
+#define GUARANTEED_ADVENTURER_LEVEL_MIN 8
+#define GUARANTEED_ADVENTURER_LEVEL_MAX 23
 #define MOLOCH_LAIR_LEVEL       DEEPEST_LEVEL - 1
 
 //#define MACHINES_FACTOR         1.0         // use this to adjust machine frequency
@@ -669,6 +670,8 @@ enum tileType {
     NETHER_DOOR,
     NETHER_SECRET_DOOR,
 
+    ROLLING_WATER,
+
 	NUMBER_TILETYPES,
 };
 
@@ -734,6 +737,7 @@ enum lightType {
     GLYPH_LIGHT_BRIGHT,
     SACRED_GLYPH_LIGHT,
     DESCENT_LIGHT,
+    SWIRLING_WIND_LIGHT,
 	NUMBER_LIGHT_KINDS
 };
 
@@ -1861,6 +1865,8 @@ enum dungeonFeatureTypes {
     // goblin warren:
     DF_STENCH_BURN,
     DF_STENCH_SMOLDER,
+
+	DF_ROLLING_WATER,
 
 	NUMBER_DUNGEON_FEATURES,
 };

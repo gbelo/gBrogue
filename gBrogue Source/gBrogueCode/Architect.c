@@ -2366,8 +2366,11 @@ void designRandomRoom(short **grid, boolean attachHallway, short doorSites[4][2]
         designNarrowRoom(grid);
     else if (rogue.depthLevel == rogue.bigLevelDepth)
         designBigRoom(grid);
+    else if (rogue.depthLevel == ELEMENTAL_LEVEL)
+        designChunkyRoom(grid);
     else if (rogue.depthLevel == AMULET_LEVEL)
         designCrossRoom(grid);
+
     else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL)
         designCavern(grid, DROWS-4, DROWS-2, 5, 20);
 
@@ -2555,7 +2558,6 @@ void carveDungeon(short **grid) {
         temporaryMessage("First room placed:", true);
     }
 
-
     if (rogue.depthLevel == rogue.bigLevelDepth) // Special levels handled here -- gsr
         attachRooms(grid, &theDP, 35, 0);
     else if (rogue.depthLevel == rogue.narrowLevelDepth)
@@ -2622,7 +2624,7 @@ void liquidType(short *deep, short *shallow, short *shallowWidth) {
     else if (rogue.depthLevel == rogue.narrowLevelDepth)
         rand = 4;
 
-    else if (rogue.depthLevel == AMULET_LEVEL) // no pits leading downward -- must take stairs!
+    else if (rogue.depthLevel == AMULET_LEVEL || rogue.depthLevel == ELEMENTAL_LEVEL) // no pits leading downward -- must take stairs!
         rand = 0;
     else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL) // no skipping Moloch's lair!
         rand = 3;

@@ -74,14 +74,14 @@ creature *generateMonster(short monsterID, boolean itemPossible, boolean mutatio
     if (mutationPossible
         && !(monst->info.flags & MONST_NEVER_MUTATED)
         && !(monst->info.abilityFlags & MA_NEVER_MUTATED)
-        && rogue.depthLevel > 10) {
+        && rogue.deepestLevel > 10) {
 
 
         // let's give these guys lots of mutations --gsr
-        if (rogue.depthLevel <= AMULET_LEVEL) {
-            mutationChance = pow(1.18, rogue.depthLevel); // 10);
+        if (rogue.deepestLevel <= AMULET_LEVEL) {
+            mutationChance = pow(rogue.deepestLevel/6, 3); // 10);
         } else {
-            mutationChance = 75;
+            mutationChance = 90;
         }
 
         if (rand_percent(mutationChance)) {
@@ -1014,6 +1014,10 @@ void populateMonsters() {
         numberOfMonsters /= 1.1;
 	else if (rogue.depthLevel == rogue.narrowLevelDepth) // don't crowd the narrow level -- gsr
         numberOfMonsters /= 2;
+	else if (rogue.depthLevel == ELEMENTAL_LEVEL) // exactly eight of these guys -- gsr
+        numberOfMonsters = 8;
+
+
     // "Our" Moloch, on the second to last floor, near down stairs to the final floor -- gsr
     else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL && !rogue.moloch)
     {
@@ -1026,7 +1030,7 @@ void populateMonsters() {
         rogue.moloch = monst;
     }
     // Generate a fellow adventurer -- gsr
-    if ((rogue.depthLevel > 10 && rand_percent(2)) || rogue.depthLevel == rogue.guaranteedAdventurerDepth)
+    if ((rogue.depthLevel > 10 && rand_percent(4)) || rogue.depthLevel == rogue.guaranteedAdventurerDepth)
         generateFellowAdventurer();
 
 

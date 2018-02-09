@@ -280,6 +280,8 @@ const color spectralBladeLightColor ={40,	0,		230,	0,		0,			0,			0,		true};
 const color ectoplasmLightColor =	{23,	10,		28,		13,		0,			13,			3,		false};
 const color explosionColor =		{10,	8,		2,		0,		2,			2,			0,		true};
 const color explosiveAuraColor =	{2000,	0,      -1000,  200,    200,		0,          0,		true};
+const color swirlingWindColor =	{50,	50,      50,  10,    10,		10,          50,		true};
+
 const color dartFlashColor =		{500,	500,	500,	0,		2,			2,			0,		true};
 const color lichLightColor =		{-50,	80,		30,		0,		0,			20,			0,		true};
 const color forceFieldLightColor =	{10,	10,		10,		0,		50,			50,			0,		true};
@@ -743,6 +745,13 @@ const floorTileType tileCatalog[NUMBER_TILETYPES] = {
 //	{WALL_CHAR,		&netherWallForeColor,   &netherWallBackColor,	0,	0,	0,	0,			0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET),	"a magnetite wall",		"The rough magmatite wall is firm and warm to the touch."},
     {WALL_CHAR,		&netherWallForeColor,   &netherWallBackColor,	0,	0,	0,	DF_SHOW_DOOR,			0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),														"a magmatite wall",			"The rough magmatite wall is firm and warm to the touch."},
 
+    // For water elementals!
+	//	char		fore color				back color		priority	ignit	fireType	discovType	promoteType		promoteChance	glowLight		flags																								description			flavorText
+
+	{0,				&shallowWaterForeColor,	&shallowWaterBackColor,	50,	200,	DF_STEAM_ACCUMULATION,	0,	0,		2000,			NO_LIGHT,		(0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING),	"shallow water",		"knee-deep water sloshes around very subtly."},
+
+//	{FIRE_CHAR,		&fireForeColor,			0,						10,	0,	    0,				        0,	DF_EMBERS,		500,			FIRE_LIGHT,		(T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),				"billowing flames",		"flames billow upward."},
+
 
 //	{WALL_CHAR,		&wallForeColor,			&wallBackColor,			0,	50,	DF_EMBERS,		DF_SHOW_DOOR,0,				0,				NO_LIGHT,		(T_OBSTRUCTS_EVERYTHING | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET),	"a stone wall",		"The rough stone wall is firm and unyielding."},
 
@@ -915,7 +924,7 @@ dungeonFeature dungeonFeatureCatalog[NUMBER_DUNGEON_FEATURES] = {
     {CREATURE_FIRE,             SURFACE,    0,      0,      0,  "", FALLEN_TORCH_FLASH_LIGHT},
 
 	{FLOOD_WATER_SHALLOW,		SURFACE,	225,	37,		0,	"", 0,	0,	0,		0,			DF_FLOOD_2},
-	{FLOOD_WATER_DEEP,			SURFACE,	175,	37,		0,	"the area is flooded as water rises through imperceptible holes in the ground."},
+	{FLOOD_WATER_DEEP,			SURFACE,	175,	37,		0,	"the area becomes flooded!"},
 	{FLOOD_WATER_SHALLOW,		SURFACE,	10,		25,		0},
 	{HOLE,						SURFACE,	200,	100,	0},
 	{HOLE_EDGE,					SURFACE,	0,		0,		0},
@@ -1082,6 +1091,12 @@ dungeonFeature dungeonFeatureCatalog[NUMBER_DUNGEON_FEATURES] = {
     {STENCH_SMOKE_GAS,          GAS,		50,		0,		0, "", 0, 0, 0, 0, DF_PLAIN_FIRE},
     {STENCH_SMOKE_GAS,          GAS,		50,		0,		0, "", 0, 0, 0, 0, DF_EMBERS},
 
+    // water elemental
+	{ROLLING_WATER,			SURFACE,		300,		90,		0},
+
+//	{ROLLING_WATER,			LIQUID,	90,	100,		0},
+
+
 };
 
 #pragma mark Dungeon Profiles
@@ -1175,6 +1190,9 @@ const lightSource lightCatalog[NUMBER_LIGHT_KINDS] = {
     {&glyphLightColor,      {300, 300, 1},          0,      false},     // glyph bright light
     {&sacredGlyphColor,     {300, 300, 1},          0,      false},     // sacred glyph light
     {&descentLightColor,    {600, 600, 1},          0,      false},     // magical pit light
+
+    // other/new
+    {&swirlingWindColor,    {300, 300, 1},          0,      true},      // explosive bloat light
 };
 
 #pragma mark Blueprints
@@ -1768,14 +1786,14 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 	{0, "quivering jelly",	'J',	&white,	60,		0,		115,	{4, 8, 1},		0,	100,	100,	DF_ACID_BLOOD,	0,		0,		0,              {0},
 		(0), (MA_HIT_SLOWS | MA_CLONE_SELF_ON_DEFEND)},
 
-	{0, "fire elemental",'E',	&salamanderColor,	40,		60,		100,	{8, 18, 1},		20,	100,	100, DF_GAS_FIRE,	EXPLOSIVE_BLOAT_LIGHT,0, DF_ARMOR_IMMOLATION, {BOLT_FIRE},
-		(MONST_FLEES_NEAR_DEATH | MONST_NEVER_SLEEPS | MONST_IMMUNE_TO_FIRE | MONST_CAST_SPELLS_SLOWLY | MONST_MAINTAINS_DISTANCE | MONST_FIERY | MONST_NEVER_MUTATED), (MA_DF_ON_DEATH)},
-	{0, "water elemental",'E',	&shallowWaterBackColor,	40,		60,		100,	{11, 18, 1},		110,	100,	50,	DF_FLOOD_DRAIN,	0,		0,		DF_FLOOD,              {},
-		(MONST_FLEES_NEAR_DEATH | MONST_IMMUNE_TO_WATER | MONST_SUBMERGES | MONST_IMMUNE_TO_FIRE | MONST_NEVER_MUTATED), (MA_DF_ON_DEATH | MA_ATTACKS_EXTEND | MA_AVOID_CORRIDORS)},
+	{0, "fire elemental",'E',	&salamanderColor,	40,		60,		100,	{8, 18, 1},		20,	100,	100, DF_GAS_FIRE,	EXPLOSIVE_BLOAT_LIGHT,0, DF_GAS_FIRE, {BOLT_SPARK, BOLT_LIGHT_SOURCE, BOLT_FIRE},
+		(MONST_NO_POLYMORPH | MONST_FLEES_NEAR_DEATH | MONST_NEVER_SLEEPS | MONST_IMMUNE_TO_FIRE | MONST_CAST_SPELLS_SLOWLY | MONST_MAINTAINS_DISTANCE | MONST_FIERY), (MA_NEVER_MUTATED | MA_DF_ON_DEATH)},
+	{0, "water elemental",'E',	&shallowWaterBackColor,	40,		60,		100,	{11, 18, 1},		75,	100,	400,	DF_SHALLOW_WATER_POOL,	0,		400,		DF_ROLLING_WATER,              {},
+		(MONST_NO_POLYMORPH | MONST_FLITS | MONST_FLEES_NEAR_DEATH | MONST_NEVER_SLEEPS | MONST_IMMUNE_TO_WATER | MONST_IMMUNE_TO_FIRE | MONST_SUBMERGES | MA_ATTACKS_ALL_ADJACENT), (MA_NEVER_MUTATED | MA_DF_ON_DEATH)},
 	{0, "earth elemental",'E',	&brown,	120,	80,		150,	{15, 20, 1},		50,	150,	150,	DF_RUBBLE_BLOOD,	SENTINEL_LIGHT,		0,		DF_RUBBLE,              {0},
-		(MONST_NEVER_SLEEPS | MONST_REFLECT_4 | MONST_IMMUNE_TO_FIRE | MONST_NEVER_MUTATED), (MA_SEIZES)},
-	{0, "air elemental",'E',	&grayFungusColor,	40,		60,		100,	{10, 15, 1},		5,	70,	80,    0,	WISP_LIGHT,		0,		0,              {BOLT_BLINKING, BOLT_FORCE},
-		(MONST_FLEES_NEAR_DEATH | MONST_NEVER_SLEEPS | MONST_MAINTAINS_DISTANCE | MONST_FLITS | MONST_FLIES | MONST_IMMUNE_TO_WEBS | MONST_NEVER_MUTATED), (MA_ATTACKS_ALL_ADJACENT)},
+		(MONST_NO_POLYMORPH | MONST_NEVER_SLEEPS | MONST_REFLECT_4 | MONST_IMMUNE_TO_FIRE), (MA_NEVER_MUTATED | MA_SEIZES|MA_DF_ON_DEATH)},
+	{0, "air elemental",'E',	&grayFungusColor,	40,		60,		100,	{10, 15, 1},		5,	70,	80,    0,	SWIRLING_WIND_LIGHT,		0,		DF_STEAM_PUFF,              {BOLT_BLINKING, BOLT_FORCE},
+		(MONST_NO_POLYMORPH | MONST_FLEES_NEAR_DEATH | MONST_NEVER_SLEEPS | MONST_MAINTAINS_DISTANCE | MONST_FLITS | MONST_FLIES | MONST_IMMUNE_TO_WEBS), (MA_NEVER_MUTATED | MA_ATTACKS_ALL_ADJACENT | MA_DF_ON_DEATH)},
 
 	{0,	"kraken",		'K',	&krakenColor,	120,	0,		150,	{15, 20, 3},	1,	50,		100,	0,              0,		0,		0,              {0},
 		(MONST_RESTRICTED_TO_LIQUID | MONST_IMMUNE_TO_WATER | MONST_SUBMERGES | MONST_FLITS | MONST_NEVER_SLEEPS | MONST_FLEES_NEAR_DEATH), (MA_SEIZES)},
@@ -2037,16 +2055,16 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 	{"This subspecies of jelly thrives in the dungeons with a slowing touch, leaving $HISHER prey almost helpless.",
 		"transmuting", "Transmuting",
 		{"douses","slimes","touches", {0}}},
-	{"fire everburning, explosive main method of attack is hurling flame",
+	{"Almost shining too bright to observe directly, the everburning fire elemental leaves ash, char, and destruction wherever $HESHE moves.",
 		"incinerating", "Incinerating",
 		{"scalds","singes","scorches","chars", {0}}},
-	{"water becomes one with the water pool",
+	{"A deep but hazily-defined pool of water creeps along the dungeon floor. As a liquid, the water elemental uses trickery and deception to circle around and attack $HISHER prey.",
 		"absorbing", "Absorbing",
-		{"sprays","douses","drenches", {0}}},
-	{"earth slow moving, earth make sure you're not stuck between a rock and a hard place. he can grasp onto you and is hard to destroy",
+		{"smacks","douses","drenches", {0}}},
+	{"This massive, stoic creature is the embodiment of earth itself. The earth elemental moves at glacial speeds but is rock-solid. If $HESHE is able to catch up to $HISHER prey, $HESHE will grapple then ruthlessly bludgeon $HISHER prey until it stops breathing.",
 		"eating", "Eating",
 		{"crushes","punches","slams","squeezes", {0}}},
-	{"air tornado of debris, move like the wind and throw forceful wind at you",
+	{"The ethereal air elemental roughly takes the form of a swirling column of air with subtle anthropomorphic features, circulating dust and jagged debris all around $HIM for good measure. $HISHER power lies in $HISHER ability to move swiftly and to blow torrents of forceful winds at $HISHER opponents.",
 		"eroding", "Eroding",
 		{"scrapes","cuts","minces","grinds", {0}}},
 
@@ -2233,8 +2251,8 @@ const mutation mutationCatalog[NUMBER_MUTATORS] = {
         "A rare mutation has caused $HISHER to seep fireproof mucous through $HISHER pores."},
     {"berserk",     &explosiveAuraColor,        100,            75,         50,            25,     150,     -1, 0,      0,      (MONST_ALWAYS_HUNTING|MONST_NEVER_SLEEPS), (MA_ATTACKS_ALL_ADJACENT|MA_ATTACKS_PENETRATE), (0), (0),
         "Some sort of chaotic spirit seems to have possessed $HIMHER, sending $HIMHER into a blind primal rage."},
-    {"skeletal",    &lightningColor,        90,            100,         100,            100,     100,     -1, 0,      0,      (MONST_DIES_IF_NEGATED|MONST_IMMUNE_TO_FIRE|MONST_NEVER_SLEEPS), (MA_ATTACKS_ALL_ADJACENT|MA_ATTACKS_PENETRATE), (MONST_DIES_IF_NEGATED), (MA_CLONE_SELF_ON_DEFEND),
-        "$HESHE has shed $HISHER flesh, leaving only an animated skeleton."},
+    {"skeletal",    &grayFungusColor,        90,            100,         100,            100,     100,     -1, 0,      0,      (MONST_DIES_IF_NEGATED|MONST_IMMUNE_TO_FIRE|MONST_NEVER_SLEEPS), (MA_ATTACKS_ALL_ADJACENT|MA_ATTACKS_PENETRATE), (MONST_DIES_IF_NEGATED), (MA_CLONE_SELF_ON_DEFEND),
+        "$HESHE has been stripped of $HISHER flesh, muscles, and organs, leaving only a magically animated skeleton that only vaguely resembles $HISHER living form."},
     {"acidic",   &acidBackColor,    80,           100,         100,            100,     100,     -1, 0,      0,      (MONST_DEFEND_DEGRADE_WEAPON), (MA_HIT_DEGRADE_ARMOR), (MONST_DEFEND_DEGRADE_WEAPON|MONST_DIES_IF_NEGATED), (MA_HIT_DEGRADE_ARMOR),
         "A rare mutation causes acid to seep through the surface of $HISHER body, making $HIMHER corrosive to the touch."},
 };
@@ -2321,12 +2339,6 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_TENTACLE_HORROR,2,		{MK_TENTACLE_HORROR, MK_REVENANT},		{{1, 3, 1}, {2, 4, 1}},			32,		MOLOCH_LAIR_LEVEL-1,    2},
 	{MK_DRAGON,			1,		{MK_DRAGON},							{{3, 5, 1}},					34,		MOLOCH_LAIR_LEVEL-1,    2},
 
-	{MK_FIRE_ELEMENTAL,0,		{0},									{{0}},							1,		MOLOCH_LAIR_LEVEL-1,		1000},
-	{MK_WATER_ELEMENTAL,0,		{0},									{{0}},							1,		MOLOCH_LAIR_LEVEL-1,		1000},
-	{MK_EARTH_ELEMENTAL,0,		{0},									{{0}},							1,		MOLOCH_LAIR_LEVEL-1,		1000},
-	{MK_AIR_ELEMENTAL,0,		{0},									{{0}},							1,		MOLOCH_LAIR_LEVEL-1,		1000},
-
-
 
 	// "post-game" -- gsr
 	{MK_BLACK_DRAGON,	0,		{0},									{{0}},							NETHER_LEVEL - 2,		MOLOCH_LAIR_LEVEL-1,		3},
@@ -2341,6 +2353,23 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_HELLHOUND,  	1,		{MK_HELLHOUND},							{{1,4,1}},						28,		            MOLOCH_LAIR_LEVEL-1,		2},
 	{MK_HELLHOUND,  	1,		{0},            					    {0},    						28,		            MOLOCH_LAIR_LEVEL-1,		2},
 	{MK_INVISIBLE_JELLY,  	1,		{0},            					{0},    						34,		            MOLOCH_LAIR_LEVEL-1,		2},
+
+	// Old favorites return in the post-game, but mutated beyond belief...
+	{MK_RAT,  	1,		{0},            					{0},    						NETHER_LEVEL,		            MOLOCH_LAIR_LEVEL-1,		1},
+	{MK_GOBLIN,  	1,		{0},            					{0},    						NETHER_LEVEL,		            MOLOCH_LAIR_LEVEL-1,		1},
+	{MK_OGRE,  	1,		{0},            					{0},    						NETHER_LEVEL,		            MOLOCH_LAIR_LEVEL-1,		1},
+	{MK_KOBOLD,  	1,		{0},            					{0},    						NETHER_LEVEL,		            MOLOCH_LAIR_LEVEL-1,		1},
+
+	// Virtually guarantee that these guys will be the only ones inhabiting the elemental plane.. --gsr
+	{MK_FIRE_ELEMENTAL,0,		{0},									{{0}},							ELEMENTAL_LEVEL-1,		ELEMENTAL_LEVEL-1,		5000},
+	{MK_WATER_ELEMENTAL,0,		{0},									{{0}},							ELEMENTAL_LEVEL-1,		ELEMENTAL_LEVEL-1,		5000},
+	{MK_EARTH_ELEMENTAL,0,		{0},									{{0}},							ELEMENTAL_LEVEL-1,		ELEMENTAL_LEVEL-1,		5000},
+	{MK_AIR_ELEMENTAL,0,		{0},									{{0}},							ELEMENTAL_LEVEL-1,		ELEMENTAL_LEVEL-1,		5000},
+
+	{MK_FIRE_ELEMENTAL,0,		{0},									{{0}},							NETHER_LEVEL,		MOLOCH_LAIR_LEVEL-1,		5},
+	{MK_WATER_ELEMENTAL,0,		{0},									{{0}},							NETHER_LEVEL,		MOLOCH_LAIR_LEVEL-1,		5},
+	{MK_EARTH_ELEMENTAL,0,		{0},									{{0}},							NETHER_LEVEL,		MOLOCH_LAIR_LEVEL-1,		5},
+	{MK_AIR_ELEMENTAL,0,		{0},									{{0}},							NETHER_LEVEL,		MOLOCH_LAIR_LEVEL-1,		5},
 
 
 

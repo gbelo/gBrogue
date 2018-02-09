@@ -881,6 +881,8 @@ void startLevel(short oldLevelNumber, short stairDirection) {
             messageWithColor("This floor leaves you feeling claustrophobic.", &white, false);
         else if (rogue.depthLevel == rogue.bigLevelDepth)
             messageWithColor("This floor leaves you with a stark feeling of insignificance.", &white, false);
+        else if (rogue.depthLevel == ELEMENTAL_LEVEL)
+            messageWithColor("Immediately upon entering, you feel overwhelmed by the elements.", &pink, false);
         else if (rogue.depthLevel == MOLOCH_LAIR_LEVEL)
             messageWithColor("You sense a devastating demonic presence...", &pink, false);
         else if (rogue.depthLevel == NETHER_LEVEL)
