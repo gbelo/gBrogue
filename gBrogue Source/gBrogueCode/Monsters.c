@@ -71,6 +71,10 @@ creature *generateMonster(short monsterID, boolean itemPossible, boolean mutatio
 	monst->uniqueID = rogue.numberOfMonstersGenerated++; // gsr
 
     monst->mutationIndex = -1;
+
+    if (monst->info.flags & MONST_DOES_NOT_MUTATE) // why do we need this..? --gsr
+        mutationPossible = false;
+
     if (mutationPossible
         && !(monst->info.flags & MONST_NEVER_MUTATED)
         && !(monst->info.abilityFlags & MA_NEVER_MUTATED)
@@ -1030,7 +1034,7 @@ void populateMonsters() {
         rogue.moloch = monst;
     }
     // Generate a fellow adventurer -- gsr
-    if ((rogue.depthLevel > 10 && rand_percent(4)) || rogue.depthLevel == rogue.guaranteedAdventurerDepth)
+    if ((rogue.depthLevel > 10 && rand_percent(3)) || rogue.depthLevel == rogue.guaranteedAdventurerDepth)
         generateFellowAdventurer();
 
 
@@ -4539,7 +4543,7 @@ void generateFellowAdventurer()
                 do {
                     j = rand_range(BOLT_TELEPORT, BOLT_SPARK);
                     // Lots of cool bolts but we want to forbid some of them
-                } while (j == BOLT_POLYMORPH || j == BOLT_POLYMORPH || j == BOLT_DOMINATION || j == BOLT_PLENTY || j == BOLT_EMPOWERMENT || j == BOLT_ENTRANCEMENT || j == BOLT_SPIDERWEB);
+                } while (j == BOLT_POLYMORPH || j == BOLT_TUNNELING || j == BOLT_DOMINATION || j == BOLT_PLENTY || j == BOLT_EMPOWERMENT || j == BOLT_ENTRANCEMENT || j == BOLT_SPIDERWEB);
 
                 for (k = 0; k <= i; k++)
                 {

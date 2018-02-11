@@ -431,7 +431,6 @@ void initializeRogue(unsigned long seed) {
 	rogue.displayAggroRangeMode = true; // gsr
 
     rogue.yendorWarden = NULL;
-	rogue.petDog = NULL; // gsr
 
     rogue.flares = NULL;
     rogue.flareCount = rogue.flareCapacity = 0;
@@ -476,14 +475,7 @@ void initializeRogue(unsigned long seed) {
 
     recalculateEquipmentBonuses();
 
-	DEBUG {
-
-		theItem = generateItem(RING, RING_CLAIRVOYANCE);
-		theItem->enchant1 = max(DROWS, DCOLS);
-		theItem->flags &= ~ITEM_CURSED;
-		identify(theItem);
-		theItem = addItemToPack(theItem);
-
+/*	DEBUG {
 		theItem = generateItem(WEAPON, DAGGER);
 		theItem->enchant1 = 50;
 		theItem->enchant2 = W_QUIETUS;
@@ -500,7 +492,7 @@ void initializeRogue(unsigned long seed) {
 		theItem->flags |= (ITEM_PROTECTED | ITEM_RUNIC);
 		identify(theItem);
 		theItem = addItemToPack(theItem);
-
+*/
 /*
 		theItem = generateItem(STAFF, STAFF_FIRE);
 		theItem->enchant1 = 10;
@@ -591,18 +583,12 @@ void initializeRogue(unsigned long seed) {
 		identify(theItem);
 		theItem = addItemToPack(theItem);*/
 
-		theItem = generateItem(CHARM, CHARM_IDENTIFY);
-		theItem->enchant1 = 30;
-		theItem->flags &= ~ITEM_CURSED;
-		identify(theItem);
-		theItem = addItemToPack(theItem);
-
 //		short i;
 //		for (i=0; i < NUMBER_CHARM_KINDS && i < 4; i++) {
 //			theItem = generateItem(CHARM, i);
 //			theItem = addItemToPack(theItem);
 //		}
-	}
+//	}
 	blackOutScreen();
 	welcome();
 }
@@ -940,18 +926,6 @@ void startLevel(short oldLevelNumber, short stairDirection) {
         && !cellHasTerrainFlag(player.xLoc, player.yLoc, (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))) {
 		rogue.inWater = true;
 	}
-
-	// Our starting pet -- gsr
-    if (rogue.depthLevel == 1 && !rogue.petDog)
-    {
-        monst = summonMonster(MK_PET_DOG);
-        monst->bookkeepingFlags |= MB_FOLLOWER | MB_TELEPATHICALLY_REVEALED;
-        monst->bookkeepingFlags &= ~MB_JUST_SUMMONED;
-        monst->leader = &player;
-        monst->creatureState = MONSTER_ALLY;
-        sprintf(monst->called, "%s", "Kenny");
-        rogue.petDog = monst;
-    }
 
 	updateMapToShore();
 	updateVision(true);

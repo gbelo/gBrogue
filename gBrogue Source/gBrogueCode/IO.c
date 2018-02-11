@@ -2593,6 +2593,23 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
             if (DEBUGGING || rogue.wizardMode)
                 debugWish(rogue.lastWishText);
             break;
+        case DEBUG_OMNIPRESENCE_KEY:
+            if (DEBUGGING || rogue.wizardMode)
+            {
+                rogue.playbackOmniscience = !rogue.playbackOmniscience;
+                message("Omniscience toggled.", false);
+
+                updateMinersLightRadius();
+                updateVision(true);
+            }
+            break;
+        case DEBUG_OMNIPOWERFULNESS_KEY:
+            if (DEBUGGING || rogue.wizardMode)
+            {
+                rogue.omniMode = !rogue.omniMode;
+                message("Omnipowerfulness toggled.", false);
+            }
+            break;
 		default:
 			break;
 

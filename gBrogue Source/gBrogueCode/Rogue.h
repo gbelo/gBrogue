@@ -36,6 +36,7 @@
 /* TO DO:
     - Reevaluate some potions/scrolls
     - Fix that incineration/on fire bug
+    - Force bolt crash?
     - Jellymancer feat
     - Warnings in compiling
     - Compilation: Linux, iPad..
@@ -58,11 +59,11 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "v1.17.02.08"
+#define BROGUE_VERSION_STRING "v1.18.02.10"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
-#define DEBUGGING						1
+#define DEBUGGING						0
 
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.
@@ -1006,6 +1007,7 @@ enum charmKind {
 //    CHARM_NEGATION,
     CHARM_IDENTIFY,
     CHARM_DISCORD,
+    CHARM_BECKONING,
     NUMBER_CHARM_KINDS
 };
 
@@ -1311,6 +1313,8 @@ enum tileFlags {
 // debug commands -- gsr
 #define DEBUG_GSR_WISH  '$'
 #define DEBUG_GSR_WISH_AGAIN  '!'
+#define DEBUG_OMNIPRESENCE_KEY		'o'
+#define DEBUG_OMNIPOWERFULNESS_KEY		'p'
 
 
 // okay, more of the Brogue vanilla stuff
@@ -1388,6 +1392,7 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 
 #define ringWisdomMultiplier(enchant)       (int) (10 * pow(1.3, min(27, (enchant))) + FLOAT_FUDGE)
 #define ringPropulsionBonus(enchant)        ((int) (4 * (enchant)))
+#define ringPropulsionBeckonChance(enchant) (int) (enchant * 10)
 #define ringSpeedBonus(enchant)             ((int) (5 * (enchant)))
 #define ringStealthBonus(enchant)           ((int) ((enchant)))
 
@@ -2167,6 +2172,7 @@ enum monsterBehaviorFlags {
     MONST_ALWAYS_USE_ABILITY        = Fl(29),   // monster will never fail to use special ability if eligible (no random factor)
     MONST_NO_POLYMORPH              = Fl(30),   // monster cannot result from a polymorph spell (liches, phoenixes and Warden of Yendor)
     MONST_DISTANT_FOLLOWER          = Fl(31),   // monster doesn't closely follow a leader (e.g. player); will wander around
+    MONST_DOES_NOT_MUTATE           = Fl(32),   // monster doesn't mutate. no idea why there's a 'monst never mutated' flag below
 
 	NEGATABLE_TRAITS				= (MONST_INVISIBLE | MONST_DEFEND_DEGRADE_WEAPON | MONST_IMMUNE_TO_WEAPONS | MONST_FLIES
 									   | MONST_FLITS | MONST_IMMUNE_TO_FIRE | MONST_REFLECT_4 | MONST_FIERY | MONST_MAINTAINS_DISTANCE),
@@ -2418,6 +2424,7 @@ typedef struct playerCharacter {
 	boolean updatedMapToShoreThisTurn;		// so it's updated no more than once per turn
 	boolean easyMode;					// enables easy mode
 	boolean wizardMode;                 // enables wizard mode -- gsr
+	boolean omniMode;                 // enables/disables omnipowerfulness: we never get hurt, never get hit; we always score a killing blow against anything -- gsr
 	boolean inWater;					// helps with the blue water filter effect
 	boolean heardCombatThisTurn;		// so you get only one "you hear combat in the distance" per turn
 	boolean creaturesWillFlashThisTurn;	// there are creatures out there that need to flash before the turn ends
@@ -2444,7 +2451,6 @@ typedef struct playerCharacter {
     short flareCapacity;
 
     creature *yendorWarden;
-    creature *petDog;
     creature *moloch;
 
     short numberOfMonstersGenerated;    // number of monsters EVER generated, so that we can give each one a unique ID -- gsr
@@ -2513,6 +2519,7 @@ typedef struct playerCharacter {
 	short wisdomBonus;
     short reaping;
     short throwingBonus;
+    short thrownItemBeckoning;
     short speedBonus;
 
     // feats:

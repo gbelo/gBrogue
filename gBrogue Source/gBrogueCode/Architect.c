@@ -1715,15 +1715,9 @@ void addMachines() {
     }
 
     // Add the initial guaranteed treasure room if we're on the appropriate floor -- gsr
-        /*if (rogue.depthLevel == GUARANTEED_CAPTIVE_LEVEL)
-        {
-            // Generate the captive monster out of sight from the very first entrance in the game
-            getRandomMonsterSpawnLocation(x, y);
-            spawnHorde(0, &x, &y, NULL, HORDE_GUARANTEED_FOUND_CAPTIVE);
-        }*/
         if (rogue.depthLevel == GUARANTEED_VAULT_LEVEL)
         {
-            for (failsafe = 50; failsafe; failsafe--) {
+            for (failsafe = 200; failsafe; failsafe--) {
                 if (buildAMachine(MT_REWARD_FIRST_FLOOR, -1, -1, NULL, NULL, NULL, NULL)) {
                     break;
                 }

@@ -557,8 +557,8 @@ void populateItems(short upstairsX, short upstairsY) {
         rogue.lifePotionFrequency += 34; // irrelevant now -- gsr
 		rogue.strengthPotionFrequency += 17; // irrelevant now -- gsr
 		rogue.empowermentPotionFrequency += 15; // changed 2018.02.05 -- gsr //20; // gsr
-		rogue.enchantScrollFrequency += 25;
-		numberOfItems = 3;
+		rogue.enchantScrollFrequency += 15;
+		numberOfItems = 2;//3;
 		while (rand_percent(40)) { //60)) {
 			numberOfItems++;
 		}
@@ -571,9 +571,9 @@ void populateItems(short upstairsX, short upstairsY) {
 
         // rewards on special floors! -- gsr
 		else if (rogue.depthLevel == rogue.bigLevelDepth)
-            numberOfItems += rand_range(10, 16);
+            numberOfItems += rand_range(3, 6);
         else if (rogue.depthLevel == rogue.narrowLevelDepth)
-            numberOfItems += rand_range(6, 12);
+            numberOfItems += rand_range(2, 5);
 
 		numberOfGoldPiles = min(5, (int) (rogue.depthLevel / 4 + FLOAT_FUDGE));
 		for (goldBonusProbability = 60;
@@ -1833,6 +1833,7 @@ short charmEffectDuration(short charmKind, short enchant) {
 
         0,  // Identify
         0,  // Discord
+        0,  // Whistle
     };
     const short increment[NUMBER_CHARM_KINDS] = {
         0,  // Health
@@ -1851,6 +1852,7 @@ short charmEffectDuration(short charmKind, short enchant) {
 
         0,  // Identify
         0,  // Discord
+        0,  // Beckoning
     };
 
     return duration[charmKind] * (pow((double) (100 + (increment[charmKind])) / 100, enchant) + FLOAT_FUDGE);
@@ -1874,6 +1876,7 @@ short charmRechargeDelay(short charmKind, short enchant) {
 
         900,   // Identify
         2500,  // Discord
+        500,  // Beckoning
     };
     const short increment[NUMBER_CHARM_KINDS] = {
         45, // Health
@@ -1892,6 +1895,7 @@ short charmRechargeDelay(short charmKind, short enchant) {
 
         40,   // Identify
         40,   // Discord
+        30,     // Beckoning
     };
 
     return charmEffectDuration(charmKind, enchant) + duration[charmKind] * (pow((double) (100 - (increment[charmKind])) / 100, enchant) + FLOAT_FUDGE);
@@ -2755,11 +2759,24 @@ void itemDetails(char *buf, item *theItem) {
                 if (theItem->enchant1) {
                     switch (theItem->kind) {
                         case RING_PROPULSION:
-                            sprintf(buf2, "\n\nWhile wearing this ring, your maximum throwing distance will be %s by %i. (If the ring is enchanted, your maximum throwing distance will instead be %s by %i.)",
-                                    (theItem->enchant1 >= 0 ? "increased" : "decreased"),
-                                    ringPropulsionBonus(abs(theItem->enchant1)),
-                                    (theItem->enchant1 >= 0 ? "increased" : "decreased"),
-                                    ringPropulsionBonus(abs(theItem->enchant1 + 1)));
+                            if (theItem->enchant1 >= 0)
+                            {
+                                sprintf(buf2, "\n\nWhile wearing this ring, your maximum throwing distance will be %s by %i, and there will be a %i%% chance that an unbroken thrown item will magically return to your pack. (If the ring is enchanted, your maximum throwing distance will instead be %s by %i, and the chance of return will become %i%%.)",
+                                        (theItem->enchant1 >= 0 ? "increased" : "decreased"),
+                                        ringPropulsionBonus(abs(theItem->enchant1)),
+                                        ringPropulsionBeckonChance(theItem->enchant1),
+                                        (theItem->enchant1 >= 0 ? "increased" : "decreased"),
+                                        ringPropulsionBonus(abs(theItem->enchant1 + 1)),
+                                        ringPropulsionBeckonChance(abs(theItem->enchant1 + 1)));
+                            }
+                            else
+                            {
+                                sprintf(buf2, "\n\nWhile wearing this ring, your maximum throwing distance will be %s by %i. (If the ring is enchanted, your maximum throwing distance will instead be %s by %i.)",
+                                        (theItem->enchant1 >= 0 ? "increased" : "decreased"),
+                                        ringPropulsionBonus(abs(theItem->enchant1)),
+                                        (theItem->enchant1 >= 0 ? "increased" : "decreased"),
+                                        ringPropulsionBonus(abs(theItem->enchant1 + 1)));
+                            }
                             strcat(buf, buf2);
                             break;
                         case RING_CLAIRVOYANCE:
@@ -2967,6 +2984,10 @@ void itemDetails(char *buf, item *theItem) {
                             charmDiscordRadius(theItem->enchant1 + 1),
                             charmRechargeDelay(theItem->kind, theItem->enchant1 + 1));
                     break;
+                case CHARM_BECKONING:
+                    sprintf(buf2, "\n\nWhen used, the charm pull all allies in your field of view toward you, and recharge in %i turns. (If the charm is enchanted, it will recharge in %i turns.)",
+                            charmRechargeDelay(theItem->kind, theItem->enchant1),
+                            charmRechargeDelay(theItem->kind, theItem->enchant1 + 1));
                 default:
                     break;
             }
@@ -5957,7 +5978,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 	short listOfCoordinates[MAX_BOLT_LENGTH][2], originLoc[2];
 	short i, j, x, y, numCells;
 	creature *monst = NULL;
-	char buf[COLS*3], buf2[COLS*3], buf3[COLS*3];
+	char buf[COLS*3], buf2[COLS*3], buf3[COLS*3],theItemName[COLS];
 	uchar displayChar;
 	color foreColor, backColor, multColor;
 	short dropLoc[2];
@@ -5984,6 +6005,8 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 	numCells = getLineCoordinates(listOfCoordinates, originLoc, targetLoc);
 
 	thrower->ticksUntilTurn = thrower->attackSpeed;
+
+    itemName(theItem, theItemName, false, true, NULL);
 
 	if (thrower != &player
         && (pmap[originLoc[0]][originLoc[1]].flags & IN_FIELD_OF_VIEW)) {
@@ -6401,9 +6424,34 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 		}
 		return;
 	}*/
-	getQualifyingLocNear(dropLoc, x, y, true, 0, (T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_PASSABILITY), (HAS_ITEM), false, false);
-	placeItem(theItem, dropLoc[0], dropLoc[1]);
-	refreshDungeonCell(dropLoc[0], dropLoc[1]);
+
+        getQualifyingLocNear(dropLoc, x, y, true, 0, (T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_PASSABILITY), (HAS_ITEM), false, false);
+
+        if (cellHasTerrainFlag(x, y, T_OBSTRUCTS_PASSABILITY)) {
+            strcpy(buf2, "against");
+        } else if (tileCatalog[pmap[x][y].layers[highestPriorityLayer(x, y, false)]].mechFlags & TM_STAND_IN_TILE) {
+            strcpy(buf2, "into");
+        } else {
+            strcpy(buf2, "on");
+        }
+        itemName(theItem, theItemName, false, false, NULL);
+        sprintf(buf, "the %s comes to rest %s %s.", theItemName, buf2, tileText(x, y));
+        message(buf, false);
+
+    // Ring of propulsion might return thrown items
+    if (!rand_percent(ringPropulsionBeckonChance(rogue.thrownItemBeckoning)))
+    {
+        placeItem(theItem, dropLoc[0], dropLoc[1]);
+        refreshDungeonCell(dropLoc[0], dropLoc[1]);
+    }
+    else
+    {
+        itemName(theItem, theItemName, false, true, NULL);
+        sprintf(buf, "Your ring glows and %s returns to your pack!", theItemName);
+        message(buf, false);
+        createFlare(dropLoc[0], dropLoc[1], EMPOWERMENT_LIGHT);
+        addItemToPack(theItem);
+    }
 }
 
 void throwCommand(item *theItem) {
@@ -6769,6 +6817,7 @@ creature* summonMonster(short monsterKind) {
 void useCharm(item *theItem) {
     char buf[COLS * 3], buf2[COLS * 3];
     rogue.featRecord[FEAT_PURE_WARRIOR] = false;
+    creature *monst;
 
     switch (theItem->kind) {
         case CHARM_HEALTH:
@@ -6830,6 +6879,25 @@ void useCharm(item *theItem) {
             break;*/
         case CHARM_DISCORD:
             discordBlast("your charm", charmDiscordRadius(theItem->enchant1) + 1);
+            break;
+        case CHARM_BECKONING:
+            messageWithColor("your charm flickers and emits a faint, soothing hum..", &itemMessageColor, false);
+            for (monst = monsters->nextCreature; monst != NULL; monst = monst->nextCreature)
+            {
+                if (monst->creatureState == MONSTER_ALLY && (pmap[monst->xLoc][monst->yLoc].flags & IN_FIELD_OF_VIEW))
+                {
+                    beckonMonster(monst, player.xLoc, player.yLoc);
+                    wakeUp(monst);
+
+                    /*
+                        getQualifyingPathLocNear(&(monst->xLoc), &(monst->yLoc), player.xLoc, player.yLoc, true,
+                             T_DIVIDES_LEVEL & avoidedFlagsForMonster(&(monst->info)) & ~T_SPONTANEOUSLY_IGNITES, HAS_PLAYER,
+                             avoidedFlagsForMonster(&(monst->info)) & ~T_SPONTANEOUSLY_IGNITES, (HAS_PLAYER | HAS_MONSTER | HAS_UP_STAIRS | HAS_DOWN_STAIRS), false);
+                                pmap[monst->xLoc][monst->yLoc].flags |= HAS_MONSTER;
+                                fadeInMonster(monst);
+                                */
+                }
+            }
             break;
 
         case CHARM_IDENTIFY:
@@ -8171,7 +8239,7 @@ void updateRingBonuses() {
 	item *rings[2] = {rogue.ringLeft, rogue.ringRight};
 
 	rogue.clairvoyance = rogue.stealthBonus = rogue.transference
-	= rogue.awarenessBonus = rogue.regenerationBonus = rogue.wisdomBonus = rogue.reaping = rogue.throwingBonus = rogue.speedBonus = 0;
+	= rogue.awarenessBonus = rogue.regenerationBonus = rogue.wisdomBonus = rogue.reaping = rogue.throwingBonus = rogue.speedBonus = rogue.thrownItemBeckoning = 0;
 	rogue.lightMultiplier = 1;
 
 	for (i=0; i<= 1; i++) {
@@ -8202,6 +8270,7 @@ void updateRingBonuses() {
 
 				case RING_PROPULSION:
 					rogue.throwingBonus += effectiveRingEnchant(rings[i]);
+					rogue.thrownItemBeckoning += effectiveRingEnchant(rings[i]);
 					break;
 				case RING_WISDOM:
 					rogue.wisdomBonus += effectiveRingEnchant(rings[i]);

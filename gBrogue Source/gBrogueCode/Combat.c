@@ -87,6 +87,10 @@ short hitProbability(creature *attacker, creature *defender) {
 	short defense = monsterDefenseAdjusted(defender);
 	short hitProbability;
 
+	// we always hit! they never hit! we're so powerful! --gsr
+	if (rogue.omniMode && (attacker == &player || defender == &player))
+        return (attacker == &player ? 100 : 0);
+
 	if (defender->status[STATUS_STUCK] || (defender->bookkeepingFlags & MB_CAPTIVE)) {
 		return 100;
 	}
@@ -108,6 +112,10 @@ short hitProbability(creature *attacker, creature *defender) {
 	}
 
 	hitProbability = accuracy * pow(DEFENSE_FACTOR, defense);
+
+	// Darkness does crazy stuff to monsters now... --gsr
+	if (defender->status[STATUS_DARKNESS])
+        hitProbability/=2;
 
 	if (hitProbability > 100) {
 		hitProbability = 100;
@@ -482,6 +490,11 @@ void specialHit(creature *attacker, creature *defender, short damage) {
     if (attacker->info.abilityFlags & MA_HIT_HALLUCINATE && defender != &player) {
         defender->status[STATUS_HALLUCINATING] = 300;//+= 20;
         defender->maxStatus[STATUS_HALLUCINATING] = max(defender->maxStatus[STATUS_HALLUCINATING], defender->status[STATUS_HALLUCINATING]);
+    }
+
+    if (defender != &player && attacker->info.abilityFlags & MA_HIT_BLINDS) {
+        defender->status[STATUS_DARKNESS] = 300;//+= 20;
+        defender->maxStatus[STATUS_DARKNESS] = max(defender->maxStatus[STATUS_DARKNESS], defender->status[STATUS_DARKNESS]);
     }
 }
 
@@ -1291,6 +1304,10 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
             }
         }
 
+        // we're unstoppable! kill everything we touch. --gsr
+        if (rogue.omniMode)
+            damage = 32767;
+
 		if (damage == 0) {
 			sprintf(explicationClause, " but %s no damage", (attacker == &player ? "do" : "does"));
 			if (attacker == &player) {
@@ -1645,6 +1662,11 @@ boolean inflictDamage(creature *attacker, creature *defender,
 	boolean killed = false;
 	dungeonFeature theBlood;
     short transferenceAmount;
+
+
+	// we always hit! we never get hurt! we're so powerful! --gsr
+	if (rogue.omniMode && defender == &player)
+        return false;
 
 	if (damage == 0
         || (defender->info.flags & MONST_INVULNERABLE)) {
