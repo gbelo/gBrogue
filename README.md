@@ -1,4 +1,4 @@
-# gBrogue (v1.17.12.26)
+# gBrogue (v1.18.02.11)
 gBrogue: A community-driven fork of Brogue
 
 gBrogue is based on the roguelike game Brogue. It's mostly designed to build upon Brogue's particular advantages over other roguelikes. Brogue provides you with a lot of information, but not overwhelmingly so; is easy to navigate, use, and understand; and presents more varied and interesting level designs than many other roguelikes. This modest fork strives to crank these to 11 while also adding some twists and turns, with increments guided by community feedback.
@@ -13,6 +13,8 @@ General feel / Overview:
  * You're given options. You can choose one of a few different special items on the very first floor to get the game going. You can choose to explore and find hidden areas to find more items. Potions, especially, are multipurpose. You can choose to allow your starting pet to accompany you and to take care of it, and/or you can free captured monsters along the way.
  * There's a focus on usability as well -- playing into what's already a major strength of Brogue -- in the UI, keyboard commands, and visual cues.
  * Features for new players include a page on the help screen with tips and tricks and "stealth range" visible by default.
+ 
+Some of the following needs to be amended for the latest version, but it's generally correct.
 
 Tweaks to existing items:
  * All wands have been removed. Staffs of entrancement, healing, haste, and protection are out. Some of these have had their functionality given to other items, such as scrolls or potions (e.g. you can throw a potion at a monster to speed it up or heal it). Some functionalities, such as domination and entrancement, are entirely unavailable.

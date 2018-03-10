@@ -1094,6 +1094,7 @@ void spawnPeriodicHorde() {
 }
 
 // x and y are optional.
+// TO DO: fix teleport not occurring in e.g. big room
 void teleport(creature *monst, short x, short y, boolean respectTerrainAvoidancePreferences) {
 	short **grid, i, j;
 	char monstFOV[DCOLS][DROWS];
@@ -1106,7 +1107,7 @@ void teleport(creature *monst, short x, short y, boolean respectTerrainAvoidance
         calculateDistances(grid, monst->xLoc, monst->yLoc, forbiddenFlagsForMonster(&(monst->info)) & T_DIVIDES_LEVEL, NULL, true, false);
         findReplaceGrid(grid, -30000, DCOLS/2, 0);
         findReplaceGrid(grid, 2, 30000, 1);
-        if (validLocationCount(grid, 1) < 1) {
+        if (validLocationCount(grid, 1) < 5) {
             fillGrid(grid, 1);
         }
         if (respectTerrainAvoidancePreferences) {

@@ -46,7 +46,6 @@
     - Ally commands
     - More detail on high score screen https://www.reddit.com/r/brogueforum/comments/6iosq7/idea_show_inventory_and_last_screenshot_on_high/
     - Poison vs. vampiric?
-    - Ring of propulsion multishot?
 */
 
 #include <stdio.h>
@@ -63,7 +62,7 @@
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
-#define DEBUGGING						0
+#define DEBUGGING						1
 
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.
