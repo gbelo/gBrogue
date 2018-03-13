@@ -558,7 +558,7 @@ void populateItems(short upstairsX, short upstairsY) {
 		rogue.strengthPotionFrequency += 17; // irrelevant now -- gsr
 		rogue.empowermentPotionFrequency += 15; // changed 2018.02.05 -- gsr //20; // gsr
 		rogue.enchantScrollFrequency += 15;
-		numberOfItems = 2;//3;
+		numberOfItems = 3;//3;
 		while (rand_percent(40)) { //60)) {
 			numberOfItems++;
 		}
@@ -7259,7 +7259,8 @@ void readScroll(item *theItem) {
 			teleport(&player, -1, -1, true);
             for (monst = monsters->nextCreature; monst != NULL; monst = monst->nextCreature)
             {
-                teleport(monst, -1, -1, true);
+                if (!(monst->info.flags & MONST_IMMOBILE))
+                    teleport(monst, -1, -1, true);
                 wakeUp(monst);
             }
             message("you feel completely disoriented.", false);

@@ -706,8 +706,11 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
 	}
 
     // No enchantment means no (positive) runics. Sorry! --gsr
-    	if (theItem->enchant2 < NUMBER_GOOD_WEAPON_ENCHANT_KINDS && rogue.armor->enchant1 < 1) // good runic
-            return;
+    	if (theItem->enchant2 < NUMBER_GOOD_WEAPON_ENCHANT_KINDS && theItem->enchant1 < 1) // good runic
+         {
+             message("!",false);
+             return;
+         }
 
 
 	enchant = netEnchant(theItem);
@@ -873,21 +876,30 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
 				}
 				break;*/
 			case W_TELEPORT:
-			    teleport(defender,-1,-1,false);
-
-				if (canDirectlySeeMonster(defender)) {
-					sprintf(buf, "%s is teleported to another spot", monstName);
-					buf[DCOLS] = '\0';
-					combatMessage(buf, messageColorFromVictim(defender));
-                    autoID = true;
-				}
-				else
+			    if (!(defender->info.flags & MONST_IMMOBILE))
                 {
-					sprintf(buf, "%s disappears", monstName);
-					buf[DCOLS] = '\0';
-					combatMessage(buf, messageColorFromVictim(defender));
-                    autoID = true;
+                    teleport(defender,-1,-1,false);
 
+                    if (canDirectlySeeMonster(defender)) {
+                        sprintf(buf, "%s is teleported to another spot", monstName);
+                        buf[DCOLS] = '\0';
+                        combatMessage(buf, messageColorFromVictim(defender));
+                        autoID = true;
+                    }
+                    else
+                    {
+                        sprintf(buf, "%s disappears", monstName);
+                        buf[DCOLS] = '\0';
+                        combatMessage(buf, messageColorFromVictim(defender));
+                        autoID = true;
+                    }
+                }
+                else
+                {
+                    sprintf(buf, "%s looks distorted for a brief moment", monstName);
+                    buf[DCOLS] = '\0';
+                    combatMessage(buf, messageColorFromVictim(defender));
+                    autoID = true;
                 }
 				break;
 /*			case W_CONFUSION:
