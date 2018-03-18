@@ -1877,6 +1877,7 @@ short charmRechargeDelay(short charmKind, short enchant) {
         900,   // Identify
         2500,  // Discord
         500,  // Beckoning
+        100,    // Aggravate monsters
     };
     const short increment[NUMBER_CHARM_KINDS] = {
         45, // Health
@@ -1896,6 +1897,7 @@ short charmRechargeDelay(short charmKind, short enchant) {
         40,   // Identify
         40,   // Discord
         30,     // Beckoning
+        5,  // Aggravate monsters
     };
 
     return charmEffectDuration(charmKind, enchant) + duration[charmKind] * (pow((double) (100 - (increment[charmKind])) / 100, enchant) + FLOAT_FUDGE);
@@ -2938,7 +2940,7 @@ void itemDetails(char *buf, item *theItem) {
 
                 // Lifted directly from UnBrogue
                 case CHARM_FEAR:
-                    sprintf(buf2, "\n\nWhen used, the charm will terrify all visible creatures and recharge in %i turns. (If the charm is enchanted, it will recharge in %i turns.)",
+                    sprintf(buf2, "\n\nWhen used, the charm will induce a state of fear in all visible creatures and recharge in %i turns. (If the charm is enchanted, it will recharge in %i turns.)",
                             charmRechargeDelay(theItem->kind, enchant),
                             charmRechargeDelay(theItem->kind, enchant + 1));
                     break;
@@ -2988,8 +2990,15 @@ void itemDetails(char *buf, item *theItem) {
                     sprintf(buf2, "\n\nWhen used, the charm pull all allies in your field of view toward you, and recharge in %i turns. (If the charm is enchanted, it will recharge in %i turns.)",
                             charmRechargeDelay(theItem->kind, theItem->enchant1),
                             charmRechargeDelay(theItem->kind, theItem->enchant1 + 1));
+                    break;
+                case CHARM_AGGRAVATE_MONSTER:
+                    sprintf(buf2, "\n\nWhen used, this charm will alert all creatures to your presence, and it will recharge in %i turns. This may be useful to flush creatures out of hiding, allowing you to deal with them on your own terms. (If the charm is enchanted, it will recharge in %i turns.)",
+                            charmRechargeDelay(theItem->kind, theItem->enchant1),
+                            charmRechargeDelay(theItem->kind, theItem->enchant1 + 1));
+                    break;
                 default:
                     break;
+
             }
             strcat(buf, buf2);
             break;
@@ -3683,7 +3692,7 @@ void aggravateMonsters(short distance, short x, short y, const color *flashColor
     if (grid[player.xLoc][player.yLoc] >= 0 && grid[player.xLoc][player.yLoc] <= distance) {
         discover(x, y);
         discoverCell(x, y);
-        colorFlash(flashColor, 0, (DISCOVERED | MAGIC_MAPPED), 10, distance, x, y);
+        colorFlash(flashColor, 0, (DISCOVERED | MAGIC_MAPPED), 5, distance, x, y);
         if (!playerCanSee(x, y)) {
             message("You hear a piercing shriek; something must have triggered a nearby alarm.", false);
         }
@@ -6871,6 +6880,11 @@ void useCharm(item *theItem) {
         case CHARM_TELEPORTATION:
             teleport(&player, -1, -1, true);
             break;
+        case CHARM_AGGRAVATE_MONSTER:
+			aggravateMonsters(DCOLS + DROWS, player.xLoc, player.yLoc, &gray);
+			message("the charm emits a piercing shriek that echoes throughout the dungeon!", false);
+			break;
+
 /*        case CHARM_RECHARGING:
             rechargeItems(STAFF);
             break;*/

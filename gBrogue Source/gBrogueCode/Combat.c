@@ -395,9 +395,9 @@ void specialHit(creature *attacker, creature *defender, short damage) {
 			if (!player.status[STATUS_HALLUCINATING]) {
 				player.maxStatus[STATUS_HALLUCINATING] = 0;
 			}
-			player.status[STATUS_HALLUCINATING] = 300;//+= 20;
+			player.status[STATUS_HALLUCINATING] = min(player.status[STATUS_HALLUCINATING]+30, 90);
 			player.maxStatus[STATUS_HALLUCINATING] = max(player.maxStatus[STATUS_HALLUCINATING], player.status[STATUS_HALLUCINATING]);
-		}
+        }
 		// gsr
 		if (attacker->info.abilityFlags & MA_HIT_BLINDS) {
 			if (!player.status[STATUS_DARKNESS]) {
@@ -406,7 +406,7 @@ void specialHit(creature *attacker, creature *defender, short damage) {
 			if (!player.status[STATUS_DARKNESS]) {
 				player.maxStatus[STATUS_DARKNESS] = 0;
 			}
-			player.status[STATUS_DARKNESS] = 300; //+= 30;
+			player.status[STATUS_DARKNESS] = min(player.status[STATUS_DARKNESS]+30, 90);
 			player.maxStatus[STATUS_DARKNESS] = max(player.maxStatus[STATUS_DARKNESS], player.status[STATUS_DARKNESS]);
             updateMinersLightRadius();
 			updateVision(true);
@@ -418,7 +418,7 @@ void specialHit(creature *attacker, creature *defender, short damage) {
 			if (!player.status[STATUS_SLOWED]) {
 				player.maxStatus[STATUS_SLOWED] = 0;
 			}
-			player.status[STATUS_SLOWED] = 30; //+= 30;
+			player.status[STATUS_SLOWED] = min(player.status[STATUS_SLOWED]+10, 50);
 			player.maxStatus[STATUS_SLOWED] = max(player.maxStatus[STATUS_SLOWED], player.status[STATUS_SLOWED]);
             updateMinersLightRadius();
 			updateVision(true);

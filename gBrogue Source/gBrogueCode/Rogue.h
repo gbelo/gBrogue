@@ -1007,6 +1007,7 @@ enum charmKind {
     CHARM_IDENTIFY,
     CHARM_DISCORD,
     CHARM_BECKONING,
+    CHARM_AGGRAVATE_MONSTER,
     NUMBER_CHARM_KINDS
 };
 
@@ -1405,7 +1406,8 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 //#define wandDominate(monst)					(((monst)->currentHP * 5 < (monst)->info.maxHP) ? 100 : \
 //											max(0, 100 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP))
 // gsr
-#define wandDominate(monst)					max(0, 90 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP)
+//#define wandDominate(monst)					max(0, 90 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP)
+#define wandDominate(monst)					100 // since domination is used mostly in debug/wizard mode
 #define armorForceDistance(enchant)		    (max(1, (((int) (enchant + FLOAT_FUDGE)) + 1))) // Depends on definition of staffBlinkDistance() above.
 
 

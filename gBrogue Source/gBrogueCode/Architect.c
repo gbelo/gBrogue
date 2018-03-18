@@ -975,6 +975,7 @@ boolean buildAMachine(enum machineTypes bp,
 	machineNumber;
 	const unsigned long alternativeFlags[2] = {MF_ALTERNATIVE, MF_ALTERNATIVE_2};
     boolean success;
+    char buf[255];
 
 	// Our boolean grids:
 	//	Interior:		This is the master grid for the machine. All area inside the machine are set to true.
@@ -1573,6 +1574,7 @@ boolean buildAMachine(enum machineTypes bp,
 											   ((HORDE_IS_SUMMONED | HORDE_LEADER_CAPTIVE) & ~(feature->hordeFlags)),
 											   feature->hordeFlags);
 							if (monst) {
+											   sprintf(buf, ": %i, %i", monst->xLoc, monst->yLoc);
 								monst->bookkeepingFlags |= MB_JUST_SUMMONED;
 							}
 						}
@@ -1641,6 +1643,8 @@ boolean buildAMachine(enum machineTypes bp,
 									if (!(feature->flags & MF_MONSTER_SLEEPING) && monst->creatureState != MONSTER_ALLY) {
 										monst->creatureState = MONSTER_TRACKING_SCENT;
 									}
+
+									message("hi",false);
 								}
                                 monst->machineHome = machineNumber; // Monster remembers the machine that spawned it.
 							}

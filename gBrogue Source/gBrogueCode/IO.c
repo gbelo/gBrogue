@@ -4369,10 +4369,12 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
 			applyColorAugment(&monstForeColor, &black, 100);
 			applyColorAugment(&monstBackColor, &black, 100);
 		}
+
 		plotCharWithColor(monstChar, 0, y, &monstForeColor, &monstBackColor);
 		monsterName(monstName, monst, false);
 		upperCase(monstName);
 
+    // Player-specific stuff
         if (monst == &player) {
             if (player.status[STATUS_INVISIBLE]) {
                 strcat(monstName, " xxxx");
@@ -4396,8 +4398,14 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
         sprintf(buf, ": %s", monstName);
 
 		printString("                   ", 1, y, &white, &black, 0);
-		printString(buf, 1, y++, (dim ? &gray : &white), &black, 0);
+		printString(buf, 1, y, (dim ? &gray : &white), &black, 0);
+
+        // carrying item? -- gsr
+        if (monst->carriedItem && (!player.status[STATUS_HALLUCINATING] || rogue.playbackOmniscience))
+            plotCharWithColor(monst->carriedItem->displayChar, 18, y, &itemColor, &black);
+        y++;
 	}
+
 
     // mutation, if any
     if (y < ROWS - 1
