@@ -824,8 +824,6 @@ dungeonFeature dungeonFeatureCatalog[NUMBER_DUNGEON_FEATURES] = {
 	{FLAMEDANCER_FIRE,			SURFACE,	200,	75,		0},
 
     // corpse! -- gsr
-//	{MONSTER_CORPSE,			SURFACE,	0,	1,		DF_DEAD_FOLIAGE},
-
 	{MONSTER_CORPSE,			DUNGEON,	0,		0,		0,	"", 0,	0,	0,		0,			0},
 
      // mutation effects
@@ -1248,6 +1246,56 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 		{0,			0,			0,				{3,6},		2,			(GOLD),	-1,			0,				2,				0,			0,			(MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING)},
 		{0,			0,          0,              {1,1},		1,			0,          0,          0,				2,				0,			0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)},
         {0,			STATUE_INERT,DUNGEON,		{2,3},		0,			0,			-1,			0,				2,				0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)}}},
+    // Commutation altars
+	{{13, AMULET_LEVEL},{10, 30},	20,		4,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_IMPREGNABLE | BP_REWARD),	{
+		{0,			CARPET,		DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
+        {0,			STATUE_INERT,DUNGEON,		{1,3},		0,			0,			-1,			0,				2,				0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)},
+		{DF_MAGIC_PIPING,COMMUTATION_ALTAR,DUNGEON,{2,2},	2,			0,          -1,         0,              2,				0,			0,          (MF_TREAT_AS_BLOCKING)},
+		{0,			0,          0,              {1,1},		1,			0,          0,          0,				2,				0,			0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)}}},
+    // Goblin warren
+	{{5, 15},           {75, 200},	5,     9,			DP_GOBLIN_WARREN,   (BP_ROOM | BP_REWARD | BP_MAXIMIZE_INTERIOR | BP_REDESIGN_INTERIOR | BP_SURROUND_WITH_WALLS),	{
+		{0,			MUD_FLOOR,	DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
+        {0,         MUD_DOORWAY,DUNGEON,        {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_AT_ORIGIN)},
+        {0,         MUD_WALL,   DUNGEON,        {1,1},      100,        0,			-1,			0,				1,				0,			0,			(MF_BUILD_IN_WALLS | MF_EVERYWHERE)},
+        {0,			0,	0,		{2,6},		1,			0,	0, MK_GOBLIN, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
+        {0,			0,	0,		{0,2},		1,			0,	0, MK_GOBLIN_CONJURER, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
+        {0,			0,	0,		{0,3},		1,			0,	0, MK_GOBLIN_DRIVER, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
+        {0,			0,	0,		{0,2},		1,			0,	0, MK_GOBLIN_MYSTIC, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
+        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(SCROLL),	SCROLL_ENCHANTING, MK_GOBLIN_CHIEFTAN, 2,   0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
+//        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_STRENGTH, MK_GOBLIN_CHIEFTAN, 2,         0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
+        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_EMPOWERMENT, MK_GOBLIN_CHIEFTAN, 2,         0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
+        {0,         0,          0,              {5, 8},     5,          0,          -1,         0,              2,              HORDE_MACHINE_GOBLIN_WARREN,    0,  (MF_GENERATE_HORDE | MF_NOT_IN_HALLWAY | MF_MONSTER_SLEEPING)},
+        {0,			0,			0,				{2,3},		2,			(WEAPON|ARMOR),	-1,		0,				1,				0,			0,			(MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
+        {DF_HAY,	0,			0,				{10, 15},	1,			0,			-1,			0,				1,				0,			0,			(MF_NOT_IN_HALLWAY)},
+		{DF_JUNK,	0,			0,				{7, 12},	1,			0,			-1,			0,				1,				0,			0,			(MF_NOT_IN_HALLWAY)}}},
+    // Sentinel sanctuary
+	{{10, 23},           {75, 200}, 3,  10,			DP_SENTINEL_SANCTUARY, (BP_ROOM | BP_REWARD | BP_MAXIMIZE_INTERIOR | BP_REDESIGN_INTERIOR | BP_SURROUND_WITH_WALLS),	{
+		{0,			MARBLE_FLOOR,DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
+        {0,         CRYSTAL_WALL,DUNGEON,       {0,0},      0,          0,			-1,			0,				0,				0,			0,			(MF_BUILD_IN_WALLS | MF_EVERYWHERE)},
+        {0,         PEDESTAL, DUNGEON, {1,1},	1,			(SCROLL),	SCROLL_ENCHANTING,0,	2,              0,              (ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
+//        {0,         PEDESTAL, DUNGEON, {1,1},	1,			(POTION),	POTION_STRENGTH,0,          2,              0,              (ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
+        {0,         PEDESTAL, DUNGEON, {1,1},	1,			(POTION),	POTION_EMPOWERMENT,0,          2,              0,              (ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
+        {0,         MACHINE_GLYPH,DUNGEON,      {30, 35},	20,			0,			-1,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING)},
+        {0,         STATUE_INERT,DUNGEON,       {3, 5},     3,          0,          -1,         MK_SENTINEL,    2,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
+        {0,         STATUE_INERT,DUNGEON,       {10, 15},   8,          0,          -1,         MK_SENTINEL,    2,              0,          0,          MF_BUILD_IN_WALLS},
+        {0,         0,          0,              {4, 6},     4,          0,          -1,         MK_GUARDIAN,    1,              0,          0,          MF_TREAT_AS_BLOCKING},
+        {0,         0,          0,              {0, 2},     0,          0,          -1,         MK_WINGED_GUARDIAN, 1,          0,          0,          MF_TREAT_AS_BLOCKING},
+        {0,			0,			0,				{2,3},		2,			(SCROLL | POTION), -1,	0,				1,				0,			0,			(MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},
+    // Ogre armory -- a few equippables, including one good one, in a crappy makeshift hideout -- gsr
+	{{9, 20},           {70, 150},	5,     12,			DP_OGRE_ARMORY,   (BP_ROOM | BP_REWARD | BP_MAXIMIZE_INTERIOR | BP_REDESIGN_INTERIOR | BP_PURGE_LIQUIDS | BP_SURROUND_WITH_WALLS),	{
+//		{0,			MARBLE_FLOOR,     DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
+        {0,         OGRE_DOORWAY,       DUNGEON,        {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_AT_ORIGIN)},
+        {0,			OGRE_FLOOR,DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
+        {0,         TABLE, DUNGEON, {1,1},	1,			(WEAPON|ARMOR),	0,0,          2,              0,              0,	(MF_REQUIRE_GOOD_RUNIC | MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY)},
+        {0,         TABLE, DUNGEON, {1,3},	1,			(WEAPON|ARMOR),	0,0,          2,              0,              0,	(MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY)},
+        {0,         TABLE,       DUNGEON,       {0,3},      0,          0,			-1,			0,				0,				0,			0,			(MF_NOT_IN_HALLWAY)},
+        {0,         OGRE_WALL,       DUNGEON,       {0,0},      0,          0,			-1,			0,				0,				0,			0,			(MF_BUILD_IN_WALLS | MF_EVERYWHERE)},
+        {DF_BONES, 0,	0,				{3,5},		3,			0,			-1,			0,				1,				0,			0,			0},
+        {DF_HAY,	0,			0,				{1,2},	1,			0,			-1,			0,				1,				0,			0,			(MF_NOT_IN_HALLWAY)},
+        {0,			0,	          0,	    	{2,8},		1,			0,	        -1, MK_OGRE, 2,   0,			0,	(MF_GENERATE_HORDE)},
+        {0,			0,	          0,	    	{0,1},		1,			0,	        -1, MK_OGRE_SHAMAN, 2,   0,			0,	(MF_GENERATE_HORDE)},
+        {0,         STATUE_INERT,DUNGEON,       {6,12},     0,          0,          -1,         0,    2,              0,          0,          (MF_NOT_IN_HALLWAY)},
+        {0,			TORCH_WALL,	DUNGEON,		{5,6},		0,			0,			0,			0,				1,				0,			0,			(MF_BUILD_IN_WALLS)}}},
 
 
 
@@ -1322,54 +1370,9 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 	{{8, AMULET_LEVEL}, {30, 50},	0,		2,			0,                  (BP_ROOM | BP_REWARD),	{
 		{DF_LUMINESCENT_FUNGUS,	ALTAR_KEYHOLE, DUNGEON,	{1,1}, 1,		KEY,		KEY_PORTAL,	0,				2,				0,			(ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY | MF_NEAR_ORIGIN | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_KEY_DISPOSABLE)},
 		{DF_LUMINESCENT_FUNGUS,	PORTAL,	DUNGEON,{1,1},		1,			0,			-1,			0,				2,				HORDE_MACHINE_LEGENDARY_ALLY,0,	(MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN)}}},
-    // Goblin warren
-	{{5, 15},           {75, 200},	5,     9,			DP_GOBLIN_WARREN,   (BP_ROOM | BP_REWARD | BP_MAXIMIZE_INTERIOR | BP_REDESIGN_INTERIOR | BP_SURROUND_WITH_WALLS),	{
-		{0,			MUD_FLOOR,	DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
-        {0,         MUD_DOORWAY,DUNGEON,        {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_AT_ORIGIN)},
-        {0,         MUD_WALL,   DUNGEON,        {1,1},      100,        0,			-1,			0,				1,				0,			0,			(MF_BUILD_IN_WALLS | MF_EVERYWHERE)},
-        {0,			0,	0,		{2,6},		1,			0,	0, MK_GOBLIN, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
-        {0,			0,	0,		{0,2},		1,			0,	0, MK_GOBLIN_CONJURER, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
-        {0,			0,	0,		{0,3},		1,			0,	0, MK_GOBLIN_DRIVER, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
-        {0,			0,	0,		{0,2},		1,			0,	0, MK_GOBLIN_MYSTIC, 2,   0,			0,	(MF_MONSTER_SLEEPING)},
-        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(SCROLL),	SCROLL_ENCHANTING, MK_GOBLIN_CHIEFTAN, 2,   0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
-//        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_STRENGTH, MK_GOBLIN_CHIEFTAN, 2,         0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
-        {0,			PEDESTAL,	DUNGEON,		{1,1},		1,			(POTION),	POTION_EMPOWERMENT, MK_GOBLIN_CHIEFTAN, 2,         0,			(ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
-        {0,         0,          0,              {5, 8},     5,          0,          -1,         0,              2,              HORDE_MACHINE_GOBLIN_WARREN,    0,  (MF_GENERATE_HORDE | MF_NOT_IN_HALLWAY | MF_MONSTER_SLEEPING)},
-        {0,			0,			0,				{2,3},		2,			(WEAPON|ARMOR),	-1,		0,				1,				0,			0,			(MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
-        {DF_HAY,	0,			0,				{10, 15},	1,			0,			-1,			0,				1,				0,			0,			(MF_NOT_IN_HALLWAY)},
-		{DF_JUNK,	0,			0,				{7, 12},	1,			0,			-1,			0,				1,				0,			0,			(MF_NOT_IN_HALLWAY)}}},
-    // Sentinel sanctuary
-	{{10, 23},           {75, 200}, 3,  10,			DP_SENTINEL_SANCTUARY, (BP_ROOM | BP_REWARD | BP_MAXIMIZE_INTERIOR | BP_REDESIGN_INTERIOR | BP_SURROUND_WITH_WALLS),	{
-		{0,			MARBLE_FLOOR,DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
-        {0,         CRYSTAL_WALL,DUNGEON,       {0,0},      0,          0,			-1,			0,				0,				0,			0,			(MF_BUILD_IN_WALLS | MF_EVERYWHERE)},
-        {0,         PEDESTAL, DUNGEON, {1,1},	1,			(SCROLL),	SCROLL_ENCHANTING,0,	2,              0,              (ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
-//        {0,         PEDESTAL, DUNGEON, {1,1},	1,			(POTION),	POTION_STRENGTH,0,          2,              0,              (ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
-        {0,         PEDESTAL, DUNGEON, {1,1},	1,			(POTION),	POTION_EMPOWERMENT,0,          2,              0,              (ITEM_KIND_AUTO_ID),	(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
-        {0,         MACHINE_GLYPH,DUNGEON,      {30, 35},	20,			0,			-1,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING)},
-        {0,         STATUE_INERT,DUNGEON,       {3, 5},     3,          0,          -1,         MK_SENTINEL,    2,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
-        {0,         STATUE_INERT,DUNGEON,       {10, 15},   8,          0,          -1,         MK_SENTINEL,    2,              0,          0,          MF_BUILD_IN_WALLS},
-        {0,         0,          0,              {4, 6},     4,          0,          -1,         MK_GUARDIAN,    1,              0,          0,          MF_TREAT_AS_BLOCKING},
-        {0,         0,          0,              {0, 2},     0,          0,          -1,         MK_WINGED_GUARDIAN, 1,          0,          0,          MF_TREAT_AS_BLOCKING},
-        {0,			0,			0,				{2,3},		2,			(SCROLL | POTION), -1,	0,				1,				0,			0,			(MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},
-    // Ogre armory -- a few equippables, including one good one, in a crappy makeshift hideout -- gsr
-	{{9, 20},           {70, 150},	5,     12,			DP_OGRE_ARMORY,   (BP_ROOM | BP_REWARD | BP_MAXIMIZE_INTERIOR | BP_REDESIGN_INTERIOR | BP_PURGE_LIQUIDS | BP_SURROUND_WITH_WALLS),	{
-//		{0,			MARBLE_FLOOR,     DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
-        {0,         OGRE_DOORWAY,       DUNGEON,        {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_AT_ORIGIN)},
-        {0,			OGRE_FLOOR,DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
-        {0,         TABLE, DUNGEON, {1,1},	1,			(WEAPON|ARMOR),	0,0,          2,              0,              0,	(MF_REQUIRE_GOOD_RUNIC | MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY)},
-        {0,         TABLE, DUNGEON, {1,3},	1,			(WEAPON|ARMOR),	0,0,          2,              0,              0,	(MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY)},
-        {0,         TABLE,       DUNGEON,       {0,3},      0,          0,			-1,			0,				0,				0,			0,			(MF_NOT_IN_HALLWAY)},
-        {0,         OGRE_WALL,       DUNGEON,       {0,0},      0,          0,			-1,			0,				0,				0,			0,			(MF_BUILD_IN_WALLS | MF_EVERYWHERE)},
-        {DF_BONES, 0,	0,				{3,5},		3,			0,			-1,			0,				1,				0,			0,			0},
-        {DF_HAY,	0,			0,				{1,2},	1,			0,			-1,			0,				1,				0,			0,			(MF_NOT_IN_HALLWAY)},
-        {0,			0,	          0,	    	{2,8},		1,			0,	        -1, MK_OGRE, 2,   0,			0,	(MF_GENERATE_HORDE)},
-        {0,			0,	          0,	    	{0,1},		1,			0,	        -1, MK_OGRE_SHAMAN, 2,   0,			0,	(MF_GENERATE_HORDE)},
-        {0,         STATUE_INERT,DUNGEON,       {6,12},     0,          0,          -1,         0,    2,              0,          0,          (MF_NOT_IN_HALLWAY)},
-        {0,			TORCH_WALL,	DUNGEON,		{5,6},		0,			0,			0,			0,				1,				0,			0,			(MF_BUILD_IN_WALLS)}}},
 */
 
     // -- AMULET HOLDER --
-    // Statuary -- key on an altar, area full of statues; take key to cause statues to burst and reveal monsters
 	{{10, AMULET_LEVEL},{35, 40},	0,		4,			0,                  (BP_PURGE_INTERIOR | BP_OPEN_INTERIOR),	{
 		{DF_LUMINESCENT_FUNGUS,	AMULET_SWITCH, DUNGEON, {1,1}, 1,		AMULET,		-1,			0,				2,				0,			0,			(MF_GENERATE_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
         {0,			FUNGUS_FOREST,SURFACE,		{2,3},		0,			0,			-1,			0,				2,				0,			0,			MF_NOT_IN_HALLWAY},
@@ -1379,34 +1382,42 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
     // -- VESTIBULES --
 
     // Plain locked door, key guarded by an adoptive room
-    {{1, AMULET_LEVEL},	{1, 1},     80,		1,		0,                  (BP_VESTIBULE),	{
+    {{1, AMULET_LEVEL-1},	{1, 1},     80,		1,		0,                  (BP_VESTIBULE),	{
 		{0,			LOCKED_DOOR, DUNGEON,		{1,1},		1,			KEY,		KEY_DOOR,	0,				1,				0,			(ITEM_IS_KEY | ITEM_PLAYER_AVOIDS), (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_GENERATE_ITEM | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_KEY_DISPOSABLE | MF_IMPREGNABLE)}}},
     // Plain secret door
-    {{2, AMULET_LEVEL},	{1, 1},     20,		1,			0,                  (BP_VESTIBULE),	{
+    {{2, AMULET_LEVEL-1},	{1, 1},     20,		1,			0,                  (BP_VESTIBULE),	{
 		{0,			SECRET_DOOR, DUNGEON,		{1,1},		1,			0,          0,          0,				1,				0,			0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING)}}},
     // Lever and either an exploding wall or a portcullis
-    {{4, AMULET_LEVEL},	{1, 1},     8,		3,			0,                  (BP_VESTIBULE),	{
+    {{4, AMULET_LEVEL-1},	{1, 1},     8,		3,			0,                  (BP_VESTIBULE),	{
 		{0,         WORM_TUNNEL_OUTER_WALL,DUNGEON,{1,1},	1,			0,			-1,			0,				1,				0,			0,			(MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_IMPREGNABLE | MF_ALTERNATIVE)},
         {0,			PORTCULLIS_CLOSED,DUNGEON,  {1,1},      1,			0,			0,			0,				3,				0,			0,			(MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_IMPREGNABLE | MF_ALTERNATIVE)},
         {0,			WALL_LEVER_HIDDEN,DUNGEON,  {1,1},      1,			0,			-1,			0,				1,				0,			0,			(MF_BUILD_IN_WALLS | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_BUILD_ANYWHERE_ON_LEVEL)}}},
 
      // Pit traps -- area outside entrance is full of pit traps
-	{{1, AMULET_LEVEL},	{30, 60},	8,		3,			0,                  (BP_VESTIBULE | BP_OPEN_INTERIOR | BP_NO_INTERIOR_FLAG),	{
+	{{1, AMULET_LEVEL-1},	{30, 60},	8,		3,			0,                  (BP_VESTIBULE | BP_OPEN_INTERIOR | BP_NO_INTERIOR_FLAG),	{
 		{0,			DOOR,       DUNGEON,        {1,1},      1,			0,			0,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN | MF_ALTERNATIVE)},
         {0,			SECRET_DOOR,DUNGEON,        {1,1},      1,			0,			0,			0,				1,				0,			0,			(MF_IMPREGNABLE | MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN | MF_ALTERNATIVE)},
 		{0,			TRAP_DOOR_HIDDEN,DUNGEON,	{60, 60},	1,			0,			-1,			0,				1,				0,			0,			(MF_TREAT_AS_BLOCKING | MF_REPEAT_UNTIL_NO_PROGRESS)}}},
     // Beckoning obstacle -- a mirrored totem guards the door, and glyph are around the doorway.
-	{{5, AMULET_LEVEL}, {15, 30},	10,		3,			0,                  (BP_VESTIBULE | BP_PURGE_INTERIOR | BP_OPEN_INTERIOR), {
+	{{5, AMULET_LEVEL-1}, {15, 30},	10,		3,			0,                  (BP_VESTIBULE | BP_PURGE_INTERIOR | BP_OPEN_INTERIOR), {
         {0,         DOOR,       DUNGEON,        {1,1},		1,			0,			-1,			0,				1,				0,			0,			(MF_BUILD_AT_ORIGIN)},
 		{0,         0,          0,              {1,1},		1,			0,			-1,			MK_MIRRORED_TOTEM,3,			0,			0,			(MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_IN_VIEW_OF_ORIGIN | MF_FAR_FROM_ORIGIN)},
         {0,         MACHINE_GLYPH,DUNGEON,      {1,1},		0,			0,			-1,			0,				1,				0,			0,			(MF_NEAR_ORIGIN | MF_EVERYWHERE)},
         {0,         MACHINE_GLYPH,DUNGEON,      {3,5},      2,          0,          -1,         0,              2,              0,          0,          (MF_TREAT_AS_BLOCKING)}}},
+    // "Go away" -- force totem at doorway
+	{{5, AMULET_LEVEL-1}, {15, 30},	10,		3,			0,                  (BP_VESTIBULE | BP_PURGE_INTERIOR | BP_OPEN_INTERIOR), {
+        {0,         0,       0,        {1,1},		1,			0,			-1,			MK_FORCE_TOTEM,				1,				0,			0,			(MF_BUILD_AT_ORIGIN)}}},
     // Guardian obstacle -- a guardian is in the door on a glyph, with other glyphs scattered around.
-	{{6, AMULET_LEVEL}, {25, 25},	10,		4,          0,                  (BP_VESTIBULE | BP_OPEN_INTERIOR),	{
+	{{6, AMULET_LEVEL-1}, {25, 25},	10,		4,          0,                  (BP_VESTIBULE | BP_OPEN_INTERIOR),	{
 		{0,			DOOR,       DUNGEON,        {1,1},		1,			0,			0,			MK_GUARDIAN,	2,				0,			0,			(MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_ALTERNATIVE)},
 		{0,			DOOR,       DUNGEON,        {1,1},		1,			0,			0,			MK_WINGED_GUARDIAN,2,           0,			0,			(MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_ALTERNATIVE)},
         {0,         MACHINE_GLYPH,DUNGEON,      {10,10},    3,          0,          -1,         0,              1,              0,          0,          (MF_PERMIT_BLOCKING| MF_NEAR_ORIGIN)},
         {0,         MACHINE_GLYPH,DUNGEON,      {1,1},      0,          0,          -1,         0,              2,              0,          0,          (MF_EVERYWHERE | MF_PERMIT_BLOCKING | MF_NOT_IN_HALLWAY)}}},
+    // Flammable barricade in the doorway -- burn the wooden barricade to enter
+	{{2, AMULET_LEVEL-1},			{1, 1},     10,		3,			0,                  (BP_VESTIBULE), {
+		{0,			WOODEN_BARRICADE,DUNGEON,   {1,1},		1,			0,			0,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN)},
+		{0,			0,			0,				{1,1},		1,			THROWING_WEAPON,		INCENDIARY_DART, 0,			1,				0,			0,			(MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},
+		{0,			0,			0,				{1,1},		1,			POTION,		POTION_INCINERATION, 0,		1,				0,			0,			(MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)}}},
 
 
  /*   // Flammable barricade in the doorway -- burn the wooden barricade to enter
@@ -1443,24 +1454,118 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 	{{2, AMULET_LEVEL},	{15, 100},	30,		2,			0,                  (BP_ROOM | BP_ADOPT_ITEM), {
 		{0,			ALTAR_INERT,DUNGEON,		{1,1},		1,			0,			-1,			0,				1,				0,			ITEM_PLAYER_AVOIDS,	(MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
 		{0,			SECRET_DOOR,DUNGEON,		{1,1},		1,			0,			0,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN)}}},
-    // Thief area -- empty altar, monster with item, permanently fleeing.
-    {{3, AMULET_LEVEL},	{15, 20},	100,		2,			0,                  (BP_ADOPT_ITEM),	{
-	{DF_LUMINESCENT_FUNGUS,	ALTAR_INERT,DUNGEON,{1,1},	1,			0,			-1,			0,				2,				0,0,			(MF_ADOPT_ITEM | MF_BUILD_AT_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTER_TAKE_ITEM | MF_MONSTER_FLEEING)},
-	{DF_LUMINESCENT_FUNGUS,	ALTAR_INERT,DUNGEON,{1,1},	1,			0,			-1,			0,				2,				0,0,			(MF_ADOPT_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTER_TAKE_ITEM | MF_MONSTER_FLEEING)},
-	{DF_LUMINESCENT_FUNGUS,	ALTAR_INERT,DUNGEON,{1,1},	1,			0,			-1,			0,				2,				0,0,			(MF_ADOPT_ITEM | MF_BUILD_AT_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTER_TAKE_ITEM)},
-      {0,         STATUE_INERT,0,             {3, 5},     2,          0,          -1,         0,              2,              0,          0,          (MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},
+    // Thief -- empty altar, monster with item, often permanently fleeing; sometimes far away from the altar
+    {{3, AMULET_LEVEL},	{0, 0},	10,		2,			0,                  (BP_ADOPT_ITEM),	{
+        {DF_LUMINESCENT_FUNGUS,	ALTAR_INERT,DUNGEON,{1,1},	1,			0,			-1,			0,				2,				0,0,			(MF_ALTERNATIVE | MF_ADOPT_ITEM | MF_BUILD_AT_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTER_TAKE_ITEM | MF_MONSTER_FLEEING)},
+        {DF_LUMINESCENT_FUNGUS,	ALTAR_INERT,DUNGEON,{1,1},	1,			0,			-1,			0,				2,				0,0,			(MF_ALTERNATIVE | MF_ADOPT_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTER_TAKE_ITEM | MF_MONSTER_FLEEING)},
+        {DF_LUMINESCENT_FUNGUS,	ALTAR_INERT,DUNGEON,{1,1},	1,			0,			-1,			0,				2,				0,0,			(MF_ALTERNATIVE | MF_ADOPT_ITEM | MF_BUILD_AT_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTER_TAKE_ITEM)},
+        {0,         STATUE_INERT,0,             {3, 5},     2,          0,          -1,         0,              2,              0,          0,          (MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},
 
-/*	// Throwing tutorial -- toss an item onto the pressure plate to retract the cage and reveal the key
-	{{2, 4},			{70, 80},	0,		2,			0,                  (BP_ADOPT_ITEM), {
-		{0,			ALTAR_CAGE_RETRACTABLE,DUNGEON,{1,1},	1,			0,			-1,			0,				3,				0,			0,			(MF_ADOPT_ITEM | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY)},
-		{DF_MEDIUM_HOLE, MACHINE_PRESSURE_PLATE, LIQUID, {1,1}, 1,		0,			0,			0,				1,				0,			0,			(MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},
-*/    // Rat trap -- getting the key triggers paralysis vents nearby and also causes rats to burst out of the walls
-	{{2,8},             {30, 70},	5,		3,          0,                  (BP_ADOPT_ITEM | BP_ROOM),	{
+    // Rat trap -- getting the key triggers paralysis vents nearby and also causes rats to burst out of the walls
+	{{2,8},             {30, 70},	2,		3,          0,                  (BP_ADOPT_ITEM | BP_ROOM),	{
 		{0,			ALTAR_SWITCH,DUNGEON,		{1,1},		1,			0,			-1,			0,				1,				0,			0,			(MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
         {0,			MACHINE_PARALYSIS_VENT_HIDDEN,DUNGEON,{1,1},1,		0,			-1,			0,				2,				0,			0,			(MF_FAR_FROM_ORIGIN | MF_NOT_IN_HALLWAY)},
         {0,			RAT_TRAP_WALL_DORMANT,DUNGEON,{10,20},	5,			0,			-1,			MK_RAT,         1,				0,			0,			(MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_NOT_ON_LEVEL_PERIMETER)}}},
-	// Fun with fire -- trigger the fire trap and coax the fire over to the wooden barricade surrounding the altar and key
- /*   {{3, 10},			{80, 100},	10,		6,			0,                  (BP_ROOM | BP_ADOPT_ITEM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR), {
+	// Collapsing floor area -- key on an altar in an area; take key to cause the floor of the area to collapse
+	{{2, AMULET_LEVEL},	{45, 65},	10,		3,			0,                  (BP_ADOPT_ITEM | BP_TREAT_AS_BLOCKING),	{
+		{0,			FLOOR_FLOODABLE,DUNGEON,	{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
+		{0,			ALTAR_SWITCH_RETRACTING,DUNGEON,{1,1},	1,			0,			-1,			0,				3,				0,			0,			(MF_ADOPT_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
+		{DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT,0,0,{3, 3},	2,			0,			-1,			0,				3,				0,			0,			(MF_FAR_FROM_ORIGIN | MF_NOT_IN_HALLWAY)}}},
+	// Pit traps -- key on an altar, room full of pit traps
+	{{2, AMULET_LEVEL},	{30, 100},	10,		3,			0,                  (BP_ROOM | BP_ADOPT_ITEM),	{
+		{0,			ALTAR_INERT,DUNGEON,		{1,1},		1,			0,			-1,			0,				2,				0,			0,			(MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},
+		{0,			TRAP_DOOR_HIDDEN,DUNGEON,	{30, 40},	1,			0,			-1,			0,				1,				0,			0,			(MF_TREAT_AS_BLOCKING | MF_REPEAT_UNTIL_NO_PROGRESS)},
+		{0,			SECRET_DOOR,DUNGEON,		{1,1},		1,			0,			0,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN)}}},
+	// Alarming -- can trip alarms all over
+	{{2, AMULET_LEVEL},	{30, 50},	10,		3,			0,                  (BP_ROOM | BP_ADOPT_ITEM),	{
+		{0,			ALTAR_INERT,DUNGEON,		{1,1},		1,			0,			-1,			0,				2,				0,			0,			(MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},
+		{0,			ALARM_TRAP_HIDDEN,DUNGEON,	{5,9},     1,			0,			-1,			0,				1,				0,			0,			(MF_TREAT_AS_BLOCKING)},
+		{0,			SECRET_DOOR,DUNGEON,		{1,1},		1,			0,			0,			0,				1,				0,			0,			(MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN)}}},
+	// Explosive situation -- key on an altar; take key to cause a methane gas vent to appear and a pilot light to ignite
+	{{7, AMULET_LEVEL},	{60, 70},	14,		5,			0,                  (BP_ROOM | BP_PURGE_LIQUIDS | BP_SURROUND_WITH_WALLS | BP_ADOPT_ITEM),	{
+		{0,			DOOR,       DUNGEON,		{1,1},		1,			0,			0,			0,				1,				0,			0,			(MF_BUILD_AT_ORIGIN)},
+        {0,			FLOOR,		DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
+        {0,			ALTAR_SWITCH,DUNGEON,		{1,1},		1,			0,			-1,			0,				1,				0,			0,			(MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_FAR_FROM_ORIGIN)},
+		{0,			MACHINE_METHANE_VENT_HIDDEN,DUNGEON,{1,1}, 1,		0,			-1,			0,				1,				0,			0,			MF_NEAR_ORIGIN},
+		{0,			PILOT_LIGHT_DORMANT,DUNGEON,{1,1},		1,			0,			-1,			0,				1,				0,			0,			(MF_FAR_FROM_ORIGIN | MF_BUILD_IN_WALLS)}}},
+	// Burning grass -- key on an altar; take key to cause pilot light to ignite grass in room
+	{{2, 7},			{40, 110},	15,		6,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_ADOPT_ITEM | BP_OPEN_INTERIOR),	{
+		{DF_SMALL_DEAD_GRASS,ALTAR_SWITCH_RETRACTING,DUNGEON,{1,1},1,	0,			-1,			0,				1,				0,			0,			(MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_FAR_FROM_ORIGIN)},
+		{DF_DEAD_FOLIAGE,0,		SURFACE,		{2,3},		0,			0,			-1,			0,				1,				0,			0,			0},
+		{0,			FOLIAGE,	SURFACE,		{1,4},		0,			0,			-1,			0,				1,				0,			0,			0},
+		{0,			GRASS,		SURFACE,		{10,25},	0,			0,			-1,			0,				1,				0,			0,			0},
+		{0,			DEAD_GRASS,	SURFACE,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
+		{0,			PILOT_LIGHT_DORMANT,DUNGEON,{1,1},		1,			0,			-1,			0,				1,				0,			0,			MF_NEAR_ORIGIN | MF_BUILD_IN_WALLS}}},
+    // Guardian gauntlet -- key in a room full of guardians, glyphs scattered and unavoidable.
+	{{6, AMULET_LEVEL}, {50, 95},	10,		6,			0,                  (BP_ROOM | BP_ADOPT_ITEM),	{
+        {DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,	{1,1},		1,			0,			-1,			0,				1,				0,			0,			(MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
+		{0,			DOOR,       DUNGEON,        {1,1},		1,			0,			0,			0,				3,				0,			0,			(MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN)},
+		{0,			0,          0,              {3,6},		3,			0,			-1,			MK_GUARDIAN,	2,				0,			0,			(MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},
+		{0,			0,          0,              {1,2},		1,			0,			-1,			MK_WINGED_GUARDIAN,2,           0,			0,			(MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},
+        {0,         MACHINE_GLYPH,DUNGEON,      {10,15},   10,          0,          -1,         0,              1,              0,          0,          (MF_PERMIT_BLOCKING | MF_NOT_IN_HALLWAY)},
+        {0,         MACHINE_GLYPH,DUNGEON,      {1,1},      0,          0,          -1,         0,              2,              0,          0,          (MF_EVERYWHERE | MF_PERMIT_BLOCKING | MF_NOT_IN_HALLWAY)}}},
+    // Guardian corridor -- key in a small room, with a connecting corridor full of glyphs, one guardian blocking the corridor.
+    {{4, AMULET_LEVEL}, {85, 100},   9,     7,          0,                  (BP_ROOM | BP_ADOPT_ITEM | BP_PURGE_INTERIOR | BP_OPEN_INTERIOR | BP_SURROUND_WITH_WALLS),        {
+        {DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,   {1,1},      1,          0,          -1,         MK_GUARDIAN,    3,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN  | MF_ALTERNATIVE)},
+        {DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,   {1,1},      1,          0,          -1,         MK_WINGED_GUARDIAN,3,           0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN  | MF_ALTERNATIVE)},
+        {0,         MACHINE_GLYPH,DUNGEON,      {3,5},      2,          0,          0,          0,              2,              0,          0,          MF_NEAR_ORIGIN | MF_NOT_IN_HALLWAY},
+        {0,         0,          0,              {1,1},      1,          0,          0,          0,              3,              0,          0,          MF_BUILD_AT_ORIGIN},
+        {0,         WALL,DUNGEON,               {80,80},    1,          0,          -1,         0,              1,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_REPEAT_UNTIL_NO_PROGRESS)},
+        {0,         MACHINE_GLYPH,DUNGEON,      {1,1},      1,          0,          0,          0,              1,              0,          0,          (MF_PERMIT_BLOCKING | MF_EVERYWHERE)},
+        {0,			MACHINE_GLYPH,DUNGEON,      {1,1},      1,			0,			-1,			0,				1,				0,			0,			(MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_NOT_IN_HALLWAY | MF_BUILD_ANYWHERE_ON_LEVEL)}}},
+    // Summoning circle -- key in a room with an eldritch totem, glyphs unavoidable.
+	{{12, AMULET_LEVEL}, {50, 100},	2,		2,			0,                  (BP_ROOM | BP_OPEN_INTERIOR | BP_ADOPT_ITEM),	{
+        {DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,	{1,1},		1,			0,			-1,			0,				3,				0,			0,			(MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
+		{DF_GLYPH_CIRCLE,0,     0,              {1,1},		1,			0,			-1,			MK_ELDRITCH_TOTEM,3,			0,			0,			(MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},
+    // Beckoning obstacle -- key surrounded by glyphs in a room with a mirrored totem.
+	{{5, AMULET_LEVEL}, {60, 100},	10,		4,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_ADOPT_ITEM), {
+        {DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,	{1,1},		1,			0,			-1,			0,				3,				0,			0,			(MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN | MF_IN_VIEW_OF_ORIGIN)},
+		{0,         0,          0,              {1,1},		1,			0,			-1,			MK_MIRRORED_TOTEM,3,			0,			0,			(MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_IN_VIEW_OF_ORIGIN)},
+        {0,         0,          0,              {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_BUILD_AT_ORIGIN)},
+        {0,         MACHINE_GLYPH,DUNGEON,      {3,5},      2,          0,          -1,         0,              2,              0,          0,          (MF_TREAT_AS_BLOCKING)}}},
+    // Worms in the walls -- key on altar; take key to cause underworms to burst out of the walls
+	{{12,AMULET_LEVEL},	{7, 7},		7,		2,			0,                  (BP_ADOPT_ITEM),	{
+		{0,			ALTAR_SWITCH,DUNGEON,		{1,1},		1,			0,			-1,			0,				2,				0,			0,			(MF_ADOPT_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
+		{0,			WALL_MONSTER_DORMANT,DUNGEON,{5,8},		5,			0,			-1,			MK_UNDERWORM,	1,				0,			0,			(MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_NOT_ON_LEVEL_PERIMETER)}}},
+	// Mud pit -- key on an altar, room full of mud, take key to cause bog monsters to spawn in the mud
+	{{12, AMULET_LEVEL},{40, 90},	10,		3,			0,                  (BP_ROOM | BP_ADOPT_ITEM | BP_SURROUND_WITH_WALLS | BP_PURGE_LIQUIDS),	{
+		{DF_SWAMP,		0,		0,				{5,5},		0,			0,			-1,			0,				1,				0,			0,			0},
+		{DF_SWAMP,	ALTAR_SWITCH,DUNGEON,		{1,1},		1,			0,			-1,			0,				2,				0,			0,			(MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},
+		{DF_MUD_DORMANT,0,		0,				{3,4},		3,			0,			-1,			0,				1,				HORDE_MACHINE_MUD,0,	(MF_GENERATE_HORDE | MF_MONSTERS_DORMANT)}}},
+    // Zombie crypt -- key on an altar; coffins scattered around; brazier in the room; take key to cause zombies to burst out of all of the coffins
+	{{12, AMULET_LEVEL},{60, 90},	10,		8,			0,                  (BP_ROOM | BP_ADOPT_ITEM | BP_SURROUND_WITH_WALLS | BP_PURGE_INTERIOR),	{
+		{0,         DOOR,       DUNGEON,        {1,1},		1,			0,			-1,			0,				1,				0,			0,			(MF_BUILD_AT_ORIGIN)},
+        {DF_BONES,  0,          0,              {3,4},      2,          0,          -1,         0,              1,              0,          0,          0},
+        {DF_ASH,    0,          0,              {3,4},      2,          0,          -1,         0,              1,              0,          0,          0},
+        {DF_AMBIENT_BLOOD,0,    0,              {1,2},		1,			0,			-1,			0,				1,				0,			0,			0},
+		{DF_AMBIENT_BLOOD,0,    0,              {1,2},		1,			0,			-1,			0,				1,				0,			0,			0},
+        {0,         ALTAR_SWITCH,DUNGEON,		{1,1},		1,			0,			-1,			0,				2,				0,			0,			(MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},
+        {0,         BRAZIER,    DUNGEON,        {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING)},
+        {0,         COFFIN_CLOSED, DUNGEON,		{6,8},		1,			0,          0,          MK_ZOMBIE,		2,				0,			0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_MONSTERS_DORMANT)}}},
+	// Haunted house -- key on an altar; take key to cause the room to darken, ectoplasm to cover everything and phantoms to appear
+	{{16, AMULET_LEVEL},{45, 150},	13,		4,			0,                  (BP_ROOM | BP_ADOPT_ITEM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS),	{
+		{0,			ALTAR_SWITCH,DUNGEON,		{1,1},		1,			0,			-1,			0,				2,				0,			0,			(MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},
+		{0,			DARK_FLOOR_DORMANT,DUNGEON,	{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
+		{0,			DARK_FLOOR_DORMANT,DUNGEON,	{4,5},		4,			0,			-1,			MK_PHANTOM,		1,				0,			0,			(MF_MONSTERS_DORMANT)},
+        {0,         HAUNTED_TORCH_DORMANT,DUNGEON,{5,10},   3,          0,          -1,         0,              2,              0,          0,          (MF_BUILD_IN_WALLS)}}},
+    // Worm tunnels -- hidden lever causes tunnels to open up revealing worm areas and a key
+    {{8, AMULET_LEVEL},{80, 175},	10,		6,			0,                  (BP_ROOM | BP_ADOPT_ITEM | BP_PURGE_INTERIOR | BP_MAXIMIZE_INTERIOR | BP_SURROUND_WITH_WALLS),	{
+		{0,			ALTAR_INERT,DUNGEON,		{1,1},		1,			0,			-1,			0,				2,				0,			0,			(MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},
+		{0,			0,          0,              {3,6},		3,			0,			-1,			MK_UNDERWORM,	1,				0,			0,			0},
+		{0,			GRANITE,    DUNGEON,        {150,150},  1,			0,			-1,			0,				1,				0,			0,			(MF_TREAT_AS_BLOCKING | MF_REPEAT_UNTIL_NO_PROGRESS)},
+        {DF_WORM_TUNNEL_MARKER_DORMANT,GRANITE,DUNGEON,{0,0},0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE | MF_PERMIT_BLOCKING)},
+        {DF_TUNNELIZE,WORM_TUNNEL_OUTER_WALL,DUNGEON,{1,1},	1,			0,			-1,			0,				1,				0,			0,			(MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING)},
+        {0,			WALL_LEVER_HIDDEN,DUNGEON,  {1,1},      1,			0,			-1,			0,				1,				0,			0,			(MF_BUILD_IN_WALLS | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_BUILD_ANYWHERE_ON_LEVEL)}}},
+    // Electric crystals -- key caged on an altar, darkened crystal globes around the room, lightning the globes to release the key.
+	{{6, AMULET_LEVEL},{40, 60},	10,		4,			0,                  (BP_ROOM | BP_ADOPT_ITEM | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR | BP_PURGE_INTERIOR),	{
+		{0,			CARPET,		DUNGEON,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
+		{0,         ELECTRIC_CRYSTAL_OFF,DUNGEON,{3,4},		3,			0,			-1,			0,				3,				0,			0,			(MF_NOT_IN_HALLWAY | MF_IMPREGNABLE)},
+        {0,			ALTAR_CAGE_RETRACTABLE,DUNGEON,{1,1},	1,			0,			-1,			0,				3,				0,			0,			(MF_ADOPT_ITEM | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},
+        {0,         TURRET_LEVER, DUNGEON,      {7,9},      4,			0,			-1,			MK_SPARK_TURRET,3,				0,          0,          (MF_BUILD_IN_WALLS | MF_MONSTERS_DORMANT)}}},
+
+ /*
+ 	// Fun with fire -- trigger the fire trap and coax the fire over to the wooden barricade surrounding the altar and key
+    {{3, 10},			{80, 100},	10,		6,			0,                  (BP_ROOM | BP_ADOPT_ITEM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_OPEN_INTERIOR), {
 		{DF_SURROUND_WOODEN_BARRICADE,ALTAR_INERT,DUNGEON,{1,1},1,		0,			-1,			0,				3,				0,			0,			(MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},
 		{0,			GRASS,		SURFACE,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE | MF_ALTERNATIVE)},
 		{DF_SWAMP,	0,			0,				{4,4},		2,			0,			-1,			0,				2,				0,			0,			(MF_ALTERNATIVE | MF_FAR_FROM_ORIGIN)},
@@ -1481,12 +1586,6 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 		{DF_DEEP_WATER_POOL,0,  0,              {4, 4},		1,			0,			-1,			0,				4,				HORDE_MACHINE_WATER_MONSTER,0,MF_GENERATE_HORDE},
         {DF_GRASS,	FOLIAGE,	SURFACE,		{3, 4},		3,			0,			-1,			0,				1,				0,			0,			0}}},
 
-//    // Thief area -- empty altar, monster with item, permanently fleeing.
-//  {{3, AMULET_LEVEL},	{15, 20},	10,		2,			0,                  (BP_ADOPT_ITEM),	{
-//	{DF_LUMINESCENT_FUNGUS,	ALTAR_INERT,DUNGEON,{1,1},	1,			0,			-1,			0,				2,				HORDE_MACHINE_THIEF,0,			(MF_ADOPT_ITEM | MF_BUILD_AT_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTER_TAKE_ITEM | MF_MONSTER_FLEEING)},
- //      {0,         STATUE_INERT,0,             {3, 5},     2,          0,          -1,         0,              2,              0,          0,          (MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},*/
-
-/*
 	// Collapsing floor area -- key on an altar in an area; take key to cause the floor of the area to collapse
 	{{2, AMULET_LEVEL},	{45, 65},	10,		3,			0,                  (BP_ADOPT_ITEM | BP_TREAT_AS_BLOCKING),	{
 		{0,			FLOOR_FLOODABLE,DUNGEON,	{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
@@ -1553,13 +1652,6 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 		{0,			GRASS,		SURFACE,		{10,25},	0,			0,			-1,			0,				1,				0,			0,			0},
 		{0,			DEAD_GRASS,	SURFACE,		{0,0},		0,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)},
 		{0,			PILOT_LIGHT_DORMANT,DUNGEON,{1,1},		1,			0,			-1,			0,				1,				0,			0,			MF_NEAR_ORIGIN | MF_BUILD_IN_WALLS}}},
-	// Statuary -- key on an altar, area full of statues; take key to cause statues to burst and reveal monsters
-	//	{{5, 24},			{35, 90},	14,		2,			0,                  (BP_ADOPT_ITEM | BP_NO_INTERIOR_FLAG),	{
-//        {0,			RAT_TRAP_WALL_DORMANT,DUNGEON,{10,20},	5,			0,			-1,			MK_RAT,         1,				0,			0,			(MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_NOT_ON_LEVEL_PERIMETER)}}},
-
-	{{8, AMULET_LEVEL},{35, 90},	200000,		2,			0,                  (BP_ADOPT_ITEM | BP_NO_INTERIOR_FLAG),	{
-		{0,			ALTAR_SWITCH,DUNGEON,		{1,1},		1,			0,			-1,			0,				2,				0,			0,			(MF_ADOPT_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
-		{0,			STATUE_DORMANT,DUNGEON,		{3,5},		3,			0,			-1,			0,				2,				HORDE_MACHINE_STATUE,0,	(MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN)}}},
     // Guardian water puzzle -- key held by a guardian, flood trap in the room, glyphs scattered. Lure the guardian into the water to have him drop the key.
 	{{20, AMULET_LEVEL}, {35, 70},	2,		4,			0,                  (BP_ROOM | BP_PURGE_INTERIOR | BP_SURROUND_WITH_WALLS | BP_ADOPT_ITEM),	{
         {0,         0,          0,              {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_BUILD_AT_ORIGIN)},
@@ -1700,7 +1792,7 @@ const blueprint blueprintCatalog[NUMBER_BLUEPRINTS] = {
 		{0,         GAS_TRAP_PARALYSIS_HIDDEN, DUNGEON, {1,2},1,        0,          0,			0,				3,				0,          0,			(MF_NEAR_ORIGIN | MF_NOT_IN_HALLWAY)},
 		{0,			MACHINE_PARALYSIS_VENT_HIDDEN,DUNGEON,{3, 4},2,		0,			0,			0,				3,				0,          0,          (MF_FAR_FROM_ORIGIN | MF_NOT_IN_HALLWAY)}}},
 	// Statue comes alive -- innocent-looking statue that bursts to reveal a monster when the player approaches
-	{{1,DEEPEST_LEVEL},	{5, 5},		0,		3,			0,                  (BP_NO_INTERIOR_FLAG), {
+	{{1,DEEPEST_LEVEL},	{5, 5},		0,		0,			0,                  (BP_NO_INTERIOR_FLAG), {
 		{0,			STATUE_DORMANT,DUNGEON,		{1, 1},		1,			0,			-1,			0,				1,				HORDE_MACHINE_STATUE,0,	(MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_AT_ORIGIN | MF_ALTERNATIVE)},
 		{0,			STATUE_DORMANT,DUNGEON,		{1, 1},		1,			0,			-1,			0,				1,				HORDE_MACHINE_STATUE,0,	(MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_ALTERNATIVE | MF_NOT_ON_LEVEL_PERIMETER)},
 		{0,			MACHINE_TRIGGER_FLOOR,DUNGEON,{0,0},	2,			0,			-1,			0,				0,				0,			0,			(MF_EVERYWHERE)}}},
@@ -1776,6 +1868,8 @@ creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {
 		(MONST_RESTRICTED_TO_LIQUID | MONST_IMMUNE_TO_WATER | MONST_SUBMERGES | MONST_FLITS | MONST_NEVER_SLEEPS), {MA_HIT_BLINDS}},
 	{0, "magma eel",	'e',	&white, 20,	27,     700,	{8, 12, 1},		5,	75,	75,	DF_ASH_BLOOD,	SALAMANDER_LIGHT, 100, DF_SALAMANDER_FLAME, {0},
 		(MONST_RESTRICTED_TO_LIQUID | MONST_IMMUNE_TO_FIRE | MONST_SUBMERGES | MONST_NEVER_SLEEPS | MONST_FIERY), {MA_ATTACKS_EXTEND} },
+	{0, "ankheg",   'A',	&tanColor,		40,		60,     90,	{2, 5, 1},		5,	100,	125,	DF_GREEN_BLOOD,	0,		0,		0, {BOLT_ACID_TURRET_ATTACK},
+		(MONST_CAST_SPELLS_SLOWLY | MONST_IMMUNE_TO_WATER | MONST_IMMUNE_TO_WEBS), (MA_HIT_DEGRADE_ARMOR)},
 
 	{0,	"bog monster",	'B',	&krakenColor,	55,		60,		5000,	{3, 4, 1},		3,	200,	100,	0,              0,		0,		0,              {0},
 		(MONST_RESTRICTED_TO_LIQUID | MONST_SUBMERGES | MONST_FLITS | MONST_FLEES_NEAR_DEATH), (MA_SEIZES)},
@@ -2017,7 +2111,9 @@ const monsterWords monsterText[NUMBER_MONSTER_KINDS] = {
 	{"This rare type of eel dwells in lava, infrequently emerging to unleash $HISHER fiery rage on potential intruders from a distance.",
 		"eating", "Eating",
 		{"burns", "singes", {0}}},
-
+	{"The ankheg is a large insect-like creature is known for burrowing through walls and spitting streams of acid at $HISHER prey.",
+		"melting", "Melting",
+		{"drenches", "burns", {0}}},
 
 	{"The horrifying bog monster dwells beneath the surface of mud-filled swamps. When $HISHER prey ventures into the mud, the bog monster will ensnare the unsuspecting victim in $HISHER pale tentacles and squeeze its life away.",
 		"draining", "Feeding",
@@ -2300,7 +2396,7 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_MONKEY,			0,		{0},									{{0}},							2,		9,		5},
 	{MK_RAT,			0,		{0},									{{0}},							1,		5,		15},
 	{MK_RAT,			1,		{MK_RAT},								{{2, 5, 1}},					3,		9,		10},
-	{MK_RAT,			1,		{MK_RAT},								{{5, 9, 1}},					7,		11,		3},
+	{MK_RAT,			1,		{MK_RAT},								{{6, 9, 1}},					7,		11,		5},
 	{MK_KOBOLD,			0,		{0},									{{0}},							1,		6,		15},
 	{MK_JACKAL,			0,		{0},									{{0}},							1,		3,		10},
 	{MK_JACKAL,			1,		{MK_JACKAL},							{{2, 5, 1}},					3,		7,		5},
@@ -2335,7 +2431,7 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_INK_EEL,		0,		{0},	    							{{0}},      					12,		24,		7,		DEEP_WATER},
 	{MK_MAGMA_EEL,		1,		{MK_MAGMA_EEL},							{{0}},      					15,		25,		15,		LAVA},
 	{MK_ACID_MOUND,		1,		{MK_ACID_MOUND},						{{2, 4, 1}},					9,		13,		3},
-	{MK_SPIDER,			0,		{0},									{{0}},							9,		16,		2},
+	{MK_SPIDER,			0,		{0},									{{0}},							9,		16,		0},
 	{MK_DAR_BLADEMASTER,1,		{MK_DAR_BLADEMASTER},					{{0, 1, 1}},					10,		14,		3},
 	{MK_WILL_O_THE_WISP,0,		{0},									{{0}},							10,		17,		10},
 	{MK_WRAITH,			0,		{0},									{{0}},							10,		17,		10},
@@ -2355,6 +2451,7 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
     {MK_DART_TURRET,	0,		{0},									{{0}},							15,		22,		10,		WALL,	0,                      HORDE_NO_PERIODIC_SPAWN},
 	{MK_PIXIE,			0,		{0},									{{0}},							14,		21,		8},
 	{MK_FLAME_TURRET,	0,		{0},									{{0}},							14,		24,		10,		WALL,	0,                      HORDE_NO_PERIODIC_SPAWN},
+	{MK_ANKHEG,		    0,		{0},							        {{0}},      					18,		MOLOCH_LAIR_LEVEL-1,		5},
 	{MK_DAR_BLADEMASTER,2,		{MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS},	{{0, 1, 1}, {0, 1, 1}},			15,		17,		10},
     {MK_PINK_JELLY,     2,		{MK_PINK_JELLY, MK_DAR_PRIESTESS},      {{0, 1, 1}, {1, 2, 1}},			17,		23,		7},
 	{MK_KRAKEN,			0,		{0},									{{0}},							15,		30,		5,		DEEP_WATER},
@@ -2379,7 +2476,6 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 
 	// "post-game" -- gsr
 	{MK_BLACK_DRAGON,	0,		{0},									{{0}},							NETHER_LEVEL - 2,		MOLOCH_LAIR_LEVEL-1,		3},
-	{MK_BLACK_DRAGON,	0,		{0},									{{0}},							36,		MOLOCH_LAIR_LEVEL-1,		2,		STATUE_DORMANT, 0,				HORDE_MACHINE_STATUE},
 	{MK_PARALYTIC_BLOAT,0,		{0},									{{0}},							NETHER_LEVEL - 2,		MOLOCH_LAIR_LEVEL-1,		1},
 	{MK_CRYSTAL_GOLEM,	0,		{0},									{{0}},							NETHER_LEVEL - 2,		MOLOCH_LAIR_LEVEL-1,		2},
 	{MK_QUICKLING,  	0,		{0},									{{0}},							NETHER_LEVEL - 4,		MOLOCH_LAIR_LEVEL-1,		3},
@@ -2391,24 +2487,16 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_HELLHOUND,  	1,		{0},            					    {0},    						28,		            MOLOCH_LAIR_LEVEL-1,		2},
 	{MK_INVISIBLE_JELLY,  	1,		{0},            					{0},    						34,		            MOLOCH_LAIR_LEVEL-1,		2},
 
-	// Old favorites return in the post-game, but mutated beyond belief...
-	{MK_RAT,  	1,		{0},            					{0},    						NETHER_LEVEL,		            MOLOCH_LAIR_LEVEL-1,		1},
-	{MK_GOBLIN,  	1,		{0},            					{0},    						NETHER_LEVEL,		            MOLOCH_LAIR_LEVEL-1,		1},
-	{MK_OGRE,  	1,		{0},            					{0},    						NETHER_LEVEL,		            MOLOCH_LAIR_LEVEL-1,		1},
-	{MK_KOBOLD,  	1,		{0},            					{0},    						NETHER_LEVEL,		            MOLOCH_LAIR_LEVEL-1,		1},
-
-	// Virtually guarantee that these guys will be the only ones inhabiting the elemental plane.. --gsr
-	{MK_FIRE_ELEMENTAL,0,		{0},									{{0}},							ELEMENTAL_LEVEL-1,		ELEMENTAL_LEVEL-1,		5000},
-	{MK_WATER_ELEMENTAL,0,		{0},									{{0}},							ELEMENTAL_LEVEL-1,		ELEMENTAL_LEVEL-1,		5000},
-	{MK_EARTH_ELEMENTAL,0,		{0},									{{0}},							ELEMENTAL_LEVEL-1,		ELEMENTAL_LEVEL-1,		5000},
-	{MK_AIR_ELEMENTAL,0,		{0},									{{0}},							ELEMENTAL_LEVEL-1,		ELEMENTAL_LEVEL-1,		5000},
+	// Virtually guarantee that these guys will be the only ones inhabiting the elemental plane, though others do hang around --gsr
+	{MK_FIRE_ELEMENTAL,0,		{0},									{{0}},							ELEMENTAL_LEVEL-1,		ELEMENTAL_LEVEL-1,		100},
+	{MK_WATER_ELEMENTAL,0,		{0},									{{0}},							ELEMENTAL_LEVEL-1,		ELEMENTAL_LEVEL-1,		100},
+	{MK_EARTH_ELEMENTAL,0,		{0},									{{0}},							ELEMENTAL_LEVEL-1,		ELEMENTAL_LEVEL-1,		100},
+	{MK_AIR_ELEMENTAL,0,		{0},									{{0}},							ELEMENTAL_LEVEL-1,		ELEMENTAL_LEVEL-1,		100},
 
 	{MK_FIRE_ELEMENTAL,0,		{0},									{{0}},							24,		MOLOCH_LAIR_LEVEL-1,		3},
 	{MK_WATER_ELEMENTAL,0,		{0},									{{0}},							24,		MOLOCH_LAIR_LEVEL-1,		3},
 	{MK_EARTH_ELEMENTAL,0,		{0},									{{0}},							24,		MOLOCH_LAIR_LEVEL-1,		3},
 	{MK_AIR_ELEMENTAL,0,		{0},									{{0}},							24,		MOLOCH_LAIR_LEVEL-1,		3},
-
-
 
 	// summons
 	{MK_GOBLIN_CONJURER,1,		{MK_SPECTRAL_BLADE},					{{3, 5, 1}},					0,		0,		10,		0,			0,					HORDE_IS_SUMMONED | HORDE_DIES_ON_LEADER_DEATH},
@@ -2449,12 +2537,6 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_TENTACLE_HORROR,3,		{MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS, MK_DAR_BATTLEMAGE},{{1,2,1},{1,1,1},{1,1,1}},20,26,1,	0,			0,					HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD},
 	{MK_GOLEM,			3,		{MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS, MK_DAR_BATTLEMAGE},{{1,2,1},{1,1,1},{1,1,1}},18,25,1,	0,			0,					HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD},
 
-	// bosses
-	{MK_GOBLIN_CHIEFTAN,1,		{MK_GOBLIN_MYSTIC, MK_GOBLIN}, {{1,1,1}, {2,3,1}},2,	    10,		5,		0,			0},
-	{MK_BLACK_JELLY,	1,		{0},									{{0}},    10,		15,		5,		0,			0},
-	{MK_VAMPIRE,		1,		{0},									{{0}},    20,		DEEPEST_LEVEL,	5,  0,		0},
-	{MK_FLAMEDANCER,	1,		{0},									{{0}},    13,		DEEPEST_LEVEL,	5,  0,		0},
-
 	// machine water monsters
 	{MK_EEL,			0,		{0},									{{0}},							2,		7,		10,		DEEP_WATER,	0,					HORDE_MACHINE_WATER_MONSTER},
 	{MK_EEL,			1,		{MK_EEL},								{{2, 4, 1}},					5,		15,		10,		DEEP_WATER,	0,					HORDE_MACHINE_WATER_MONSTER},
@@ -2463,7 +2545,6 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 
     // for general store starting ally
 	{MK_MONKEY,			0,		{0},									{{0}},							1,		1,		10,		MONSTER_CAGE_CLOSED, 0,			HORDE_LEADER_CAPTIVE | HORDE_MACHINE_KENNEL},
-	{MK_PET_DOG,        0,		{0},									{{0}},							1,		1,		10,		MONSTER_CAGE_CLOSED, 0,			HORDE_LEADER_CAPTIVE | HORDE_MACHINE_KENNEL},
 	{MK_OGRE,			0,		{0},									{{0}},							1,		1,		8,		MONSTER_CAGE_CLOSED, 0,			HORDE_LEADER_CAPTIVE | HORDE_MACHINE_KENNEL},
 	{MK_GOBLIN_DRIVER,	0,		{0},									{{0}},							1,		1,		9,		MONSTER_CAGE_CLOSED, 0,			HORDE_LEADER_CAPTIVE | HORDE_MACHINE_KENNEL},
 	{MK_GOBLIN_THIEF,	0,		{0},									{{0}},							1,		1,		9,		MONSTER_CAGE_CLOSED, 0,			HORDE_LEADER_CAPTIVE | HORDE_MACHINE_KENNEL},
@@ -2473,7 +2554,6 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_TROLL,   		0,		{0},									{{0}},							1,		1,		1,		MONSTER_CAGE_CLOSED, 0,			HORDE_LEADER_CAPTIVE | HORDE_MACHINE_KENNEL},
 	{MK_LEPRECHAUN,   	0,		{0},									{{0}},							1,		1,		5,		MONSTER_CAGE_CLOSED, 0,			HORDE_LEADER_CAPTIVE | HORDE_MACHINE_KENNEL},
 	{MK_CENTIPEDE,      0,		{0},									{{0}},							1,		1,		5,		MONSTER_CAGE_CLOSED, 0,			HORDE_LEADER_CAPTIVE | HORDE_MACHINE_KENNEL},
-	{MK_WILL_O_THE_WISP,0,		{0},									{{0}},							1,		1,		5,		MONSTER_CAGE_CLOSED, 0,			HORDE_LEADER_CAPTIVE | HORDE_MACHINE_KENNEL},
 	{MK_VAMPIRE_BAT,    0,		{0},									{{0}},							1,		1,		8,		MONSTER_CAGE_CLOSED, 0,			HORDE_LEADER_CAPTIVE | HORDE_MACHINE_KENNEL},
 	{MK_GLASS_GOLEM,    0,		{0},									{{0}},							1,		1,		3,		MONSTER_CAGE_CLOSED, 0,			HORDE_LEADER_CAPTIVE | HORDE_MACHINE_KENNEL},
 
@@ -2543,18 +2623,12 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 	{MK_DAR_PRIESTESS,	0,		{0},									{{0}},							12,		AMULET_LEVEL,10,MONSTER_CAGE_CLOSED, 0,			HORDE_VAMPIRE_FODDER},
 	{MK_DAR_BATTLEMAGE,	0,		{0},									{{0}},							13,		AMULET_LEVEL,10,MONSTER_CAGE_CLOSED, 0,			HORDE_VAMPIRE_FODDER},
 
-    // key thieves
-    {MK_MONKEY,			0,		{0},									{{0}},							1,		14,		10,     0,          0,                  HORDE_MACHINE_THIEF},
-    {MK_GOBLIN_THIEF,	0,		{0},									{{0}},							8,		20,		10,     0,          0,                  HORDE_MACHINE_THIEF},
-    {MK_IMP,			0,		{0},									{{0}},							15,		DEEPEST_LEVEL,	10, 0,      0,                  HORDE_MACHINE_THIEF},
+	// bosses
+	{MK_BLACK_JELLY,	1,		{0},									{{0}},    10,		DEEPEST_LEVEL,		2,		0,		0},
+	{MK_VAMPIRE,		1,		{0},									{{0}},    20,		DEEPEST_LEVEL,	    2,      0,		0},
+	{MK_FLAMEDANCER,	1,		{0},									{{0}},    13,		DEEPEST_LEVEL,	    2,      0,		0},
 
-	// legendary allies
-/*	{MK_UNICORN,		0,		{0},									{{0}},							1,		DEEPEST_LEVEL,	10, 0,		0,					HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER},
-	{MK_IFRIT,			0,		{0},									{{0}},							1,		DEEPEST_LEVEL,	10,	0,		0,					HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER},
-	{MK_PHOENIX_EGG,	0,		{0},									{{0}},							1,		DEEPEST_LEVEL,	10,	0,		0,					HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER},
-    {MK_ANCIENT_SPIRIT,	0,		{0},									{{0}},							1,		DEEPEST_LEVEL,	10,	0,		0,					HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER},
-    {MK_WARRIOR_SOUL,	0,		{0},									{{0}},							1,		DEEPEST_LEVEL,	10,	0,		0,					HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER},*/
-    // Let's be a total jerk and make them late-ish game bosses -- gsr
+	// legendary "allies"
 	{MK_UNICORN,		0,		{0},									{{0}},							15,		DEEPEST_LEVEL,	5, 0,		0,					HORDE_MACHINE_BOSS},
 	{MK_IFRIT,			0,		{0},									{{0}},							15,		DEEPEST_LEVEL,	5,	0,		0,					HORDE_MACHINE_BOSS},
 	{MK_PHOENIX_EGG,	0,		{0},									{{0}},							15,		DEEPEST_LEVEL,	5,	0,		0,					HORDE_MACHINE_BOSS},
@@ -2563,6 +2637,7 @@ const hordeType hordeCatalog[NUMBER_HORDES] = {
 
     // goblin warren
     {MK_GOBLIN,			0,		{0},									{{0}},							1,		10,		10,     0,              0,              HORDE_MACHINE_GOBLIN_WARREN},
+	{MK_GOBLIN_CHIEFTAN,3,		{MK_GOBLIN, MK_GOBLIN_MYSTIC, MK_GOBLIN_DRIVER},{{2, 3, 1}, {1,2,1}, {1,2,1}},	6,		12,		4,      0,              0,              HORDE_MACHINE_GOBLIN_WARREN},
 	{MK_GOBLIN_CONJURER,0,		{0},									{{0}},							1,		10,		6,      0,              0,              HORDE_MACHINE_GOBLIN_WARREN},
 	{MK_GOBLIN_TOTEM,	1,		{MK_GOBLIN},							{{2,4,1}},						5,		13,		10,		0,				MT_CAMP_AREA,	HORDE_MACHINE_GOBLIN_WARREN},
 	{MK_GOBLIN,			3,		{MK_GOBLIN, MK_GOBLIN_MYSTIC, MK_JACKAL},{{2, 3, 1}, {1,2,1}, {1,2,1}},	6,		12,		4,      0,              0,              HORDE_MACHINE_GOBLIN_WARREN},
@@ -2577,7 +2652,7 @@ const monsterClass monsterClassCatalog[MONSTER_CLASS_COUNT] = {
     // name             frequency   maxDepth    member list
     {"abomination",     10,         -1,         {MK_BOG_MONSTER, MK_UNDERWORM, MK_KRAKEN, MK_TENTACLE_HORROR}},
     {"dar",             10,         22,         {MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS, MK_DAR_BATTLEMAGE}},
-    {"animal",          10,         10,         {MK_RAT, MK_MONKEY, MK_JACKAL, MK_EEL, MK_INK_EEL, MK_TOAD, MK_CENTIPEDE, MK_SPIDER}},
+    {"animal",          10,         10,         {MK_RAT, MK_MONKEY, MK_JACKAL, MK_EEL, MK_INK_EEL, MK_TOAD, MK_CENTIPEDE, MK_SPIDER, MK_ANKHEG}},
     {"goblin",          10,         10,         {MK_GOBLIN, MK_GOBLIN_CONJURER, MK_GOBLIN_MYSTIC, MK_GOBLIN_TOTEM, MK_GOBLIN_CHIEFTAN, MK_GOBLIN_DRIVER, MK_GOBLIN_THIEF}},
     {"ogre",            10,         16,         {MK_OGRE, MK_OGRE_SHAMAN, MK_OGRE_TOTEM}},
     {"dragon",          10,         -1,         {MK_DRAGON, MK_BLACK_DRAGON}},
@@ -2776,7 +2851,7 @@ const itemTable throwingWeaponTable[NUMBER_THROWING_WEAPON_KINDS] = {
 
 
 const itemTable armorTable[NUMBER_ARMOR_KINDS] = {
-    {"cloak",       	"", "", 10,	5,		5,	{5,5,0},		true, false, "This torn yet elegant garment covers you almost completely, but it offers very little protection."},
+    {"cloak",       	"", "", 10,	5,		5,	{5,5,0},		true, false, "This simple garment covers you almost completely, but it offers very little protection."},
 	{"leather armor",	"", "", 10,	20,		12,	{30,30,0},		true, false, "This lightweight armor offers basic protection."},
 	{"scale mail",		"", "", 10, 45,		12, {40,40,0},		true, false, "Bronze scales cover the surface of treated leather, offering greater protection than plain leather with minimal additional weight."},
 	{"chain mail",		"", "", 10, 50,		13, {50,50,0},		true, false, "Interlocking metal links make for a tough but flexible suit of armor."},
@@ -2837,7 +2912,7 @@ itemTable scrollTable[NUMBER_SCROLL_KINDS] = {
 	{"shattering",			itemTitles[9],"",	10,	50,	0,{0,0,0}, false, false, "The blast of sorcery unleashed by this scroll will alter the physical structure of nearby stone, causing it to dissolve away over the ensuing minutes."},
     {"discord",             itemTitles[10], "",	9,	40,	0,{0,0,0}, false, false, "Reading this scroll will unleash a powerful blast of mind magic. Any creatures within line of sight will turn against their companions and attack indiscriminately for 30 turns."},
 	{"great identify",		itemTitles[11], "",	2,	200,	0,{0,0,0}, false, false, "This extremely rare parchment will reveal the secrets of every item in the reader's pack when read aloud."},
-	{"summon familiar",		itemTitles[12], "",	2,	180,	0,{0,0,0}, false, false, "The incantation on this scroll will beckon a creature from another plane, drawing it through to existence to assist the reader."},
+	{"domination",		    itemTitles[12], "",	2,	180,	0,{0,0,0}, false, false, "A sweet pink aroma released by this scroll will bind the closest enemy to the reader's will, turning it into a steadfast ally."},
  	{"chaos",		        itemTitles[13], "",	2,	200,	0,{0,0,0}, false, false, "This scroll will cause absolute chaos all around, transporting every creature on the level to a random location. It might flush out hidden monsters, or it could make for a last resort. It could also be combined with telepathic power to indirectly map out portions of the current level."},
 	{"aggravate monsters",	itemTitles[14], "",	6,	3,		0,{0,0,0}, false, false, "When read aloud, this scroll will unleash a piercing shriek that will awaken all monsters and alert them to the reader's location."},
 	{"summon monsters",		itemTitles[15], "",	10,	3,		0,{0,0,0}, false, false, "The incantation on this scroll will call out to creatures in other planes of existence, drawing them through the fabric of reality to confront the reader."},
@@ -2851,16 +2926,16 @@ itemTable charmTable[NUMBER_CHARM_KINDS] = {
 	{"invisibility",	"", "",	5,	70,	0,{1,2,1}, true, false, "This intricate figurine depicts a strange humanoid creature. It has a face on both sides of its head, but all four eyes are closed."},
 //	{"telepathy",		"", "",	3,	70,	0,{1,2,1}, true, false, "Seven tiny glass eyes roll freely within this glass sphere. Somehow, they always come to rest facing outward."},
 	{"levitation",      "", "",	4,	70,	0,{1,2,1}, true, false, "Sparkling dust and fragments of feather waft and swirl endlessly inside this small glass sphere."},
-    {"shattering",      "", "",	2,	70,	0,{1,2,1}, true, false, "This turquoise crystal, fixed to a leather lanyard, hums with an arcane energy that sets your teeth on edge."},
+    {"shattering",      "", "",	0,	70,	0,{1,2,1}, true, false, "This turquoise crystal, fixed to a leather lanyard, hums with an arcane energy that sets your teeth on edge."},
     {"guardian",        "", "",	5,	70,	0,{1,2,1}, true, false, "When you touch this tiny granite statue, a rhythmic booming sound echoes in your head."},
-    {"teleportation",   "", "",	4,	70,	0,{1,2,1}, true, false, "The surface of this nickel sphere has been etched with a perfect grid pattern. Somehow, the squares of the grid are all exactly the same size."},
     {"fear",            "", "",	3,	70,	0,{1,2,1}, true, false, "When you gaze into the murky interior of this obsidian cube, you feel as though something predatory is watching you."},
+    {"teleportation",   "", "",	4,	70,	0,{1,2,1}, true, false, "The surface of this nickel sphere has been etched with a perfect grid pattern. Somehow, the squares of the grid are all exactly the same size."},
     {"recharging",      "", "",	0,	70,	0,{1,2,1}, true, false, "A strip of bronze has been wound around a rough wooden sphere. Each time you touch it, you feel a tiny electric shock."},
 //    {"negation",        "", "",	5,	70,	0,{1,2,1}, true, false, "A featureless gray disc hangs from a leather lanyard. When you touch it, your hand briefly goes numb."},
     {"identify",        "", "",	0,	85,	0,{1,2,1}, true, false, "This pocket-sized tome is bound with worn leather. A bookmark of crimson silk flows from the top of its spine, dancing and waving subtly as if it were caught by a breeze."},
     {"discord",         "", "",	2,	85,	0,{1,2,1}, true, false, "A series of jagged lines dance around the surface of this otherwise pristine shard of crystal."},
-    {"beckoning",       "", "",	4,	70,	0,{1,2,1}, true, false, "When you place your hand near this gray sphere, you can feel a strange force pulling your hand toward it."},
-    {"provocation",     "", "",	5,	50,	0,{1,2,1}, true, false, "This small brass bell seems to be perfectly soundproof, both inside and out. It is completely silent even as it brushes against other equipment in your pack."},
+    {"beckoning",       "", "",	0,	70,	0,{1,2,1}, true, false, "When you place your hand near this gray sphere, you can feel a strange force pulling your hand toward it."},
+    {"provocation",     "", "",	0,	50,	0,{1,2,1}, true, false, "This small brass bell seems to be perfectly soundproof, both inside and out. It is completely silent even as it brushes against other equipment in your pack."},
 };
 
 itemTable potionTable[NUMBER_POTION_KINDS] = {
@@ -2884,6 +2959,7 @@ itemTable potionTable[NUMBER_POTION_KINDS] = {
 //	{"descent",				itemColors[15], "",	15,	50,	0,{0,0,0}, false, false, "When this flask is uncorked by hand or shattered by being thrown, the fog that seeps out will temporarily cause the ground in the vicinity to vanish."},
 //	{"creeping death",		itemColors[12], "",	7,	45,	0,{0,0,0}, false, false, "When the cork is popped or the flask is thrown, tiny spores will spill across the ground and begin to grow a deadly lichen. Anything that touches the lichen will be poisoned by its clinging tendrils, and the lichen will slowly grow to fill the area. Fire will purge the infestation."},
     {"caustic gas",         itemColors[12], "",	20,	20,0,{0,0,0}, false, false, "Uncorking or shattering this pressurized glass will cause its contents to explode into a deadly cloud of caustic, flammable purple gas. You might choose to fling this potion at distant enemies instead of uncorking it by hand."},
+    {"methane",             itemColors[13], "",	10,	20,0,{0,0,0}, false, false, "This flask contains a massive amount of flammable methane gas kept under intense pressure. Uncorking or shattering it will cause its contents to billow out and spread quickly and all around. One small flicker of flame will cause the entire cloud to explode violently."},
 };
 
 // There aren't any wands, and so this is kinda useless --gsr
@@ -2919,8 +2995,6 @@ itemTable ringTable[NUMBER_RING_KINDS] = {
 	{"stealth",			itemGems[1], "",	6,	280,	0,{1,3,1}, false, false, "This ring will reduce your stealth range, making enemies less likely to notice you and more likely to lose your trail. Staying motionless and lurking in the shadows will make you even harder to spot. Cursed rings of stealth will increase your stealth range, making you easier to spot and to track."},
 	{"regeneration",	itemGems[2], "",	4,	475,	0,{1,3,1}, false, false, "This ring increases the body's regenerative properties, allowing one to recover lost health at an accelerated rate. Cursed rings will decrease or even halt one's natural regeneration."},
 	{"transference",	itemGems[3], "",	4,	375,	0,{1,3,1}, false, false, "Landing a melee attack while wearing this ring will heal you in proportion to the damage inflicted. Cursed rings will cause you to lose health with each attack you land."},
-//	{"sight",			itemGems[4], "",	6,	1600,	0,{1,3,1}, false, false, "This ring subtly enhances your vision, enabling you to see farther in the dimming light of the deeper dungeon levels. It will not make you more visible to enemies."},
-//	{"awareness",		itemGems[5], "",	7,	1700,	0,{1,3,1}, false, false, "Wearing this ring will enable you to notice hidden secrets (traps, secret doors and hidden levers) more often and from a greater distance. Cursed rings of awareness will dull your senses, making it harder to notice secrets even when actively searching for them."},
 	{"perception",		itemGems[4], "",	7,	170,	0,{1,3,1}, false, false, "This ring will enhance your perception. It enables you to see farther in the dimming light of the deeper dungeon levels and to notice hidden secrets (traps, secret doors and hidden levers) more often and from a greater distance. Cursed rings will dull your perception."},
 	{"wisdom",			itemGems[5], "",	4,	470,	0,{1,3,1}, false, false, "Your staffs will recharge at an accelerated rate in the energy field that radiates from this ring. Cursed rings of wisdom will instead cause your staffs to recharge more slowly."},
     {"reaping",         itemGems[6], "",	0,	700,	0,{1,3,1}, false, false, "The blood magic in this ring will recharge your staffs and charms in proportion to the damage you inflict directly. Cursed rings of reaping will drain your staffs and charms when you inflict damage directly."},
@@ -2980,8 +3054,7 @@ const feat featTable[FEAT_COUNT] = {
     {"Archivist",       "Ascend without drinking a potion or reading a scroll.", true},
     {"Companion",       "Journey with an ally through 20 depths.", false},
     {"Specialist",      "Enchant an item up to or above +16.", false},
-//    {"Jellymancer",     "Obtain at least 90 jelly allies simultaneously.", false},
-    {"Jellymancer",     "Obtain at least 90 jelly allies simultaneously.", false}, // should replace this -- gsr
+    {"Jellymancer",     "Obtain at least 90 jelly allies simultaneously.", false},
     {"Indomitable",     "Ascend without taking damage.", true},
     {"Mystic",          "Ascend without eating.", true},
     {"Dragonslayer",    "Kill a dragon with a melee attack.", false},

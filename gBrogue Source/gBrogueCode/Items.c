@@ -80,8 +80,7 @@ unsigned long pickItemCategory(unsigned long theCategory) {
 	short i, sum, randIndex;
 // Probability of different item categories
 //	short probabilities[13] =						{50,	42,		52,		3,		3,		10,		8,		2,		3,      2,        0,		0,		0};
-//	short probabilities[13] =						{50,	42,		52,		3,		0,		7,		8,		2,		3,      3,        0,		0,		0};
-	short probabilities[14] =         			    {50,	55,		45,		25,              2,		0,		2,		2,		3,		2,      2,        0,		0,		0};
+	short probabilities[14] =         			    {50,	45,		55,		15,              3,		0,		2,		2,		3,		3,      2,        0,		0,		0};
 	unsigned short correspondingCategories[14] =	{GOLD,	SCROLL,	POTION,	THROWING_WEAPON, STAFF,	WAND,	WEAPON,	ARMOR,	FOOD,	RING,   CHARM,    AMULET,	GEM,	KEY};
 
 
@@ -554,12 +553,10 @@ void populateItems(short upstairsX, short upstairsY) {
 
 
 	 else {
-        rogue.lifePotionFrequency += 34; // irrelevant now -- gsr
-		rogue.strengthPotionFrequency += 17; // irrelevant now -- gsr
-		rogue.empowermentPotionFrequency += 15; // changed 2018.02.05 -- gsr //20; // gsr
-		rogue.enchantScrollFrequency += 15;
+		rogue.empowermentPotionFrequency += 20;// gsr
+		rogue.enchantScrollFrequency += 22;
 		numberOfItems = 3;//3;
-		while (rand_percent(40)) { //60)) {
+		while (rand_percent(60)) { //60)) {
 			numberOfItems++;
 		}
 		if (rogue.depthLevel == 1) {
@@ -1876,7 +1873,7 @@ short charmRechargeDelay(short charmKind, short enchant) {
 
         900,   // Identify
         2500,  // Discord
-        500,  // Beckoning
+        150,  // Beckoning
         100,    // Aggravate monsters
     };
     const short increment[NUMBER_CHARM_KINDS] = {
@@ -1896,7 +1893,7 @@ short charmRechargeDelay(short charmKind, short enchant) {
 
         40,   // Identify
         40,   // Discord
-        30,     // Beckoning
+        10,     // Beckoning
         5,  // Aggravate monsters
     };
 
@@ -6174,7 +6171,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                     {
                         flashMonster(monst, boltCatalog[BOLT_HASTE].backColor, 100);
                         monsterName(monstName, monst, true);
-                        sprintf(buf, "the flask shatters and %s seems to speed up!", monstName);
+                        sprintf(buf, "the flask shatters and %s's actions speed up!", monstName);
                         message(buf, false);
                         haste(monst, 100);
                         hadEffect = true;
@@ -6264,36 +6261,6 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                         hadEffect = true;
                     }
                     break;
-                /*case POTION_STRENGTH:
-				    if (monst = monsterAtLoc(x, y))
-                    {
-                        monsterName(monstName, monst, true);
-                        sprintf(buf, "the flask shatters and %s absorbs its contents.", monstName);
-                        empowerMonster(monst);
-                    }
-                    else
-                    {
-                        spawnDungeonFeature(player.xLoc, player.yLoc, &dungeonFeatureCatalog[DF_SACRED_GLYPHS], true, false);
-                        strcpy(buf, "sprays of color arc out of the shattered flask, forming glyphs where they alight.");
-                        message(buf, false);
-                    }
-					break;
-                case POTION_LIFE:
-				    if (monst = monsterAtLoc(x, y))
-                    {
-                        monsterName(monstName, monst, true);
-//                        strcpy(buf, "the flask shatters and releases a cloud of bloodwort spores!");
-//                        message(buf, false);
-                        heal(monst, 100, true);
-                    }
-                    else
-                    {
-                        strcpy(buf, "the flask shatters and releases a massive cloud of bloodwort spores!");
-                        message(buf, false);
-
-                        spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_BLOODFLOWER_POD_BURST], true, false);
-                        spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_BLOODFLOWER_POD_BURST], true, false);
-                    }*/
                 case POTION_EMPOWERMENT:
 				    if (hitMonsterAtSpot && monst)
                     {
@@ -6385,6 +6352,12 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 				case POTION_CAUSTIC_GAS:
 					strcpy(buf, "the flask shatters and a deadly purple cloud billows out!");
 					spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_POISON_GAS_CLOUD_POTION], true, false);
+					message(buf, false);
+					hadEffect = true;
+					break;
+				case POTION_METHANE:
+					strcpy(buf, "the flask shatters and a cloud of methane billows out!");
+					spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_METHANE_GAS_ARMAGEDDON], true, false);
 					message(buf, false);
 					hadEffect = true;
 					break;
@@ -6902,14 +6875,6 @@ void useCharm(item *theItem) {
                 {
                     beckonMonster(monst, player.xLoc, player.yLoc);
                     wakeUp(monst);
-
-                    /*
-                        getQualifyingPathLocNear(&(monst->xLoc), &(monst->yLoc), player.xLoc, player.yLoc, true,
-                             T_DIVIDES_LEVEL & avoidedFlagsForMonster(&(monst->info)) & ~T_SPONTANEOUSLY_IGNITES, HAS_PLAYER,
-                             avoidedFlagsForMonster(&(monst->info)) & ~T_SPONTANEOUSLY_IGNITES, (HAS_PLAYER | HAS_MONSTER | HAS_UP_STAIRS | HAS_DOWN_STAIRS), false);
-                                pmap[monst->xLoc][monst->yLoc].flags |= HAS_MONSTER;
-                                fadeInMonster(monst);
-                                */
                 }
             }
             break;
@@ -6959,7 +6924,7 @@ void apply(item *theItem, boolean recordCommands) {
 	revealItemType = false;
 
 	if (!theItem) {
-		theItem = promptForItemOfType((SCROLL|FOOD|POTION|STAFF|WAND|CHARM|THROWING_WEAPON), 0, 0,
+		theItem = promptForItemOfType((SCROLL|FOOD|POTION|STAFF|WAND|CHARM|THROWING_WEAPON|WEAPON|ARMOR|RING), 0, 0,
 									  KEYBOARD_LABELS ? "Apply what? (a-z, shift for more info; or <esc> to cancel)" : "Apply what?",
                                       true);
 	}
@@ -7225,9 +7190,11 @@ void magicMapCell(short x, short y) {
 }
 
 void readScroll(item *theItem) {
-	short i, j, x, y, numberOfMonsters = 0;
+	short i, j, x, y, numberOfMonsters = 0, shortestDistance;
+
 	item *tempItem;
 	creature *monst;
+    creature *target, *closestMonster = NULL;
 	boolean hadEffect = false;
 	char buf[COLS * 3], buf2[COLS * 3];
 
@@ -7531,32 +7498,35 @@ void readScroll(item *theItem) {
 			}
 			break;
         case SCROLL_SUMMON_FAMILIAR:
+            shortestDistance = 10000;
+            // Look around for enemies
+                for (target = monsters->nextCreature; target != NULL; target = target->nextCreature)
+                {
+                    if ( (target->creatureState != MONSTER_ALLY) && !(target->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE))
+                        && canSeeMonster(target)
+                        && distanceBetween(player.xLoc, player.yLoc, target->xLoc, target->yLoc) < shortestDistance)
+                            {
+                                closestMonster = target;
+                                shortestDistance = distanceBetween(player.xLoc, player.yLoc, target->xLoc, target->yLoc);
+                            }
+                }
+            if (closestMonster)
+            {
+                flash(&pink, 5, closestMonster->xLoc, closestMonster->yLoc);
+                monsterName(buf2, closestMonster, true);
 
-			for (j=0; j<25 && numberOfMonsters < 1; j++) {
-				for (i=0; i<8; i++) {
-					x = player.xLoc + nbDirs[i][0];
-					y = player.yLoc + nbDirs[i][1];
-					if (!cellHasTerrainFlag(x, y, T_OBSTRUCTS_PASSABILITY) && !(pmap[x][y].flags & HAS_MONSTER)
-						&& rand_percent(10) && (numberOfMonsters < 1)) {
-						monst = spawnHorde(0, x, y, (HORDE_LEADER_CAPTIVE | HORDE_NO_PERIODIC_SPAWN | HORDE_IS_SUMMONED | HORDE_MACHINE_ONLY), 0);
-						if (monst) {
-							// refreshDungeonCell(x, y);
-							// monst->creatureState = MONSTER_TRACKING_SCENT;
-							// monst->ticksUntilTurn = player.movementSpeed;
-							wakeUp(monst);
-							fadeInMonster(monst);
-							becomeAllyWith(monst);
-							j = 32767; // cheap -- will deal with this later -- gsr
-						}
-					}
-				}
-			}
-			if (numberOfMonsters == 1) {
-				message("the fabric of space bends nearby, and a monster emerges!", false);
-			} else {
-				message("the fabric of space shakes around you, but nothing happens.", false);
-			}
-			break;
+                sprintf(buf, "the scroll emits a number of pink particles, and %s becomes bound to your will!", buf2);
+                message(buf, false);
+                becomeAllyWith(closestMonster);
+                wakeUp(closestMonster);
+            }
+            else
+            {
+                flash(&pink, 5, player.xLoc, player.yLoc);
+                message("the scroll emits a number of pink particles, but nothing else happens.", false);
+            }
+
+            break;
 		case SCROLL_NEGATION:
             negationBlast("the scroll", DCOLS);
 			break;
@@ -7682,6 +7652,11 @@ void drinkPotion(item *theItem) {
         case POTION_CAUSTIC_GAS:
             message("caustic gas billows out of the open flask!", false);
             spawnDungeonFeature(player.xLoc, player.yLoc, &dungeonFeatureCatalog[DF_POISON_GAS_CLOUD_POTION], true, false);
+            message(buf, false);
+            break;
+        case POTION_METHANE:
+            message("a massive cloud of methane billows out of the open flask!", false);
+            spawnDungeonFeature(player.xLoc, player.yLoc, &dungeonFeatureCatalog[DF_METHANE_GAS_ARMAGEDDON], true, false);
             message(buf, false);
             break;
 		case POTION_LEVITATION:
@@ -7833,12 +7808,12 @@ short magicCharDiscoverySuffix(short category, short kind) {
 			break;
 		case POTION:
 			switch (kind) {
-//				case POTION_HALLUCINATION:
 				case POTION_INCINERATION:
 //				case POTION_DESCENT:
 				case POTION_CAUSTIC_GAS:
 				case POTION_PARALYSIS:
                 case POTION_HALLUCINATION:
+                case POTION_METHANE:
 //				case POTION_CONFUSION:
 //				case POTION_LICHEN:
 //				case POTION_DARKNESS:

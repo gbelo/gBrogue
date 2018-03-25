@@ -1746,7 +1746,7 @@ boolean inflictDamage(creature *attacker, creature *defender,
 
 	if (defender->currentHP <= damage) { // killed
 		anyoneWantABite(defender);
-		killCreature(defender, false);
+        killCreature(defender, false);
 		killed = true;
 	} else { // survived
 		if (damage < 0 && defender->currentHP - damage > defender->info.maxHP) {
@@ -1901,10 +1901,32 @@ void killCreature(creature *decedent, boolean administrativeDeath) {
 			refreshDungeonCell(x, y);
 		}
 	}
+
+	// Fellow adventurers might drop lots of stuff
+	if (decedent->info.monsterID == MK_ADVENTURER)
+        continueKillingFellowAdventurer(decedent);
+
 	decedent->currentHP = 0;
 	demoteMonsterFromLeadership(decedent);
     if (decedent->leader) {
         checkForContinuedLeadership(decedent->leader);
+    }
+}
+
+// If the adventurer dies, we'll throw out some loot. And maybe a ghost :o
+void continueKillingFellowAdventurer(creature *monst)
+{
+    itemTable *theEntry;
+    item *tempItem = initializeItem();
+    short itemKind, i, j, k;
+    short loc[2];
+
+    // Generate some items to drop
+    for (i = 0; i < rand_range(rogue.depthLevel/4, rogue.depthLevel); i++)
+    {
+        tempItem = generateItem(ALL_ITEMS, -1);
+        getQualifyingLocNear(loc, monst->xLoc, monst->yLoc, true, 0, (T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_PASSABILITY), (HAS_ITEM), false, false);
+        placeItem(tempItem, loc[0], loc[1]);
     }
 }
 

@@ -1034,7 +1034,7 @@ void populateMonsters() {
         rogue.moloch = monst;
     }
     // Generate a fellow adventurer -- gsr
-    if ((rogue.depthLevel > 10 && rand_percent(3)) || rogue.depthLevel == rogue.guaranteedAdventurerDepth)
+    if ((rogue.depthLevel > 10 && rand_percent(3)) || rogue.depthLevel == 22)//rogue.guaranteedAdventurerDepth)
         generateFellowAdventurer();
 
 
@@ -2831,6 +2831,7 @@ boolean resurrectAlly(const short x, const short y) {
         // Restore health etc.
         monst->bookkeepingFlags &= ~(MB_IS_DYING | MB_IS_FALLING);
         heal(monst, 100, true);
+        fadeInMonster(monst);
 
         success = true;
     } else {
@@ -4512,39 +4513,13 @@ void generateFellowAdventurer()
 
 
         // A few "staffs" we've "found"
-/*
-    BOLT_NONE = 0,
-	BOLT_TELEPORT,
-	BOLT_SLOW,
-	BOLT_POLYMORPH,
-	BOLT_NEGATION,
-	BOLT_DOMINATION,
-	BOLT_BECKONING,
-	BOLT_PLENTY,
-	BOLT_INVISIBILITY,
-    BOLT_EMPOWERMENT,
-	BOLT_LIGHTNING,
-	BOLT_FIRE,
-	BOLT_POISON,
-	BOLT_TUNNELING,
-	BOLT_BLINKING,
-	BOLT_ENTRANCEMENT,
-	BOLT_OBSTRUCTION,
-	BOLT_DISCORD,
-	BOLT_CONJURATION,
-	BOLT_HEALING,
-	BOLT_HASTE,
-    BOLT_SLOW_2,
-	BOLT_SHIELDING,
-    BOLT_SPIDERWEB,
-    BOLT_SPARK,
-*/
             for (i = 0; i < rand_range(0, rogue.depthLevel * 3/4); i++)
             {
                 do {
                     j = rand_range(BOLT_TELEPORT, BOLT_SPARK);
                     // Lots of cool bolts but we want to forbid some of them
-                } while (j == BOLT_POLYMORPH || j == BOLT_TUNNELING || j == BOLT_DOMINATION || j == BOLT_PLENTY || j == BOLT_EMPOWERMENT || j == BOLT_ENTRANCEMENT || j == BOLT_SPIDERWEB);
+                } while (j == BOLT_POLYMORPH || j == BOLT_TUNNELING || j == BOLT_FORCE || j == BOLT_DOMINATION ||
+                         j == BOLT_PLENTY || j == BOLT_EMPOWERMENT || j == BOLT_ENTRANCEMENT || j == BOLT_SPIDERWEB);
 
                 for (k = 0; k <= i; k++)
                 {

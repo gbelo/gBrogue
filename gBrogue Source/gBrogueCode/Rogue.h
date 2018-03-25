@@ -34,18 +34,14 @@
 //
 
 /* TO DO:
-    - Reevaluate some potions/scrolls
     - Fix that incineration/on fire bug
     - Force bolt crash?
-    - Jellymancer feat
     - Warnings in compiling
     - Compilation: Linux, iPad..
-    - Fellow adventurers leaving loot
     - Grammar on inactive runic armor/weapons
     - SHIFT+dir(?) to move without using weapon (whip) or picking up item
-    - Ally commands
+    - Ally commanding philosophy
     - More detail on high score screen https://www.reddit.com/r/brogueforum/comments/6iosq7/idea_show_inventory_and_last_screenshot_on_high/
-    - Poison vs. vampiric?
 */
 
 #include <stdio.h>
@@ -58,11 +54,11 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "v1.18.02.10"
+#define BROGUE_VERSION_STRING "v1.18.03.25"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
-#define DEBUGGING						1
+#define DEBUGGING						0
 
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.
@@ -804,6 +800,7 @@ enum potionKind {
 //	POTION_DESCENT, // gsr
 //	POTION_LICHEN,
 	POTION_CAUSTIC_GAS, // gsr
+	POTION_METHANE,
 	NUMBER_POTION_KINDS
 };
 
@@ -1065,6 +1062,7 @@ enum monsterTypes {
 	MK_LEPRECHAUN,
 	MK_INK_EEL,
 	MK_MAGMA_EEL,
+	MK_ANKHEG,
 	MK_BOG_MONSTER,
 	MK_OGRE_TOTEM,
 	MK_SPIDER,
@@ -2179,7 +2177,7 @@ enum monsterBehaviorFlags {
 									   | MONST_FLITS | MONST_IMMUNE_TO_FIRE | MONST_REFLECT_4 | MONST_FIERY | MONST_MAINTAINS_DISTANCE),
 	MONST_TURRET					= (MONST_IMMUNE_TO_WEBS | MONST_NEVER_SLEEPS | MONST_IMMOBILE | MONST_INANIMATE |
 									   MONST_ATTACKABLE_THRU_WALLS | MONST_WILL_NOT_USE_STAIRS),
-	LEARNABLE_BEHAVIORS				= (MONST_FLIES | MONST_IMMUNE_TO_FIRE | MONST_IMMUNE_TO_WATER),
+	LEARNABLE_BEHAVIORS				= (MONST_FLIES | MONST_IMMUNE_TO_FIRE | MONST_IMMUNE_TO_WATER | MONST_REFLECT_4),
 	MONST_NEVER_VORPAL_ENEMY		= (MONST_INANIMATE | MONST_INVULNERABLE | MONST_IMMOBILE | MONST_RESTRICTED_TO_LIQUID | MONST_GETS_TURN_ON_ACTIVATION | MONST_MAINTAINS_DISTANCE),
     MONST_NEVER_MUTATED             = (MONST_INVISIBLE | MONST_INANIMATE | MONST_IMMOBILE | MONST_INVULNERABLE),
 };
@@ -2205,7 +2203,7 @@ enum monsterAbilityFlags {
     MA_HIT_SLOWS                    = Fl(17),	// monster attacks cause slowness
 
 	SPECIAL_HIT						= (MA_HIT_HALLUCINATE | MA_HIT_STEAL_FLEE | MA_HIT_DEGRADE_ARMOR | MA_HIT_BLINDS | MA_POISONS | MA_TRANSFERENCE | MA_CAUSES_WEAKNESS | MA_HIT_SLOWS),
-	LEARNABLE_ABILITIES				= (MA_TRANSFERENCE | MA_CAUSES_WEAKNESS | MA_ATTACKS_PENETRATE | MA_POISONS | MA_SEIZES | MA_ATTACKS_ALL_ADJACENT),
+	LEARNABLE_ABILITIES				= (MA_TRANSFERENCE | MA_CAUSES_WEAKNESS | MA_ATTACKS_PENETRATE | MA_POISONS | MA_SEIZES | MA_ATTACKS_ALL_ADJACENT | MA_HIT_HALLUCINATE | MA_HIT_SLOWS | MA_HIT_BLINDS),
 
     MA_NON_NEGATABLE_ABILITIES      = (MA_ATTACKS_PENETRATE | MA_ATTACKS_ALL_ADJACENT),
     MA_NEVER_VORPAL_ENEMY           = (MA_KAMIKAZE),

@@ -1644,7 +1644,6 @@ boolean buildAMachine(enum machineTypes bp,
 										monst->creatureState = MONSTER_TRACKING_SCENT;
 									}
 
-									message("hi",false);
 								}
                                 monst->machineHome = machineNumber; // Monster remembers the machine that spawned it.
 							}
