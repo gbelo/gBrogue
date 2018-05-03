@@ -76,7 +76,7 @@ static void close_logfile() {
 }
 
 static void write_to_log(const char *msg) {
-  fprintf(logfile, msg);
+  fprintf(logfile, "%s", msg);
   fflush(logfile);
 }
 
@@ -187,8 +187,8 @@ static void sendStatusUpdate() {
     for (i = 0; i < STATUS_TYPES_NUMBER; i++){
         
         // Coordinates of (255, 255) will let the server and client know that this is a status update rather than a cell update 
-        statusOutputBuffer[0] = 255;
-        statusOutputBuffer[1] = 255;
+        statusOutputBuffer[0] = (char)255;
+        statusOutputBuffer[1] = (char)255;
         
         // The status type
         statusOutputBuffer[2] = i;
@@ -297,8 +297,8 @@ static void notify_event(short eventId, int data1, int data2, const char *str1, 
   write_to_log(msg);
 
   // Coordinates of (254, 254) will let the server and client know that this is a event notification update rather than a cell update
-  statusOutputBuffer[0] = 254;
-  statusOutputBuffer[1] = 254;
+  statusOutputBuffer[0] = (char)254;
+  statusOutputBuffer[1] = (char)254;
 
   // The event id
   statusOutputBuffer[2] = eventId;

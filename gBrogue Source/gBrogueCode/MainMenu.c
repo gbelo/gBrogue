@@ -47,6 +47,8 @@
 
 #define MENU_FLAME_DENOMINATOR			(100 + MENU_FLAME_RISE_SPEED + MENU_FLAME_SPREAD_SPEED)
 
+extern boolean noMenu;
+
 void drawMenuFlames(signed short flames[COLS][(ROWS + MENU_FLAME_ROW_PADDING)][3], unsigned char mask[COLS][ROWS]) {
 	short i, j, versionStringLength;
 	color tempColor = {0};
@@ -699,9 +701,16 @@ void mainBrogueJunction() {
         rogue.playbackMode = false;
 		switch (rogue.nextGame) {
 			case NG_NOTHING:
+			    // Run the main menu to get a decision out of the player.
+			    if(noMenu) {
+				//Abort the game after completing a game or playback
+				rogue.nextGame = NG_QUIT;
+			    }
+			    else {
 				// Run the main menu to get a decision out of the player.
 				titleMenu();
-				break;
+			    }
+			    break;
 			case NG_NEW_GAME:
 			case NG_NEW_GAME_WITH_SEED:
 				rogue.nextGamePath[0] = '\0';

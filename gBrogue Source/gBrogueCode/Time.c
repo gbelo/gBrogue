@@ -910,6 +910,7 @@ void handleHealthAlerts() {
     thresholds[] = {5, 10, 25, 40},
     pThresholds[] = {100, 90, 50};
 	char buf[DCOLS];
+	char colorbuf[DCOLS + 4];
 
     assureCosmeticRNG;
 
@@ -923,6 +924,13 @@ void handleHealthAlerts() {
 			if (currentPercent < thresholds[i] && rogue.previousHealthPercent >= thresholds[i]) {
                 sprintf(buf, " <%i%% health ", thresholds[i]);
                 flashCreatureAlert(&player, buf, &badMessageColor, &darkRed);
+                if(rogue.warningPauseMode) {
+                	encodeMessageColor(colorbuf, 0, &badMessageColor);
+                	strcpy(colorbuf + 4, "LOW HITPOINT WARNING:");
+                	strncat(colorbuf, buf, DCOLS + 4 - 21);
+                	message(colorbuf, true);
+                }
+
 				break;
 			}
 		}
@@ -941,6 +949,13 @@ void handleHealthAlerts() {
                         strcpy(buf, " Fatally poisoned ");
                     }
                     flashCreatureAlert(&player, buf, &yellow, &darkGreen);
+                    if(rogue.warningPauseMode) {
+                    	encodeMessageColor(colorbuf, 0, &badMessageColor);
+                    	strcpy(colorbuf + 4, "POISON WARNING:");
+						strncat(colorbuf, buf, DCOLS + 4 - 15);
+						message(colorbuf, true);
+                    }
+
                     break;
                 }
             }
