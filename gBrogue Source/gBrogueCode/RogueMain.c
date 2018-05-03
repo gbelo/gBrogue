@@ -1169,7 +1169,7 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 				rogue.depthLevel);
 	}
 	// Extra information --gsr
-        sprintf(buf, "%s\nhi!\n", buf);
+        //sprintf(buf, "%s\nhi!\n", buf);
 
     theEntry.score = rogue.gold;
 	if (rogue.easyMode) {
