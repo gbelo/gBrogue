@@ -7,6 +7,7 @@ struct brogueConsole {
 	void (*plotChar)(uchar, short, short, short, short, short, short, short, short);
 	void (*remap)(const char *, const char *);
 	boolean (*modifierHeld)(int modifier);
+	void (*notifyEvent)(short eventId, int data1, int data2, const char *str1, const char *str2);
 };
 
 void loadKeymap();
@@ -17,6 +18,10 @@ extern struct brogueConsole tcodConsole;
 
 #ifdef BROGUE_CURSES
 extern struct brogueConsole cursesConsole;
+#endif
+
+#ifdef BROGUE_WEB
+extern struct brogueConsole webConsole;
 #endif
 
 extern struct brogueConsole currentConsole;

@@ -2901,7 +2901,9 @@ extern "C" {
 	char nextKeyPress(boolean textInput);
 	void refreshSideBar(short focusX, short focusY, boolean focusedEntityMustGoFirst);
 	void printHelpScreen();
+  void printInstructionsScreen();
 	void printDiscoveriesScreen();
+  void printGameInfoScreen();
 	void printHighScores(boolean hiliteMostRecent);
 	void displayGrid(short **map);
 	void printSeed();
@@ -3150,6 +3152,7 @@ extern "C" {
                           short damage, const color *flashColor, boolean ignoresProtectionShield);
     void addPoison(creature *monst, short totalDamage, short concentrationIncrement);
 	void killCreature(creature *decedent, boolean administrativeDeath);
+  void continueKillingFellowAdventurer(creature *monst);
     void buildHitList(creature **hitList,
                       const creature *attacker, creature *defender,
                       const boolean penetrate, const boolean sweep);
@@ -3273,6 +3276,8 @@ extern "C" {
 	void demoteMonsterFromLeadership(creature *monst);
 	void toggleMonsterDormancy(creature *monst);
 	void monsterDetails(char buf[], creature *monst);
+  void makeIdle(creature *monst);
+  void generateFellowAdventurer();
 	void makeMonsterDropItem(creature *monst);
 	void throwCommand(item *theItem);
     void relabel(item *theItem);
@@ -3284,6 +3289,7 @@ extern "C" {
 	void identify(item *theItem);
 	void updateIdentifiableItem(item *theItem);
 	void updateIdentifiableItems();
+  void magicMapCell(short x, short y);
 	void readScroll(item *theItem);
 	void updateRingBonuses();
 	void updatePlayerRegenerationDelay();
@@ -3310,6 +3316,7 @@ extern "C" {
 	void deleteItem(item *theItem);
 	void shuffleFlavors();
 	unsigned long itemValue(item *theItem);
+  void causeFear(const char *emitterName, boolean throughWalls, boolean ignoreAllies);
 	short strLenWithoutEscapes(const char *str);
 	void combatMessage(char *theMsg, color *theColor);
 	void displayCombatText();
