@@ -130,20 +130,20 @@ int main(int argc, char *argv[])
 		}
 
 		if(strcmp(argv[i], "--no-scores") == 0) {
-    	noScores = true;
-    	continue;
-    }
+		  noScores = true;
+		  continue;
+		}
 
-    if(strcmp(argv[i], "--no-recording") == 0) {
-    	noRecording = true;
-      continue;
-    }
+		if(strcmp(argv[i], "--no-recording") == 0) {
+		  noRecording = true;
+		  continue;
+		}
 
-    if(strcmp(argv[i], "--no-saves") == 0) {
-      noSaves = true;
-      continue;
-    }
-
+		if(strcmp(argv[i], "--no-saves") == 0) {
+		  noSaves = true;
+		  continue;
+		}
+		
 		if(strcmp(argv[i], "--noteye-hack") == 0) {
 			serverMode = true;
 			continue;

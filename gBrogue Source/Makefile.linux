@@ -19,7 +19,7 @@ all : both
 endif
 
 %.o : %.c Makefile gBrogueCode/Rogue.h gBrogueCode/IncludeGlobals.h
-	$(CC) $(CFLAGS) -g -o $@ -c $< 
+	$(CC) $(CFLAGS) -o $@ -c $< 
 
 BROGUEFILES=gBrogueCode/Architect.o \
 	gBrogueCode/Combat.o \
@@ -54,10 +54,14 @@ CURSES_LIB = -lncurses -lm
 WEB_DEF = -DBROGUE_WEB
 WEB_LIB = -lm
 
+tcoddebug : CFLAGS += -DDEBUGGING -g 
+tcoddebug : tcod
 tcod : DEPENDENCIES += ${TCOD_DEP}
 tcod : DEFINES += ${TCOD_DEF}
 tcod : LIBRARIES += ${TCOD_LIB}
 
+cursesdebug : CFLAGS += -DDEBUGGING -g 
+cursesdebug : curses
 curses : DEFINES = ${CURSES_DEF}
 curses : LIBRARIES = ${CURSES_LIB}
 
@@ -65,6 +69,8 @@ both : DEPENDENCIES += ${TCOD_DEP}
 both : DEFINES += ${TCOD_DEF} ${CURSES_DEF}
 both : LIBRARIES += ${TCOD_LIB} ${CURSES_LIB}
 	
+webdebug : CFLAGS += -DDEBUGGING -g 
+webdebug : web
 web : DEFINES += ${WEB_DEF}
 web : LIBRARIES += ${WEB_LIB}
 
