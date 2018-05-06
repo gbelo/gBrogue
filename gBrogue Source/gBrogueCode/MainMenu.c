@@ -47,7 +47,7 @@
 
 #define MENU_FLAME_DENOMINATOR			(100 + MENU_FLAME_RISE_SPEED + MENU_FLAME_SPREAD_SPEED)
 
-extern boolean noMenu;
+extern boolean noRestart;
 
 void drawMenuFlames(signed short flames[COLS][(ROWS + MENU_FLAME_ROW_PADDING)][3], unsigned char mask[COLS][ROWS]) {
 	short i, j, versionStringLength;
@@ -701,16 +701,9 @@ void mainBrogueJunction() {
         rogue.playbackMode = false;
 		switch (rogue.nextGame) {
 			case NG_NOTHING:
-			    // Run the main menu to get a decision out of the player.
-			    if(noMenu) {
-				//Abort the game after completing a game or playback
-				rogue.nextGame = NG_QUIT;
-			    }
-			    else {
-				// Run the main menu to get a decision out of the player.
-				titleMenu();
-			    }
-			    break;
+			  // Run the main menu to get a decision out of the player.
+			  titleMenu();
+			  break;
 			case NG_NEW_GAME:
 			case NG_NEW_GAME_WITH_SEED:
 				rogue.nextGamePath[0] = '\0';
@@ -788,6 +781,10 @@ void mainBrogueJunction() {
 				startLevel(rogue.depthLevel, 1); // descending into level 1
 
 				mainInputLoop();
+				if(noRestart) {
+				  rogue.nextGame = NG_QUIT;
+				}
+				
 				freeEverything();
 				break;
 			case NG_OPEN_GAME:
@@ -810,6 +807,10 @@ void mainBrogueJunction() {
 				}
 				rogue.playbackMode = false;
 				rogue.playbackOOS = false;
+
+				if(noRestart) {
+				  rogue.nextGame = NG_QUIT;
+				}
 
 				break;
 			case NG_VIEW_RECORDING:
@@ -854,6 +855,10 @@ void mainBrogueJunction() {
 				}
 				rogue.playbackMode = false;
 				rogue.playbackOOS = false;
+
+				if(noRestart) {
+				  rogue.nextGame = NG_QUIT;
+				}
 
 				break;
 			case NG_HIGH_SCORES:

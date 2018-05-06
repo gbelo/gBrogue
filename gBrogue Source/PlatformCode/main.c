@@ -24,6 +24,7 @@ struct brogueConsole currentConsole;
 
 boolean serverMode = false;
 boolean noMenu = false;
+boolean noRestart = false;
 boolean noScores = false;
 boolean noRecording = false;
 boolean noSaves = false;
@@ -60,6 +61,7 @@ static void printCommandlineHelp() {
 	"--noteye-hack              ignore SDL-specific application state checks\n"
 #endif
 	"--no-menu      -M          never display the menu (automatically pick new game)\n"
+	"--no-restart               exit the game after first game\n"
 	"--no-scores                never display high scores\n"
 	"--no-recording             never prompt to save recording\n"
 	"--no-saves                 disable saving\n"
@@ -134,6 +136,11 @@ int main(int argc, char *argv[])
 		  continue;
 		}
 
+		if(strcmp(argv[i], "--no-restart") == 0) {
+		  noRestart = true;
+		  continue;
+		}
+
 		if(strcmp(argv[i], "--no-recording") == 0) {
 		  noRecording = true;
 		  continue;
@@ -151,12 +158,12 @@ int main(int argc, char *argv[])
 
 		if(strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--open") == 0) {
 			if (i + 1 < argc) {
-				strncpy(rogue.nextGamePath, argv[i + 1], 4096);
-				rogue.nextGamePath[4095] = '\0';
+				strncpy(rogue.nextGamePath, argv[i + 1], BROGUE_FILENAME_MAX);
+				rogue.nextGamePath[BROGUE_FILENAME_MAX - 1] = '\0';
 				rogue.nextGame = NG_OPEN_GAME;
 
 				if (!endswith(rogue.nextGamePath, GAME_SUFFIX)) {
-					append(rogue.nextGamePath, GAME_SUFFIX, 4096);
+					append(rogue.nextGamePath, GAME_SUFFIX, BROGUE_FILENAME_MAX);
 				}
 
 				i++;
@@ -166,12 +173,12 @@ int main(int argc, char *argv[])
 
 		if(strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--view") == 0) {
 			if (i + 1 < argc) {
-				strncpy(rogue.nextGamePath, argv[i + 1], 4096);
-				rogue.nextGamePath[4095] = '\0';
+				strncpy(rogue.nextGamePath, argv[i + 1], BROGUE_FILENAME_MAX);
+				rogue.nextGamePath[BROGUE_FILENAME_MAX - 1] = '\0';
 				rogue.nextGame = NG_VIEW_RECORDING;
 
 				if (!endswith(rogue.nextGamePath, RECORDING_SUFFIX)) {
-					append(rogue.nextGamePath, RECORDING_SUFFIX, 4096);
+					append(rogue.nextGamePath, RECORDING_SUFFIX, BROGUE_FILENAME_MAX);
 				}
 
 				i++;
@@ -224,15 +231,15 @@ int main(int argc, char *argv[])
 
 		// maybe it ends with .broguesave or .broguerec, then?
 		if (endswith(argv[i], GAME_SUFFIX)) {
-			strncpy(rogue.nextGamePath, argv[i], 4096);
-			rogue.nextGamePath[4095] = '\0';
+			strncpy(rogue.nextGamePath, argv[i], BROGUE_FILENAME_MAX);
+			rogue.nextGamePath[BROGUE_FILENAME_MAX - 1] = '\0';
 			rogue.nextGame = NG_OPEN_GAME;
 			continue;
 		}
 
 		if (endswith(argv[i], RECORDING_SUFFIX)) {
-			strncpy(rogue.nextGamePath, argv[i], 4096);
-			rogue.nextGamePath[4095] = '\0';
+			strncpy(rogue.nextGamePath, argv[i], BROGUE_FILENAME_MAX);
+			rogue.nextGamePath[BROGUE_FILENAME_MAX - 1] = '\0';
 			rogue.nextGame = NG_VIEW_RECORDING;
 			continue;
 		}
