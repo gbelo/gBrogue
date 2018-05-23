@@ -3,20 +3,7 @@ SDL_FLAGS = `sdl-config --cflags` `sdl-config --libs`
 LIBTCODDIR=src/libtcod-1.5.2
 CFLAGS=-IgBrogueCode -IPlatformCode -Wall -Wno-parentheses ${DEFINES}
 RELEASENAME=brogue-1.7.4
-LASTTARGET := $(shell ./brogue --target)
 CC ?= gcc
-
-ifeq (${LASTTARGET},both)
-all : both
-else ifeq (${LASTTARGET},curses)
-all : curses
-else ifeq (${LASTTARGET},tcod)
-all : tcod
-else ifeq (${LASTTARGET}, web)
-all : web
-else
-all : both
-endif
 
 %.o : %.c Makefile gBrogueCode/Rogue.h gBrogueCode/IncludeGlobals.h
 	$(CC) $(CFLAGS) -o $@ -c $< 
@@ -56,52 +43,30 @@ WEB_LIB = -lm
 
 tcoddebug : CFLAGS += -DDEBUGGING -g 
 tcoddebug : tcod
-tcod : DEPENDENCIES += ${TCOD_DEP}
-tcod : DEFINES += ${TCOD_DEF}
-tcod : LIBRARIES += ${TCOD_LIB}
+tcod : CFLAGS += -DDEBUGGING=0
+tcod : tcodshared
+tcodshared : DEPENDENCIES += ${TCOD_DEP}
+tcodshared : DEFINES += ${TCOD_DEF}
+tcodshared : LIBRARIES += ${TCOD_LIB}
+tcodshared : bin/brogue
 
 cursesdebug : CFLAGS += -DDEBUGGING -g 
-cursesdebug : curses
-curses : DEFINES = ${CURSES_DEF}
-curses : LIBRARIES = ${CURSES_LIB}
+cursesdebug : cursesshared
+curses : CFLAGS += -DDEBUGGING=0
+curses : cursesshared
+cursesshared : DEFINES = ${CURSES_DEF}
+cursesshared : LIBRARIES = ${CURSES_LIB}
+cursesshared : bin/brogue
 
-both : DEPENDENCIES += ${TCOD_DEP}
-both : DEFINES += ${TCOD_DEF} ${CURSES_DEF}
-both : LIBRARIES += ${TCOD_LIB} ${CURSES_LIB}
-	
 webdebug : CFLAGS += -DDEBUGGING -g 
-webdebug : web
-web : DEFINES += ${WEB_DEF}
-web : LIBRARIES += ${WEB_LIB}
+webdebug : webshared
+web : CFLAGS += -DDEBUGGING=0
+web : webshared
+webshared : DEFINES += ${WEB_DEF}
+webshared : LIBRARIES += ${WEB_LIB}
+webshared : bin/brogue
 
-ifeq (${LASTTARGET},both)
-both : bin/brogue
-tcod : clean bin/brogue
-curses : clean bin/brogue
-web : clean bin/brogue
-else ifeq (${LASTTARGET},curses)
-curses : bin/brogue
-tcod : clean bin/brogue
-both : clean bin/brogue
-web : clean bin/brogue
-else ifeq (${LASTTARGET},tcod)
-tcod : bin/brogue
-curses : clean bin/brogue
-both : clean bin/brogue
-web : clean bin/brogue
-else ifeq (${LASTTARGET}, web)
-web : bin/brogue
-tcod : clean bin/brogue
-curses : clean bin/brogue
-both : clean bin/brogue
-else
-both : bin/brogue
-curses : bin/brogue
-tcod : bin/brogue
-web : bin/brogue
-endif
-
-.PHONY : clean both curses tcod web tar
+.PHONY : clean curses cursesdebug cursesshared tcod tcoddebug tcodshared web webdebug webshared tar
 
 bin/brogue : ${DEPENDENCIES} ${BROGUEFILES}
 	$(CC) -O2 -o bin/brogue ${BROGUEFILES} ${LIBRARIES} -Wl,-rpath,.
