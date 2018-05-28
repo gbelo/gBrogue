@@ -41,32 +41,20 @@ CURSES_LIB = -lncurses -lm
 WEB_DEF = -DBROGUE_WEB
 WEB_LIB = -lm
 
-tcoddebug : CFLAGS += -DDEBUGGING -g 
-tcoddebug : tcod
-tcod : CFLAGS += -DDEBUGGING=0
-tcod : tcodshared
-tcodshared : DEPENDENCIES += ${TCOD_DEP}
-tcodshared : DEFINES += ${TCOD_DEF}
-tcodshared : LIBRARIES += ${TCOD_LIB}
-tcodshared : bin/brogue
+tcod : DEPENDENCIES += ${TCOD_DEP}
+tcod : DEFINES += ${TCOD_DEF}
+tcod : LIBRARIES += ${TCOD_LIB}
+tcod : bin/brogue
 
-cursesdebug : CFLAGS += -DDEBUGGING -g 
-cursesdebug : cursesshared
-curses : CFLAGS += -DDEBUGGING=0
-curses : cursesshared
-cursesshared : DEFINES = ${CURSES_DEF}
-cursesshared : LIBRARIES = ${CURSES_LIB}
-cursesshared : bin/brogue
+curses : DEFINES = ${CURSES_DEF}
+curses : LIBRARIES = ${CURSES_LIB}
+curses : bin/brogue
 
-webdebug : CFLAGS += -DDEBUGGING -g 
-webdebug : webshared
-web : CFLAGS += -DDEBUGGING=0
-web : webshared
-webshared : DEFINES += ${WEB_DEF}
-webshared : LIBRARIES += ${WEB_LIB}
-webshared : bin/brogue
+web : DEFINES += ${WEB_DEF}
+web : LIBRARIES += ${WEB_LIB}
+web : bin/brogue
 
-.PHONY : clean curses cursesdebug cursesshared tcod tcoddebug tcodshared web webdebug webshared tar
+.PHONY : clean curses tcod web tar
 
 bin/brogue : ${DEPENDENCIES} ${BROGUEFILES}
 	$(CC) -O2 -o bin/brogue ${BROGUEFILES} ${LIBRARIES} -Wl,-rpath,.
