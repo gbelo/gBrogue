@@ -1138,9 +1138,9 @@ enum monsterTypes {
 	NUMBER_MONSTER_KINDS
 };
 
-#define NUMBER_MUTATORS             18
+#define NUMBER_MUTATORS             19
 
-#define	NUMBER_HORDES				168
+#define	NUMBER_HORDES				216
 
 #define MONSTER_CLASS_COUNT         13
 
@@ -1571,6 +1571,7 @@ typedef struct itemTable {
 } itemTable;
 
 enum dungeonFeatureTypes {
+	DF_UNINITIALIZED = -1,
 	DF_GRANITE_COLUMN = 1,
 	DF_CRYSTAL_WALL,
 	DF_LUMINESCENT_FUNGUS,
@@ -1905,6 +1906,7 @@ typedef struct flare {
 } flare;
 
 enum DFFlags {
+	DFF_NULL                       	=    0 ,	// No flags / safe initialization value
 	DFF_EVACUATE_CREATURES_FIRST	= Fl(0),	// Creatures in the DF area get moved outside of it
 	DFF_SUBSEQ_EVERYWHERE			= Fl(1),	// Subsequent DF spawns in every cell that this DF spawns in, instead of only the origin
 	DFF_TREAT_AS_BLOCKING			= Fl(2),	// If filling the footprint of this DF with walls would disrupt level connectivity, then abort.
@@ -2305,8 +2307,8 @@ typedef struct hordeType {
 
 	// membership information
 	short numberOfMemberTypes;
-	enum monsterTypes memberType[5];
-	randomRange memberCount[5];
+	enum monsterTypes memberType[6];
+	randomRange memberCount[6];
 
 	// spawning information
 	short minLevel;
