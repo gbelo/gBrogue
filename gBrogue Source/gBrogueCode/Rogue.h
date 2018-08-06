@@ -3153,6 +3153,7 @@ extern "C" {
                           short damage, const color *flashColor, boolean ignoresProtectionShield);
     void addPoison(creature *monst, short totalDamage, short concentrationIncrement);
 	void killCreature(creature *decedent, boolean administrativeDeath);
+	void continueKillingFellowAdventurer(creature *monst);
     void buildHitList(creature **hitList,
                       const creature *attacker, creature *defender,
                       const boolean penetrate, const boolean sweep);
@@ -3203,6 +3204,8 @@ extern "C" {
     void autoIdentify(item *theItem);
 	short numberOfItemsInPack();
 	char nextAvailableInventoryCharacter();
+	// Applies for weapons and armor. This just produces a message when a runic is inactive.
+	void disenchantAffectRunes(item *theItem);
     void checkForDisenchantment(item *theItem);
     void updateFloorItems();
 	void itemName(item *theItem, char *root, boolean includeDetails, boolean includeArticle, color *baseColor);

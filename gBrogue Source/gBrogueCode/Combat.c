@@ -250,7 +250,7 @@ void splitMonster(creature *monst, short x, short y) {
 					refreshSideBar(-1, -1, false);
 
 					if (canDirectlySeeMonster(monst)) {
-						sprintf(buf, "%s splits in two!", monstName);
+						snprintf(buf, DCOLS * 3, "%s splits in two!", monstName);
 						message(buf, false);
 					}
 
@@ -383,7 +383,7 @@ void specialHit(creature *attacker, creature *defender, short damage) {
 			rogue.armor->enchant1--;
 			equipItem(rogue.armor, true);
 			itemName(rogue.armor, buf2, false, false, NULL);
-            sprintf(buf, "your %s weakens!", buf2);
+            snprintf(buf, COLS, "your %s weakens!", buf2);
 			messageWithColor(buf, &itemMessageColor, false);
 //            checkForDisenchantment(rogue.armor);
             disenchantAffectRunes(rogue.armor); // Runics don't disappear forever anymore. --gsr
@@ -468,7 +468,7 @@ void specialHit(creature *attacker, creature *defender, short damage) {
 					attacker->creatureState = MONSTER_FLEEING;
 					monsterName(buf2, attacker, true);
 					itemName(theItem, buf3, false, true, NULL);
-					sprintf(buf, "%s stole %s!", buf2, buf3);
+					snprintf(buf, COLS, "%s stole %s!", buf2, buf3);
 					messageWithColor(buf, &badMessageColor, false);
 				}
 			}
@@ -580,7 +580,7 @@ boolean forceWeaponHit(creature *attacker, creature *defender, short distance) {
         && !cellHasTerrainFlag(newLoc[0], newLoc[1], T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION)
         && !(pmap[newLoc[0]][newLoc[1]].flags & (HAS_MONSTER | HAS_PLAYER))) {
 //        sprintf(buf, "you launch %s backward with the force of your blow", monstName);
-        sprintf(buf, "%s %s launched backward upon impact", monstName, defender == &player ? "are" : "is"); // don't discriminate against xxx of force -- gsr
+        snprintf(buf, DCOLS*3, "%s %s launched backward upon impact", monstName, defender == &player ? "are" : "is"); // don't discriminate against xxx of force -- gsr
         buf[DCOLS] = '\0';
         combatMessage(buf, messageColorFromVictim(defender));
         autoID = true;
@@ -628,7 +628,7 @@ boolean forceWeaponHit(creature *attacker, creature *defender, short distance) {
             if (canDirectlySeeMonster(defender)) {
                 knowFirstMonsterDied = true;
 
-                sprintf(buf, "%s %s on impact with %s",
+                snprintf(buf, DCOLS*3, "%s %s on impact with %s",
                         monstName,
                         (defender->info.flags & MONST_INANIMATE) ? "is destroyed" : (defender == &player ? "collapse" : "dies"),
                         buf2);
@@ -643,7 +643,7 @@ boolean forceWeaponHit(creature *attacker, creature *defender, short distance) {
             }
         } else {
             if (canDirectlySeeMonster(defender)) {
-                sprintf(buf, "%s slam%s against %s", monstName, defender == &player ? "" : "s", buf2);
+                snprintf(buf, DCOLS*3, "%s slam%s against %s", monstName, defender == &player ? "" : "s", buf2);
 /*                sprintf(buf, "%s slams against %s",
                         monstName,
                         buf2);*/
@@ -659,7 +659,7 @@ boolean forceWeaponHit(creature *attacker, creature *defender, short distance) {
 
             if (inflictDamage(NULL, otherMonster, forceDamage, &white, false)) {
                 if (canDirectlySeeMonster(otherMonster)) {
-                    sprintf(buf, "%s %s%s when %s slams into $HIMHER",
+                    snprintf(buf, DCOLS*3, "%s %s%s when %s slams into $HIMHER",
                             buf2,
                             (knowFirstMonsterDied ? "also " : ""),
                             (defender->info.flags & MONST_INANIMATE) ? "is destroyed" : "dies",
@@ -756,7 +756,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
 		switch (enchantType) {
 			case W_SPEED:
 				if (player.ticksUntilTurn != -1) {
-					sprintf(buf, "your %s trembles and time freezes for a moment", theItemName);
+					snprintf(buf, DCOLS*3, "your %s trembles and time freezes for a moment", theItemName);
 					buf[DCOLS] = '\0';
 					combatMessage(buf, 0);
 					player.ticksUntilTurn = -1; // free turn!
@@ -766,7 +766,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
 			case W_SLAYING:
 			case W_QUIETUS:
 				inflictLethalDamage(&player, defender);
-				sprintf(buf, "%s suddenly %s",
+				snprintf(buf, DCOLS*3, "%s suddenly %s",
                         monstName,
                         (defender->info.flags & MONST_INANIMATE) ? "shatters" : "dies");
 				buf[DCOLS] = '\0';
@@ -777,7 +777,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
 				defender->status[STATUS_PARALYZED] = max(defender->status[STATUS_PARALYZED], weaponParalysisDuration(enchant));
 				defender->maxStatus[STATUS_PARALYZED] = defender->status[STATUS_PARALYZED];
 				if (canDirectlySeeMonster(defender)) {
-					sprintf(buf, "%s is frozen in place", monstName);
+					snprintf(buf, DCOLS*3, "%s is frozen in place", monstName);
 					buf[DCOLS] = '\0';
 					combatMessage(buf, messageColorFromVictim(defender));
                     autoID = true;
@@ -788,21 +788,21 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
 				defender->maxStatus[STATUS_POISONED] = defender->status[STATUS_POISONED];
 				defender->poisonAmount++;
 				if (canDirectlySeeMonster(defender)) {
-					sprintf(buf, "%s looks sick", monstName);
+					snprintf(buf, DCOLS*3, "%s looks sick", monstName);
 					buf[DCOLS] = '\0';
 					combatMessage(buf, messageColorFromVictim(defender));
                     autoID = true;
 				}
 				break;
 			case W_FLAMES:
-				sprintf(buf, "flames dance about your %s", theItemName);
+				snprintf(buf, DCOLS*3, "flames dance about your %s", theItemName);
                 buf[DCOLS] = '\0';
                 combatMessage(buf, 0);
                 exposeCreatureToFire(defender);
                 autoID = true;
 				break;
 			case W_MULTIPLICITY:
-				sprintf(buf, "Your %s emits a flash of light, and %sspectral duplicate%s appear%s!",
+				snprintf(buf, DCOLS*3, "Your %s emits a flash of light, and %sspectral duplicate%s appear%s!",
 						theItemName,
 						(weaponImageCount(enchant) == 1 ? "a " : ""),
 						(weaponImageCount(enchant) == 1 ? "" : "s"),
@@ -838,7 +838,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
 					newMonst->info.damage = player.info.damage;
 					newMonst->status[STATUS_LIFESPAN_REMAINING] = newMonst->maxStatus[STATUS_LIFESPAN_REMAINING] = weaponImageDuration(enchant);
 					if (strLenWithoutEscapes(theItemName) <= 8) {
-						sprintf(newMonst->info.monsterName, "spectral %s", theItemName);
+						snprintf(newMonst->info.monsterName, COLS, "spectral %s", theItemName);
 					} else {
 						switch (rogue.weapon->kind) {
 							case BROADSWORD:
@@ -881,14 +881,14 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
                     teleport(defender,-1,-1,false);
 
                     if (canDirectlySeeMonster(defender)) {
-                        sprintf(buf, "%s is teleported to another spot", monstName);
+                        snprintf(buf, DCOLS*3, "%s is teleported to another spot", monstName);
                         buf[DCOLS] = '\0';
                         combatMessage(buf, messageColorFromVictim(defender));
                         autoID = true;
                     }
                     else
                     {
-                        sprintf(buf, "%s disappears", monstName);
+                        snprintf(buf, DCOLS*3, "%s disappears", monstName);
                         buf[DCOLS] = '\0';
                         combatMessage(buf, messageColorFromVictim(defender));
                         autoID = true;
@@ -896,7 +896,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
                 }
                 else
                 {
-                    sprintf(buf, "%s looks distorted for a brief moment", monstName);
+                    snprintf(buf, DCOLS*3, "%s looks distorted for a brief moment", monstName);
                     buf[DCOLS] = '\0';
                     combatMessage(buf, messageColorFromVictim(defender));
                     autoID = true;
@@ -922,7 +922,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, shor
                 }
 				break;
 			case W_DOUBLE_EDGE:
-					sprintf(buf, "your %s shakes and you feel a shock reverberate back and through you!", theItemName);
+					snprintf(buf, DCOLS*3, "your %s shakes and you feel a shock reverberate back and through you!", theItemName);
 					buf[DCOLS] = '\0';
 					combatMessage(buf, messageColorFromVictim(defender));
 
@@ -1028,7 +1028,7 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
 					monst->info.defense = 0;
 
 					if (strLenWithoutEscapes(attacker->info.monsterName) <= 6) {
-						sprintf(monst->info.monsterName, "spectral %s", attacker->info.monsterName);
+						snprintf(monst->info.monsterName, COLS, "spectral %s", attacker->info.monsterName);
 					} else {
 						strcpy(monst->info.monsterName, "spectral clone");
 					}
@@ -1037,7 +1037,7 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
                 updateVision(true);
 
 				runicDiscovered = true;
-				sprintf(returnString, "Your %s flashes, and spectral images of %s appear!", armorName, attackerName);
+				snprintf(returnString, DCOLS, "Your %s flashes, and spectral images of %s appear!", armorName, attackerName);
 			}
 			break;
 		case A_MUTUALITY:
@@ -1069,14 +1069,14 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
 							if (inflictDamage(&player, hitList[i], (*damage + count) / (count + 1), &blue, true)
 								&& canSeeMonster(hitList[i])) {
 
-								sprintf(buf, "%s %s", monstName, ((hitList[i]->info.flags & MONST_INANIMATE) ? "is destroyed" : "dies"));
+								snprintf(buf, DCOLS*3, "%s %s", monstName, ((hitList[i]->info.flags & MONST_INANIMATE) ? "is destroyed" : "dies"));
 								combatMessage(buf, messageColorFromVictim(hitList[i]));
 							}
 						}
 					}
 					runicDiscovered = true;
 					if (!runicKnown) {
-						sprintf(returnString, "Your %s pulses, and the damage is shared with %s!",
+						snprintf(returnString, DCOLS, "Your %s pulses, and the damage is shared with %s!",
 								armorName,
 								(count == 1 ? monstName : "the other adjacent enemies"));
 					}
@@ -1090,7 +1090,7 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
 				*damage = 0;
 				runicDiscovered = true;
 				if (!runicKnown) {
-					sprintf(returnString, "your %s pulses and absorbs the blow!", armorName);
+					snprintf(returnString, DCOLS, "your %s pulses and absorbs the blow!", armorName);
 				}
 			}
 			break;
@@ -1101,7 +1101,7 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
                 // copied wholesale from acid mound code
                 rogue.armor->enchant1--;
                 equipItem(rogue.armor, true);
-                sprintf(returnString, "your %s weakens!", armorName);
+                snprintf(returnString, DCOLS, "your %s weakens!", armorName);
 //                checkForDisenchantment(rogue.armor);
                 runicDiscovered = true;
             }
@@ -1110,7 +1110,7 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
 		case A_TELEPORTATION:
             if (rand_percent(5)) {
                 teleport(&player, -1, -1, true);
-                sprintf(returnString, "your %s pulses and you find yourself standing somewhere else!", armorName);
+                snprintf(returnString, DCOLS, "your %s pulses and you find yourself standing somewhere else!", armorName);
                 if (!runicKnown) {
                     runicDiscovered = true;
                 }
@@ -1122,12 +1122,12 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
 				newDamage = max(1, armorReprisalPercent(enchant) * (*damage) / 100); // 5% reprisal per armor level
 				if (inflictDamage(&player, attacker, newDamage, &blue, true)) {
 					if (canSeeMonster(attacker)) {
-						sprintf(returnString, "your %s pulses and %s drops dead!", armorName, attackerName);
+						snprintf(returnString, DCOLS, "your %s pulses and %s drops dead!", armorName, attackerName);
 						runicDiscovered = true;
 					}
 				} else if (!runicKnown) {
 					if (canSeeMonster(attacker)) {
-						sprintf(returnString, "your %s pulses and %s shudders in pain!", armorName, attackerName);
+						snprintf(returnString, DCOLS, "your %s pulses and %s shudders in pain!", armorName, attackerName);
 						runicDiscovered = true;
 					}
 				}
@@ -1139,7 +1139,7 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
                 runicDiscovered = forceWeaponHit(&player, attacker, staffForceDistance(rogue.armor->enchant1));
                 if (runicDiscovered || runicKnown)
                 {
-                    sprintf(returnString, "your %s pulses and %s is pushed away!", armorName, attackerName);
+                    snprintf(returnString, DCOLS, "your %s pulses and %s is pushed away!", armorName, attackerName);
                 }
             }
             break;
@@ -1152,7 +1152,7 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
 		case A_BURDEN:
 			if (rand_percent(10)) {
 				rogue.armor->strengthRequired++;
-				sprintf(returnString, "your %s suddenly feels heavier!", armorName);
+				snprintf(returnString, DCOLS, "your %s suddenly feels heavier!", armorName);
 				equipItem(rogue.armor, true);
 				runicDiscovered = true;
 			}
@@ -1160,13 +1160,13 @@ void applyArmorRunicEffect(char returnString[DCOLS], creature *attacker, short *
 		case A_VULNERABILITY:
 			*damage *= 2;
 			if (!runicKnown) {
-				sprintf(returnString, "your %s pulses and you are wracked with pain!", armorName);
+				snprintf(returnString, DCOLS, "your %s pulses and you are wracked with pain!", armorName);
 				runicDiscovered = true;
 			}
 			break;
         case A_IMMOLATION:
             if (rand_percent(10)) {
-                sprintf(returnString, "flames suddenly explode out of your %s!", armorName);
+                snprintf(returnString, DCOLS, "flames suddenly explode out of your %s!", armorName);
                 message(returnString, !runicKnown);
                 returnString[0] = '\0';
                 spawnDungeonFeature(player.xLoc, player.yLoc, &(dungeonFeatureCatalog[DF_ARMOR_IMMOLATION]), true, false);
@@ -1192,7 +1192,7 @@ void decrementWeaponAutoIDTimer() {
         updateIdentifiableItems();
         messageWithColor("you are now familiar enough with your weapon to identify it.", &itemMessageColor, false);
         itemName(rogue.weapon, buf2, true, true, NULL);
-        sprintf(buf, "%s %s.", (rogue.weapon->quantity > 1 ? "they are" : "it is"), buf2);
+        snprintf(buf, COLS*3, "%s %s.", (rogue.weapon->quantity > 1 ? "they are" : "it is"), buf2);
         messageWithColor(buf, &itemMessageColor, false);
     }
 }
@@ -1262,7 +1262,7 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
 		attacker->bookkeepingFlags |= MB_SEIZING;
 		defender->bookkeepingFlags |= MB_SEIZED;
 		if (canSeeMonster(attacker) || canSeeMonster(defender)) {
-			sprintf(buf, "%s seizes %s!", attackerName, (defender == &player ? "your legs" : defenderName));
+			snprintf(buf, COLS*2, "%s seizes %s!", attackerName, (defender == &player ? "your legs" : defenderName));
 			messageWithColor(buf, &white, false);
 		}
 		return false;
@@ -1321,20 +1321,20 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
             damage = 32767;
 
 		if (damage == 0) {
-			sprintf(explicationClause, " but %s no damage", (attacker == &player ? "do" : "does"));
+			snprintf(explicationClause, DCOLS, " but %s no damage", (attacker == &player ? "do" : "does"));
 			if (attacker == &player) {
 				rogue.disturbed = true;
 			}
         } else if (lungeAttack) {
             strcpy(explicationClause, " with a vicious lunge attack");
 		} else if (defenderWasParalyzed) {
-			sprintf(explicationClause, " while $HESHE %s paralyzed", (defender == &player ? "are" : "is"));
+			snprintf(explicationClause, DCOLS, " while $HESHE %s paralyzed", (defender == &player ? "are" : "is"));
 		} else if (defenderWasAsleep) {
 			strcpy(explicationClause, " in $HISHER sleep");
 		} else if (sneakAttack) {
 			strcpy(explicationClause, ", catching $HIMHER unaware");
 		} else if (defender->status[STATUS_STUCK] || defender->bookkeepingFlags & MB_CAPTIVE) {
-			sprintf(explicationClause, " while %s dangle%s helplessly",
+			snprintf(explicationClause, DCOLS, " while %s dangle%s helplessly",
 					(canSeeMonster(defender) ? "$HESHE" : "it"),
 					(defender == &player ? "" : "s"));
 		}
@@ -1348,12 +1348,12 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
 		if (inflictDamage(attacker, defender, damage, &red, false)) { // if the attack killed the defender
 
 			if (defenderWasAsleep || sneakAttack || defenderWasParalyzed || lungeAttack) {
-				sprintf(buf, "%s %s %s%s", attackerName,
+				snprintf(buf, COLS*2, "%s %s %s%s", attackerName,
 						((defender->info.flags & MONST_INANIMATE) ? "destroyed" : "dispatched"),
 						defenderName,
 						explicationClause);
 			} else {
-				sprintf(buf, "%s %s %s%s",
+				snprintf(buf, COLS*2, "%s %s %s%s",
 						attackerName,
 						((defender->info.flags & MONST_INANIMATE) ? "destroyed" : "defeated"),
 						defenderName,
@@ -1382,7 +1382,7 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
 			if (!rogue.blockCombatText && (canSeeMonster(attacker) || canSeeMonster(defender))) {
 				attackVerb(verb, attacker, max(damage - attacker->info.damage.lowerBound * monsterDamageAdjustmentAmount(attacker), 0) * 100
 						   / max(1, (attacker->info.damage.upperBound - attacker->info.damage.lowerBound) * monsterDamageAdjustmentAmount(attacker)));
-				sprintf(buf, "%s %s %s%s", attackerName, verb, defenderName, explicationClause);
+				snprintf(buf, COLS*2, "%s %s %s%s", attackerName, verb, defenderName, explicationClause);
 				if (sightUnseen) {
 					if (!rogue.heardCombatThisTurn) {
 						rogue.heardCombatThisTurn = true;
@@ -1435,7 +1435,7 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
             }
 			equipItem(rogue.weapon, true);
 			itemName(rogue.weapon, buf2, false, false, NULL);
-			sprintf(buf, "your %s weakens!", buf2);
+			snprintf(buf, COLS*2, "your %s weakens!", buf2);
 			messageWithColor(buf, &itemMessageColor, false);
 //            checkForDisenchantment(rogue.weapon);
             disenchantAffectRunes(rogue.weapon); // Runics don't disappear forever anymore. --gsr
@@ -1450,7 +1450,7 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
 					combatMessage("you hear combat in the distance", 0);
 				}
 			} else {
-				sprintf(buf, "%s missed %s", attackerName, defenderName);
+				snprintf(buf, COLS*2, "%s missed %s", attackerName, defenderName);
 				combatMessage(buf, 0);
 			}
 		}
@@ -1502,7 +1502,7 @@ void displayCombatText() {
 	char buf[COLS];
 
 	if (combatText[0]) {
-		sprintf(buf, "%s.", combatText);
+		snprintf(buf, COLS, "%s.", combatText);
 		combatText[0] = '\0';
 		message(buf, rogue.cautiousMode);
 		rogue.cautiousMode = false;
@@ -1837,7 +1837,7 @@ void killCreature(creature *decedent, boolean administrativeDeath) {
 
 		if (monsterText[decedent->info.monsterID].DFMessage[0] && canSeeMonster(decedent)) {
 			monsterName(monstName, decedent, true);
-			sprintf(buf, "%s %s", monstName, monsterText[decedent->info.monsterID].DFMessage);
+			snprintf(buf, DCOLS, "%s %s", monstName, monsterText[decedent->info.monsterID].DFMessage);
 			resolvePronounEscapes(buf, decedent);
 			message(buf, false);
 		}
@@ -1891,7 +1891,7 @@ void killCreature(creature *decedent, boolean administrativeDeath) {
 
 				if (canSeeMonster(decedent->carriedMonster)) {
 					monsterName(monstName, decedent->carriedMonster, true);
-					sprintf(buf, "%s appears", monstName);
+					snprintf(buf, DCOLS, "%s appears", monstName);
 					combatMessage(buf, NULL);
 				}
 
@@ -1916,9 +1916,8 @@ void killCreature(creature *decedent, boolean administrativeDeath) {
 // If the adventurer dies, we'll throw out some loot. And maybe a ghost :o
 void continueKillingFellowAdventurer(creature *monst)
 {
-    itemTable *theEntry;
     item *tempItem = initializeItem();
-    short itemKind, i, j, k;
+    short i;
     short loc[2];
 
     // Generate some items to drop
