@@ -100,7 +100,7 @@
 #define false					0
 #define true					1
 
-#define Fl(N)					(1 << (N))
+#define Fl(N)					(1ul << (N))
 
 #define PI 3.14159265
 #define FLOAT_FUDGE 0.00001
@@ -1401,22 +1401,24 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 #define charmNegationRadius(enchant)        ((int) (1 + (3 * (enchant)) + FLOAT_FUDGE))
 #define charmDiscordRadius(enchant)         ((int) (1 + (2 * (enchant)) + FLOAT_FUDGE))
 
-//#define wandDominate(monst)					(((monst)->currentHP * 5 < (monst)->info.maxHP) ? 100 : \
-//											max(0, 100 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP))
+/*
+#define wandDominate(monst)					(((monst)->currentHP * 5 < (monst)->info.maxHP) ? 100 : \
+											max(0, 100 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP))
 // gsr
-//#define wandDominate(monst)					max(0, 90 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP)
-#define wandDominate(monst)					100 // since domination is used mostly in debug/wizard mode
-#define armorForceDistance(enchant)		    (max(1, (((int) (enchant + FLOAT_FUDGE)) + 1))) // Depends on definition of staffBlinkDistance() above.
+#define wandDominate(monst)					max(0, 90 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP)
+*/
+#define wandDominate(monst)					100 /* since domination is used mostly in debug/wizard mode */
+#define armorForceDistance(enchant)		    (max(1, (((int) (enchant + FLOAT_FUDGE)) + 1))) /* Depends on definition of staffBlinkDistance() above. */
 
 
 
 #define weaponParalysisDuration(enchant)	(max(2, (int) (2 + ((enchant) / 2) + FLOAT_FUDGE)))
 #define weaponPoisonDuration(enchant)	    (max(2, (int) (6 + 2*((enchant)) + FLOAT_FUDGE)))
 #define weaponConfusionDuration(enchant)	(max(3, (int) (1.5 * (enchant) + FLOAT_FUDGE)))
-#define weaponForceDistance(enchant)		(max(4, (((int) (enchant + FLOAT_FUDGE)) * 2 + 2))) // Depends on definition of staffBlinkDistance() above.
+#define weaponForceDistance(enchant)		(max(4, (((int) (enchant + FLOAT_FUDGE)) * 2 + 2))) /* Depends on definition of staffBlinkDistance() above. */
 #define weaponSlowDuration(enchant)			(max(3, (int) (((enchant) + 2) * ((enchant) + 2) / 3 + FLOAT_FUDGE)))
 #define weaponImageCount(enchant)			(clamp((int) ((enchant) / 3 + FLOAT_FUDGE), 1, 7))
-#define weaponImageDuration(enchant)		3										//(max((int) (1 + (enchant) / 3), 2))
+#define weaponImageDuration(enchant)		3										/* (max((int) (1 + (enchant) / 3), 2)) */
 
 #define armorReprisalPercent(enchant)		(max(5, (int) ((enchant) * 5 + FLOAT_FUDGE)))
 #define armorAbsorptionMax(enchant)			(max(1, (int) ((enchant) + FLOAT_FUDGE)))
@@ -2620,6 +2622,7 @@ typedef struct machineFeature {
 } machineFeature;
 
 enum blueprintFlags {
+	BP_NULL                              =   0ul,		// Empty bit pattern
 	BP_ADOPT_ITEM                   = Fl(0),	// the machine must adopt an item (e.g. a door key)
     BP_VESTIBULE                    = Fl(1),    // spawns in a doorway (location must be given) and expands outward, to guard the room
 	BP_PURGE_PATHING_BLOCKERS		= Fl(2),	// clean out traps and other T_PATHING_BLOCKERs
@@ -2983,7 +2986,7 @@ extern "C" {
 	void freeCreature(creature *monst);
 	void emptyGraveyard();
 	void freeEverything();
-	boolean randomMatchingLocation(short *x, short *y, short dungeonType, short liquidType, short terrainType);
+	boolean randomMatchingLocation(short *x, short *y, enum tileType dungeonType, enum tileType liquidType, enum tileType terrainType);
 	enum dungeonLayers highestPriorityLayer(short x, short y, boolean skipGas);
     enum dungeonLayers layerWithTMFlag(short x, short y, unsigned long flag);
 	enum dungeonLayers layerWithFlag(short x, short y, unsigned long flag);

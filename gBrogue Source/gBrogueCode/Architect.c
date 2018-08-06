@@ -29,6 +29,7 @@
 
 #include "Rogue.h"
 #include "IncludeGlobals.h"
+#include <math.h>
 
 short topBlobMinX, topBlobMinY, blobWidth, blobHeight;
 
@@ -265,7 +266,7 @@ void analyzeMap(boolean calculateChokeMap) {
 					if ((coordinatesAreInMap(newX, newY) && passMap[newX][newY])
 						!= (coordinatesAreInMap(oldX, oldY) && passMap[oldX][oldY])) {
 						if (++passableArcCount > 2) {
-							if (!passMap[i-1][j] && !passMap[i+1][j] || !passMap[i][j-1] && !passMap[i][j+1]) {
+							if (((!passMap[i-1][j]) && (!passMap[i+1][j])) || ((!passMap[i][j-1]) && (!passMap[i][j+1]))) {
 								pmap[i][j].flags |= IS_CHOKEPOINT;
 							}
 							break;
@@ -974,8 +975,13 @@ boolean buildAMachine(enum machineTypes bp,
 	personalSpace, failsafe, locationFailsafe,
 	machineNumber;
 	const unsigned long alternativeFlags[2] = {MF_ALTERNATIVE, MF_ALTERNATIVE_2};
-    boolean success;
+    boolean success = false;
     char buf[255];
+
+	// initializing to make compiler happy
+	featX = -1;
+	featY = -1;
+	instanceCount = -1;
 
 	// Our boolean grids:
 	//	Interior:		This is the master grid for the machine. All area inside the machine are set to true.
@@ -1704,14 +1710,13 @@ boolean buildAMachine(enum machineTypes bp,
 void addMachines() {
 	short machineCount, failsafe;
     short randomMachineFactor;
-    short *x, *y;
 
 	analyzeMap(true);
 
     // Add the amulet holder if it's depth 26:
     if (rogue.depthLevel == AMULET_LEVEL) {
         for (failsafe = 50; failsafe; failsafe--) {
-            if (buildAMachine(MT_AMULET_AREA, -1, -1, NULL, NULL, NULL, NULL)) {
+            if (buildAMachine(MT_AMULET_AREA, -1, -1, BP_NULL, NULL, NULL, NULL)) {
                 break;
             }
         }
@@ -1721,7 +1726,7 @@ void addMachines() {
         if (rogue.depthLevel == GUARANTEED_VAULT_LEVEL)
         {
             for (failsafe = 200; failsafe; failsafe--) {
-                if (buildAMachine(MT_REWARD_FIRST_FLOOR, -1, -1, NULL, NULL, NULL, NULL)) {
+                if (buildAMachine(MT_REWARD_FIRST_FLOOR, -1, -1, BP_NULL, NULL, NULL, NULL)) {
                     break;
                 }
             }
@@ -1732,8 +1737,6 @@ void addMachines() {
 	// Add reward rooms, if any:
 	machineCount = 0;
 	while (rogue.depthLevel <= AMULET_LEVEL
-		//&& (rogue.rewardRoomsGenerated + machineCount) * 4 + 2 < rogue.depthLevel * MACHINES_FACTOR) {
-		//// try to build at least one every four levels on average
 		&& (rogue.rewardRoomsGenerated + machineCount) * 2 + 2 < rogue.depthLevel * MACHINES_FACTOR) {
 
 		machineCount++;
@@ -1766,7 +1769,7 @@ void runAutogenerators(boolean buildAreaMachines) {
 		// Shortcut:
 		gen = &(autoGeneratorCatalog[AG]);
 
-        if (gen->machine > 0 == buildAreaMachines) {
+        if ((gen->machine > 0) == buildAreaMachines) {
 
             // Enforce depth constraints.
             if (rogue.depthLevel < gen->minDepth || rogue.depthLevel > gen->maxDepth) {
@@ -2132,9 +2135,8 @@ void designBigRoom(short **grid) {
 }
 
 void designNarrowRoom(short **grid) {
-    short width, height, minX, maxX, minY, maxY, x, y, radius;
+    short minX, maxX, minY, maxY, x, y, radius;
     double t = 0;
-    boolean reflectY = false;
 
     // Constants for the Bezier curve given below -- roughly a sideways S shape.
     short   c1 = rand_range(DCOLS*1/4, DCOLS),
@@ -2151,8 +2153,6 @@ void designNarrowRoom(short **grid) {
     x = minX;
     y = minY;
     radius = 3;
-
-    char buf[255];
 
 
     while (t < 1)
@@ -3611,7 +3611,7 @@ boolean spawnDungeonFeature(short x, short y, dungeonFeature *feat, boolean refr
         // awaken dormant creatures?
         if (feat->flags & DFF_ACTIVATE_DORMANT_MONSTER) {
             for (monst = dormantMonsters->nextCreature; monst != NULL; monst = monst->nextCreature) {
-                if (monst->xLoc == x && monst->yLoc == y || blockingMap[monst->xLoc][monst->yLoc]) {
+                 if (((monst->xLoc == x) && (monst->yLoc == y)) || blockingMap[monst->xLoc][monst->yLoc]) {
                     // found it!
                     toggleMonsterDormancy(monst);
                     monst = dormantMonsters;
@@ -3933,7 +3933,7 @@ void initializeLevel() {
 // no creatures, items or stairs and with either a matching liquid and dungeon type
 // or at least one layer of type terrainType.
 // A dungeon, liquid type of -1 will match anything.
-boolean randomMatchingLocation(short *x, short *y, short dungeonType, short liquidType, short terrainType) {
+boolean randomMatchingLocation(short *x, short *y, enum tileType dungeonType, enum tileType liquidType, enum tileType terrainType) {
 	short failsafeCount = 0;
 	do {
 		failsafeCount++;
