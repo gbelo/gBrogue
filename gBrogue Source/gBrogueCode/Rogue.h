@@ -2862,6 +2862,7 @@ extern "C" {
 	boolean proposeOrConfirmLocation(short x, short y, char *failureMessage);
 	boolean useStairs(short stairDirection);
 	short passableArcCount(short x, short y);
+	boolean againstAWall(short x, short y);
 	void analyzeMap(boolean calculateChokeMap);
 	boolean buildAMachine(enum machineTypes bp,
 						  short originX, short originY,
