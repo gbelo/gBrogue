@@ -3122,8 +3122,10 @@ extern "C" {
     boolean getRandomMonsterSpawnLocation(short *x, short *y);
 	void spawnPeriodicHorde();
 	void clearStatus(creature *monst);
+	void causeFear(const char *emitterName, boolean throughWalls, boolean ignoreAllies);
 	void moralAttack(creature *attacker, creature *defender);
 	short runicWeaponChance(item *theItem, boolean customEnchantLevel, float enchantLevel);
+	boolean forceWeaponHit(creature *attacker, creature *defender, short distance);
 	void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, short damage);
     void teleport(creature *monst, short x, short y, boolean respectTerrainAvoidancePreferences);
 	void chooseNewWanderDestination(creature *monst);

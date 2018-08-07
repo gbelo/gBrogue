@@ -32,6 +32,8 @@
 #include "IncludeGlobals.h"
 #include <math.h>
 
+void magicMapCell(short x, short y);
+
 item *initializeItem() {
 	short i;
 	item *theItem;
@@ -520,6 +522,7 @@ void populateItems(short upstairsX, short upstairsY) {
 	short i, j, numberOfItems, numberOfGoldPiles, goldBonusProbability, x = 0, y = 0;
 	unsigned long totalHeat;
 	short theCategory, theKind, randomDepthOffset = 0;
+	numberOfGoldPiles = 0;
 
 #ifdef AUDIT_RNG
 	char RNGmessage[100];
@@ -1937,7 +1940,9 @@ short effectiveRingEnchant(item *theItem) {
         enchantment = theItem->timesEnchanted + 1; // Unidentified positive rings act as +1 until identified.
     }
     else
+	{
         enchantment = theItem->enchant1;
+	}
 
 	// If this is a ring of enchantment, we don't want to end up in an infinite loop! Otherwise, we'll apply it. --gsr
 	if (!(theItem->kind == RING_ENCHANTMENT))
@@ -2104,8 +2109,7 @@ void itemDetails(char *buf, item *theItem) {
                     theName,
                     (singular ? "s" : ""),
                     theItem->damage.lowerBound,
-                    theItem->damage.upperBound,
-                    strengthModifier(theItem));
+                    theItem->damage.upperBound)	;
             strcat(buf, buf2);
 
 				if (strengthModifier(theItem)) {
@@ -2938,8 +2942,8 @@ void itemDetails(char *buf, item *theItem) {
                 // Lifted directly from UnBrogue
                 case CHARM_FEAR:
                     sprintf(buf2, "\n\nWhen used, the charm will induce a state of fear in all visible creatures and recharge in %i turns. (If the charm is enchanted, it will recharge in %i turns.)",
-                            charmRechargeDelay(theItem->kind, enchant),
-                            charmRechargeDelay(theItem->kind, enchant + 1));
+                            charmRechargeDelay(theItem->kind, theItem->enchant1),
+                            charmRechargeDelay(theItem->kind, theItem->enchant1 + 1));
                     break;
 
                 case CHARM_SHATTERING:
@@ -3030,7 +3034,7 @@ char displayInventory(unsigned short categoryMask,
 	cellDisplayBuffer dbuf[COLS][ROWS];
 	cellDisplayBuffer rbuf[COLS][ROWS];
 	brogueButton buttons[50] = {{{0}}};
-	short actionKey;
+	short actionKey = 0;
 	color darkItemColor;
 
 	char whiteColorEscapeSequence[20],
@@ -3704,7 +3708,7 @@ void aggravateMonsters(short distance, short x, short y, const color *flashColor
 short getLineCoordinates(short listOfCoordinates[][2], const short originLoc[2], const short targetLoc[2]) {
 	float targetVector[2], error[2];
 	short largerTargetComponent, currentVector[2], previousVector[2], quadrantTransform[2], i;
-	short currentLoc[2], previousLoc[2];
+	short currentLoc[2];
 	short cellNumber = 0;
 
 	if (originLoc[0] == targetLoc[0] && originLoc[1] == targetLoc[1]) {
@@ -3731,9 +3735,6 @@ short getLineCoordinates(short listOfCoordinates[][2], const short originLoc[2],
 
 	do {
 		for (i=0; i<= 1; i++) {
-
-			previousLoc[i] = currentLoc[i];
-
 			currentVector[i] += targetVector[i];
 			error[i] += (targetVector[i] == 1 ? 0 : targetVector[i]);
 
@@ -4540,7 +4541,7 @@ boolean updateBolt(bolt *theBolt, creature *caster, short x, short y,
                    boolean boltInView, boolean alreadyReflected,
                    boolean *autoID, boolean *lightingChanged) {
 	char buf[COLS], monstName[COLS];
-	short newLoc[2];
+
     creature *monst; // Creature being hit by the bolt, if any.
     creature *newMonst; // Utility variable for plenty
     boolean terminateBolt = false;
@@ -5991,17 +5992,9 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 	boolean hitSomethingSolid = false, fastForward = false, hadEffect = false, hitMonsterAtSpot = false;
     enum dungeonLayers layer;
 
-    bolt theBolt; // gsr
-    short from[2], to[2];
-    from[0] = thrower->xLoc;
-    from[1] = thrower->yLoc;
     char monstName[DCOLS];
 
-    short dx, dy;
     short telepathyRadius = 10;
-    short lavaRetractRadius = 3;
-
-
 
 	theItem->flags |= ITEM_PLAYER_AVOIDS; // Avoid thrown items, unless it's a weapon that misses a monster.
 
@@ -6152,12 +6145,8 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 	if ((theItem->category & POTION) && (hitSomethingSolid || !cellHasTerrainFlag(x, y, T_AUTO_DESCENT))) {
 		if (1) { // Lots of potions do something when thrown now -- gsr
 
-            // C makes us jump through hoops to assign a variable (monst) and compare it to something -- gsr
-            // This also feels like an incomplete solution -- and there were bugs -- so below we see monst getting checked again.
-            if (monst = monsterAtLoc(x, y))
-                if (monst != &player)
-                    hitMonsterAtSpot = true;
-
+            monst = monsterAtLoc(x, y);
+			hitMonsterAtSpot = ((monst != NULL) && (monst != &player));
 
 			switch (theItem->kind) {
 				case POTION_PARALYSIS:
@@ -6167,7 +6156,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 					hadEffect = true;
 					break;
                 case POTION_HASTE_SELF:
-				    if (hitMonsterAtSpot && monst)
+				    if (hitMonsterAtSpot)
                     {
                         flashMonster(monst, boltCatalog[BOLT_HASTE].backColor, 100);
                         monsterName(monstName, monst, true);
@@ -6191,7 +6180,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 					hadEffect = true;
 					break;
 				case POTION_INVISIBILITY:
-				    if (hitMonsterAtSpot && monst)
+				    if (hitMonsterAtSpot)
                     {
                         monsterName(monstName, monst, true);
                         imbueInvisibility(monst, 150);
@@ -6208,7 +6197,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 					break;
 
                 case POTION_RESPIRATION:
-				    if (hitMonsterAtSpot && monst)
+				    if (hitMonsterAtSpot)
                     {
                         hadEffect = true;
                         flashMonster(monst, &white, 100);
@@ -6232,7 +6221,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                     break;
 
                 case POTION_LEVITATION:
-				    if (hitMonsterAtSpot && monst)
+				    if (hitMonsterAtSpot)
                     {
                         flashMonster(monst, boltCatalog[BOLT_BLINKING].backColor, 100);
                         monsterName(monstName, monst, true);
@@ -6249,20 +6238,20 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                     }
                     break;
                 case POTION_FIRE_IMMUNITY:
-				    if (hitMonsterAtSpot && monst)
+				    if (hitMonsterAtSpot)
                     {
                         flashMonster(monst, boltCatalog[BOLT_FIRE].backColor, 100);
                         monsterName(monstName, monst, true);
                         monst->status[STATUS_IMMUNE_TO_FIRE] = monst->maxStatus[STATUS_IMMUNE_TO_FIRE] = 300;
                         if (monst->status[STATUS_BURNING])
-                            extinguishFireOnCreature(&monst);
+                            extinguishFireOnCreature(monst);
                         sprintf(buf, "the flask shatters and %s is %senveloped in a soft breeze.", monstName, monst->status[STATUS_IMMUNE_TO_FIRE] == 1000 ? "briefly " : "");
                         message(buf, false);
                         hadEffect = true;
                     }
                     break;
                 case POTION_EMPOWERMENT:
-				    if (hitMonsterAtSpot && monst)
+				    if (hitMonsterAtSpot)
                     {
                         flashMonster(monst, boltCatalog[BOLT_EMPOWERMENT].backColor, 100);
                         monsterName(monstName, monst, true);
@@ -6272,7 +6261,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                     }
                     break;
                 case POTION_TELEPATHY:
-				    if (hitMonsterAtSpot && monst)
+				    if (hitMonsterAtSpot)
                     {
                         monsterName(monstName, monst, true);
                         if (! (monst->bookkeepingFlags & MB_TELEPATHICALLY_REVEALED))
@@ -6313,7 +6302,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                     }
                     break;
 				case POTION_HEALING:
-				    if (hitMonsterAtSpot && monst)
+				    if (hitMonsterAtSpot)
                     {
                         flashMonster(monst, boltCatalog[BOLT_HEALING].backColor, 100);
                         monsterName(monstName, monst, true);
@@ -6330,7 +6319,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                     hadEffect = true;
 					break;
 				case POTION_HALLUCINATION:
-				    if (hitMonsterAtSpot && monst)
+				    if (hitMonsterAtSpot)
                     {
                         if (polymorph(monst))
                         {
@@ -6440,7 +6429,7 @@ void throwCommand(item *theItem) {
 	item *thrownItem;
 	char buf[COLS], theName[COLS];
 	unsigned char command[10];
-	short maxDistance, zapTarget[2], originLoc[2], quantity;
+	short maxDistance, zapTarget[2], quantity;
 	boolean autoTarget, targetAllies = false;
 
 	command[0] = THROW_KEY;
@@ -6508,8 +6497,6 @@ void throwCommand(item *theItem) {
 		thrownItem->quantity = 1;
 
 		itemName(thrownItem, theName, false, false, NULL);
-		originLoc[0] = player.xLoc;
-		originLoc[1] = player.yLoc;
 
 		throwItem(thrownItem, &player, zapTarget, maxDistance);
 	} else {
@@ -7571,8 +7558,7 @@ void drinkPotion(item *theItem) {
 	creature *monst = NULL;
 	boolean hadEffect = false;
 	boolean hadEffect2 = false;
-	short x, y, i, j, radius = 6;
-    char buf[1000] = "", buf2[1000] = "";
+    char buf[1000] = "";
 
     brogueAssert(rogue.RNG == RNG_SUBSTANTIVE);
 
@@ -7740,11 +7726,8 @@ void drinkPotion(item *theItem) {
 
 // Incomplete
 void dipItemIntoPotion(item *theItem) {
-	item *tempItem = NULL;
 	item *thePotion = NULL;
-	boolean hadEffect = false;
-	boolean hadEffect2 = false;
-    char buf[1000] = "", buf2[1000] = "";
+    char buf[1000] = "";
 
     brogueAssert(rogue.RNG == RNG_SUBSTANTIVE);
 
@@ -8246,8 +8229,8 @@ void updateRingBonuses() {
 					break;
 				case RING_TRANSFERENCE:
 					rogue.transference += effectiveRingEnchant(rings[i]);
-/*					break;
-				case RING_LIGHT:
+					break;
+/*				case RING_LIGHT:
 					rogue.lightMultiplier += effectiveRingEnchant(rings[i]);
 					break;
 				case RING_AWARENESS:
@@ -8552,10 +8535,12 @@ void causeFear(const char *emitterName, boolean throughWalls, boolean ignoreAlli
 // Take a string from the player and try to make something out of it
 void debugWish(char *wishText)
 {
-    item *theItem; int i = 0, j = 0; int quantity = 1; short dropLoc[2];
+    item *theItem = NULL;
+	int i = 0, j = 0;
+	short dropLoc[2];
     boolean success = false;
-    short *enchantment = 0;
-    creature *monst;
+    int enchantment = 0;
+    creature *monst = NULL;
 
     char buf[DCOLS], buf2[DCOLS];
 
@@ -8567,10 +8552,9 @@ void debugWish(char *wishText)
         message(buf2, false);
     }
     else if (!getInputTextString(buf, "What do you wish for? ", DCOLS, "", "", TEXT_INPUT_NORMAL, false))
+	{
         return;
-
-    if (theItem) // This initialized the item to null. I have no freaking clue why. --gsr
-        message("...",true);
+	}
 
 	if (strlen(buf) != 0)
     {
@@ -8762,7 +8746,7 @@ void debugWish(char *wishText)
         {
             confirmMessages();
 //            identify(theItem);
-            sprintf(rogue.lastWishText, buf); // store this wish so that we can wish for the same thing again
+            sprintf(rogue.lastWishText, "%s", buf); // store this wish so that we can wish for the same thing again
             if (theItem)
             {
                 // If the player's pack is full, set the item at his feet.
