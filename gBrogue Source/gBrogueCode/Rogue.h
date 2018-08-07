@@ -2923,6 +2923,8 @@ extern "C" {
 					   cellDisplayBuffer rbuf[COLS][ROWS],
 					   brogueButton *buttons, short buttonCount);
 	void printMonsterDetails(creature *monst, cellDisplayBuffer rbuf[COLS][ROWS]);
+	void makeIdle(creature *monst);
+	void generateFellowAdventurer();
 	void printFloorItemDetails(item *theItem, cellDisplayBuffer rbuf[COLS][ROWS]);
 	unsigned long printCarriedItemDetails(item *theItem,
 										  short x, short y, short width,
