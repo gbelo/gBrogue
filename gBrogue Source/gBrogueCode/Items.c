@@ -6056,7 +6056,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                         {
                             // Moved incendiary dart handling to here
                             spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_DART_EXPLOSION], true, false);
-                            exposeCreatureToFire(monsterAtLoc(x, y));
+                            exposeCreatureToFire(monst);
                             return;
                         }
                         else if (theItem->kind == POISON_DART)
