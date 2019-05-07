@@ -45,6 +45,7 @@ Item handling:
  * You're told if a weapon/armor you come across is runic, but not what the runic is -- or whether it's good or bad.
  * The amount of gold generated in piles is significantly increased. This change was made because, if you head back to the surface (even prematurely), you'll sell all of your items in the epilogue -- so gathering up all of the items on depths 1-2 and heading back up won't get you very far on the high score sheet. Of course, you can't compare any high scores from vanilla and from gBrogue.
  * Staff of tunneling has been buffed.
+
 Gameplay:
  * There's a guaranteed library on the first floor, intended to help the early game along and possibly start a "build."
  * In accordance with throwing potions and the new throwing weapons, throwing distance has changed dramatically. It's generally shorter earlier on, but can be aided by additional strength and rings of propulsion.
