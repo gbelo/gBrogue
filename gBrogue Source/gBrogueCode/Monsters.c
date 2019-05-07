@@ -1034,9 +1034,9 @@ void populateMonsters() {
         rogue.moloch = monst;
     }
     // Generate a fellow adventurer -- gsr
-    if ((rogue.depthLevel > 10 && rand_percent(3)) || rogue.depthLevel == 22)//rogue.guaranteedAdventurerDepth)
+    if ((rogue.depthLevel > 10 && rand_percent(3)) || rogue.depthLevel == 22) {
         generateFellowAdventurer();
-
+	}
 
 	for (i=0; i<numberOfMonsters; i++) {
 		spawnHorde(0, -1, -1, (HORDE_IS_SUMMONED | HORDE_MACHINE_ONLY), 0); // random horde type, random location
@@ -1818,7 +1818,7 @@ void updateMonsterState(creature *monst) {
             sprintf(buf, "%s begins to wander", monstName);
             combatMessage(buf, messageColorFromVictim(monst));
         }
-        else if (oldState == MONSTER_TRACKING_SCENT && monst->creatureState == MB_GIVEN_UP_ON_SCENT)
+        else if (oldState == MONSTER_TRACKING_SCENT && (monst->bookkeepingFlags & MB_GIVEN_UP_ON_SCENT))
         {
             sprintf(buf, "%s gives up hunting", monstName);
             combatMessage(buf, messageColorFromVictim(monst));
@@ -2591,6 +2591,7 @@ boolean specificallyValidBoltTarget(creature *caster, creature *target, enum bol
                                     // (Players should never be intentionally targeted by discord. It's just a fact of monster psychology.)
                 return false;
             }
+			break;
         case BE_NEGATION:
             if (monstersAreEnemies(caster, target)) {
                 if (target->status[STATUS_HASTED] || target->status[STATUS_TELEPATHIC] || target->status[STATUS_SHIELDED]) {
@@ -3199,7 +3200,6 @@ void monstersTurn(creature *monst) {
 	short x, y, playerLoc[2], targetLoc[2], dir, shortestDistance;
 	boolean alreadyAtBestScent;
 	creature *ally, *target, *closestMonster;
-	char buf[COLS];
 
 	monst->turnsSpentStationary++;
 
@@ -4434,8 +4434,11 @@ void monsterDetails(char buf[], creature *monst) {
 
 // What does a monster do if it doesn't have anything to do? -- gsr
 void makeIdle(creature *monst) {
-	short x = monst->xLoc, y = monst->yLoc, targetLoc[2], dir, shortestDistance;
+	short targetLoc[2], dir;
 
+	if (!monst) {
+		return;
+	}
 
     // Step toward the chosen waypoint.
     dir = NO_DIRECTION;
@@ -4468,7 +4471,6 @@ void makeIdle(creature *monst) {
 // gsr
 void generateFellowAdventurer()
 {
-    itemTable *theEntry;
     item *tempItem = initializeItem();
     short itemKind, i, j, k;
     creature *monst;
@@ -4488,7 +4490,6 @@ void generateFellowAdventurer()
     // Let's equip it!
         // Weapon
 			itemKind = chooseKind(weaponTable, NUMBER_WEAPON_KINDS);
-			theEntry = &weaponTable[itemKind];
 			tempItem->damage = weaponTable[itemKind].range;
 
 			monst->info.damage.lowerBound = tempItem->damage.lowerBound;
@@ -4532,4 +4533,6 @@ void generateFellowAdventurer()
 
     // How beat up are we?
         monst->currentHP = min(monst->info.maxHP, rand_range(0, 200) * monst->info.maxHP / 100);
+			
+	deleteItem(tempItem);
 }

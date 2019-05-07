@@ -101,7 +101,7 @@
 #define false					0
 #define true					1
 
-#define Fl(N)					(1 << (N))
+#define Fl(N)					(1ul << (N))
 
 #define PI 3.14159265
 #define FLOAT_FUDGE 0.00001
@@ -1147,9 +1147,9 @@ enum monsterTypes {
 	NUMBER_MONSTER_KINDS
 };
 
-#define NUMBER_MUTATORS             18
+#define NUMBER_MUTATORS             19
 
-#define	NUMBER_HORDES				168
+#define	NUMBER_HORDES				216
 
 #define MONSTER_CLASS_COUNT         13
 
@@ -1411,22 +1411,24 @@ boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
 #define charmNegationRadius(enchant)        ((int) (1 + (3 * (enchant)) + FLOAT_FUDGE))
 #define charmDiscordRadius(enchant)         ((int) (1 + (2 * (enchant)) + FLOAT_FUDGE))
 
-//#define wandDominate(monst)					(((monst)->currentHP * 5 < (monst)->info.maxHP) ? 100 : \
-//											max(0, 100 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP))
+/*
+#define wandDominate(monst)					(((monst)->currentHP * 5 < (monst)->info.maxHP) ? 100 : \
+											max(0, 100 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP))
 // gsr
-//#define wandDominate(monst)					max(0, 90 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP)
-#define wandDominate(monst)					100 // since domination is used mostly in debug/wizard mode
-#define armorForceDistance(enchant)		    (max(1, (((int) (enchant + FLOAT_FUDGE)) + 1))) // Depends on definition of staffBlinkDistance() above.
+#define wandDominate(monst)					max(0, 90 * ((monst)->info.maxHP - (monst)->currentHP) / (monst)->info.maxHP)
+*/
+#define wandDominate(monst)					100 /* since domination is used mostly in debug/wizard mode */
+#define armorForceDistance(enchant)		    (max(1, (((int) (enchant + FLOAT_FUDGE)) + 1))) /* Depends on definition of staffBlinkDistance() above. */
 
 
 
 #define weaponParalysisDuration(enchant)	(max(2, (int) (2 + ((enchant) / 2) + FLOAT_FUDGE)))
 #define weaponPoisonDuration(enchant)	    (max(2, (int) (6 + 2*((enchant)) + FLOAT_FUDGE)))
 #define weaponConfusionDuration(enchant)	(max(3, (int) (1.5 * (enchant) + FLOAT_FUDGE)))
-#define weaponForceDistance(enchant)		(max(4, (((int) (enchant + FLOAT_FUDGE)) * 2 + 2))) // Depends on definition of staffBlinkDistance() above.
+#define weaponForceDistance(enchant)		(max(4, (((int) (enchant + FLOAT_FUDGE)) * 2 + 2))) /* Depends on definition of staffBlinkDistance() above. */
 #define weaponSlowDuration(enchant)			(max(3, (int) (((enchant) + 2) * ((enchant) + 2) / 3 + FLOAT_FUDGE)))
 #define weaponImageCount(enchant)			(clamp((int) ((enchant) / 3 + FLOAT_FUDGE), 1, 7))
-#define weaponImageDuration(enchant)		3										//(max((int) (1 + (enchant) / 3), 2))
+#define weaponImageDuration(enchant)		3										/* (max((int) (1 + (enchant) / 3), 2)) */
 
 #define armorReprisalPercent(enchant)		(max(5, (int) ((enchant) * 5 + FLOAT_FUDGE)))
 #define armorAbsorptionMax(enchant)			(max(1, (int) ((enchant) + FLOAT_FUDGE)))
@@ -1579,6 +1581,7 @@ typedef struct itemTable {
 } itemTable;
 
 enum dungeonFeatureTypes {
+	DF_UNINITIALIZED = -1,
 	DF_GRANITE_COLUMN = 1,
 	DF_CRYSTAL_WALL,
 	DF_LUMINESCENT_FUNGUS,
@@ -1913,6 +1916,7 @@ typedef struct flare {
 } flare;
 
 enum DFFlags {
+	DFF_NULL                       	=    0 ,	// No flags / safe initialization value
 	DFF_EVACUATE_CREATURES_FIRST	= Fl(0),	// Creatures in the DF area get moved outside of it
 	DFF_SUBSEQ_EVERYWHERE			= Fl(1),	// Subsequent DF spawns in every cell that this DF spawns in, instead of only the origin
 	DFF_TREAT_AS_BLOCKING			= Fl(2),	// If filling the footprint of this DF with walls would disrupt level connectivity, then abort.
@@ -2313,8 +2317,8 @@ typedef struct hordeType {
 
 	// membership information
 	short numberOfMemberTypes;
-	enum monsterTypes memberType[5];
-	randomRange memberCount[5];
+	enum monsterTypes memberType[6];
+	randomRange memberCount[6];
 
 	// spawning information
 	short minLevel;
@@ -2631,6 +2635,7 @@ typedef struct machineFeature {
 } machineFeature;
 
 enum blueprintFlags {
+	BP_NULL                              =   0ul,		// Empty bit pattern
 	BP_ADOPT_ITEM                   = Fl(0),	// the machine must adopt an item (e.g. a door key)
     BP_VESTIBULE                    = Fl(1),    // spawns in a doorway (location must be given) and expands outward, to guard the room
 	BP_PURGE_PATHING_BLOCKERS		= Fl(2),	// clean out traps and other T_PATHING_BLOCKERs
@@ -2869,8 +2874,7 @@ extern "C" {
 	boolean proposeOrConfirmLocation(short x, short y, char *failureMessage);
 	boolean useStairs(short stairDirection);
 	short passableArcCount(short x, short y);
-        boolean againstAWall(short x, short y);
-
+	boolean againstAWall(short x, short y);
 	void analyzeMap(boolean calculateChokeMap);
 	boolean buildAMachine(enum machineTypes bp,
 						  short originX, short originY,
@@ -2933,6 +2937,8 @@ extern "C" {
 					   cellDisplayBuffer rbuf[COLS][ROWS],
 					   brogueButton *buttons, short buttonCount);
 	void printMonsterDetails(creature *monst, cellDisplayBuffer rbuf[COLS][ROWS]);
+	void makeIdle(creature *monst);
+	void generateFellowAdventurer();
 	void printFloorItemDetails(item *theItem, cellDisplayBuffer rbuf[COLS][ROWS]);
 	unsigned long printCarriedItemDetails(item *theItem,
 										  short x, short y, short width,
@@ -2999,7 +3005,7 @@ extern "C" {
 	void freeCreature(creature *monst);
 	void emptyGraveyard();
 	void freeEverything();
-	boolean randomMatchingLocation(short *x, short *y, short dungeonType, short liquidType, short terrainType);
+	boolean randomMatchingLocation(short *x, short *y, enum tileType dungeonType, enum tileType liquidType, enum tileType terrainType);
 	enum dungeonLayers highestPriorityLayer(short x, short y, boolean skipGas);
     enum dungeonLayers layerWithTMFlag(short x, short y, unsigned long flag);
 	enum dungeonLayers layerWithFlag(short x, short y, unsigned long flag);
@@ -3133,9 +3139,10 @@ extern "C" {
     boolean getRandomMonsterSpawnLocation(short *x, short *y);
 	void spawnPeriodicHorde();
 	void clearStatus(creature *monst);
+	void causeFear(const char *emitterName, boolean throughWalls, boolean ignoreAllies);
 	void moralAttack(creature *attacker, creature *defender);
 	short runicWeaponChance(item *theItem, boolean customEnchantLevel, float enchantLevel);
-    boolean forceWeaponHit(creature *attacker, creature *defender, short distance);
+	boolean forceWeaponHit(creature *attacker, creature *defender, short distance);
 	void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed, short damage);
     void teleport(creature *monst, short x, short y, boolean respectTerrainAvoidancePreferences);
 	void chooseNewWanderDestination(creature *monst);
@@ -3167,7 +3174,7 @@ extern "C" {
                           short damage, const color *flashColor, boolean ignoresProtectionShield);
     void addPoison(creature *monst, short totalDamage, short concentrationIncrement);
 	void killCreature(creature *decedent, boolean administrativeDeath);
-  void continueKillingFellowAdventurer(creature *monst);
+	void continueKillingFellowAdventurer(creature *monst);
     void buildHitList(creature **hitList,
                       const creature *attacker, creature *defender,
                       const boolean penetrate, const boolean sweep);
@@ -3218,7 +3225,8 @@ extern "C" {
     void autoIdentify(item *theItem);
 	short numberOfItemsInPack();
 	char nextAvailableInventoryCharacter();
-    void disenchantAffectRunes(item *theItem);
+	// Applies for weapons and armor. This just produces a message when a runic is inactive.
+	void disenchantAffectRunes(item *theItem);
     void checkForDisenchantment(item *theItem);
     void updateFloorItems();
 	void itemName(item *theItem, char *root, boolean includeDetails, boolean includeArticle, color *baseColor);
