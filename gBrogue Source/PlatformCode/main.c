@@ -13,6 +13,8 @@ short brogueFontSize = 6;
 # else
 #  define BROGUE_TARGET_STRING "tcod"
 # endif
+#elif BROGUE_WEB
+# define BROGUE_TARGET_STRING "web"
 #else
 # define BROGUE_TARGET_STRING "curses"
 #endif
@@ -22,6 +24,11 @@ struct brogueConsole currentConsole;
 
 boolean serverMode = false;
 boolean noMenu = false;
+boolean noRestart = false;
+boolean noScores = false;
+boolean noRecording = false;
+boolean noSaves = false;
+
 unsigned long int firstSeed = 0;
 
 void dumpScores();
@@ -40,7 +47,7 @@ static void append(char *str, char *ending, int bufsize) {
 }
 
 static void printCommandlineHelp() {
-	printf("%s",
+	printf("%s", 
 	"--help         -h          print this help message\n"
 	"--version      -V          print the version (i.e., " BROGUE_VERSION_STRING ")\n"
 	"--target                   print the makefile target (i.e., " BROGUE_TARGET_STRING ")\n"
@@ -54,6 +61,10 @@ static void printCommandlineHelp() {
 	"--noteye-hack              ignore SDL-specific application state checks\n"
 #endif
 	"--no-menu      -M          never display the menu (automatically pick new game)\n"
+	"--no-restart               exit the game after first game\n"
+	"--no-scores                never display high scores\n"
+	"--no-recording             never prompt to save recording\n"
+	"--no-saves                 disable saving\n"
 #ifdef BROGUE_CURSES
 	"--term         -t          run in ncurses-based terminal mode\n"
 #endif
@@ -74,7 +85,9 @@ int main(int argc, char *argv[])
 {
 #ifdef BROGUE_TCOD
 		currentConsole = tcodConsole;
-#else
+#elif BROGUE_WEB
+                currentConsole = webConsole;
+#elif BROGUE_CURSES
 		currentConsole = cursesConsole;
 #endif
 
@@ -118,6 +131,26 @@ int main(int argc, char *argv[])
 			continue;
 		}
 
+		if(strcmp(argv[i], "--no-scores") == 0) {
+		  noScores = true;
+		  continue;
+		}
+
+		if(strcmp(argv[i], "--no-restart") == 0) {
+		  noRestart = true;
+		  continue;
+		}
+
+		if(strcmp(argv[i], "--no-recording") == 0) {
+		  noRecording = true;
+		  continue;
+		}
+
+		if(strcmp(argv[i], "--no-saves") == 0) {
+		  noSaves = true;
+		  continue;
+		}
+		
 		if(strcmp(argv[i], "--noteye-hack") == 0) {
 			serverMode = true;
 			continue;
@@ -125,12 +158,12 @@ int main(int argc, char *argv[])
 
 		if(strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--open") == 0) {
 			if (i + 1 < argc) {
-				strncpy(rogue.nextGamePath, argv[i + 1], 4096);
-				rogue.nextGamePath[4095] = '\0';
+				strncpy(rogue.nextGamePath, argv[i + 1], BROGUE_FILENAME_MAX);
+				rogue.nextGamePath[BROGUE_FILENAME_MAX - 1] = '\0';
 				rogue.nextGame = NG_OPEN_GAME;
 
 				if (!endswith(rogue.nextGamePath, GAME_SUFFIX)) {
-					append(rogue.nextGamePath, GAME_SUFFIX, 4096);
+					append(rogue.nextGamePath, GAME_SUFFIX, BROGUE_FILENAME_MAX);
 				}
 
 				i++;
@@ -140,12 +173,12 @@ int main(int argc, char *argv[])
 
 		if(strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--view") == 0) {
 			if (i + 1 < argc) {
-				strncpy(rogue.nextGamePath, argv[i + 1], 4096);
-				rogue.nextGamePath[4095] = '\0';
+				strncpy(rogue.nextGamePath, argv[i + 1], BROGUE_FILENAME_MAX);
+				rogue.nextGamePath[BROGUE_FILENAME_MAX - 1] = '\0';
 				rogue.nextGame = NG_VIEW_RECORDING;
 
 				if (!endswith(rogue.nextGamePath, RECORDING_SUFFIX)) {
-					append(rogue.nextGamePath, RECORDING_SUFFIX, 4096);
+					append(rogue.nextGamePath, RECORDING_SUFFIX, BROGUE_FILENAME_MAX);
 				}
 
 				i++;
@@ -198,15 +231,15 @@ int main(int argc, char *argv[])
 
 		// maybe it ends with .broguesave or .broguerec, then?
 		if (endswith(argv[i], GAME_SUFFIX)) {
-			strncpy(rogue.nextGamePath, argv[i], 4096);
-			rogue.nextGamePath[4095] = '\0';
+			strncpy(rogue.nextGamePath, argv[i], BROGUE_FILENAME_MAX);
+			rogue.nextGamePath[BROGUE_FILENAME_MAX - 1] = '\0';
 			rogue.nextGame = NG_OPEN_GAME;
 			continue;
 		}
 
 		if (endswith(argv[i], RECORDING_SUFFIX)) {
-			strncpy(rogue.nextGamePath, argv[i], 4096);
-			rogue.nextGamePath[4095] = '\0';
+			strncpy(rogue.nextGamePath, argv[i], BROGUE_FILENAME_MAX);
+			rogue.nextGamePath[BROGUE_FILENAME_MAX - 1] = '\0';
 			rogue.nextGame = NG_VIEW_RECORDING;
 			continue;
 		}

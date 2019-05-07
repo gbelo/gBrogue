@@ -33,6 +33,8 @@
 #include "Rogue.h"
 #include "IncludeGlobals.h"
 
+extern boolean noSaves;
+
 // Populates path[][] with a list of coordinates starting at origin and traversing down the map. Returns the number of steps in the path.
 short getPlayerPathOnMap(short path[1000][2], short **map, short originX, short originY) {
 	short dir, x, y, steps;
@@ -281,28 +283,33 @@ short actionMenu(short x, boolean playingBack) {
             buttons[buttonCount].flags &= ~B_ENABLED;
             buttonCount++;
 
-            if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text, "  %sS: %sSuspend game and quit  ",	yellowColorEscape, whiteColorEscape);
-            } else {
-                strcpy(buttons[buttonCount].text, "  Suspend game and quit  ");
-            }
-            buttons[buttonCount].hotkey[0] = SAVE_GAME_KEY;
-            buttonCount++;
-            if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text, "  %sO: %sOpen suspended game  ",		yellowColorEscape, whiteColorEscape);
-            } else {
-                strcpy(buttons[buttonCount].text, "  Open suspended game  ");
-            }
-            buttons[buttonCount].hotkey[0] = LOAD_SAVED_GAME_KEY;
+            if(!noSaves) {
+                if (KEYBOARD_LABELS) {
+                    sprintf(buttons[buttonCount].text, "  %sS: %sSuspend game and quit  ",	yellowColorEscape, whiteColorEscape);
+                } else {
+                    strcpy(buttons[buttonCount].text, "  Suspend game and quit  ");
+                }
+                buttons[buttonCount].hotkey[0] = SAVE_GAME_KEY;
+                buttonCount++;
 
-        }
-        if (KEYBOARD_LABELS) {
-            sprintf(buttons[buttonCount].text, "  %sV: %sView saved recording  ",		yellowColorEscape, whiteColorEscape);
-        } else {
-            strcpy(buttons[buttonCount].text, "  View saved recording  ");
-        }
-        buttons[buttonCount].hotkey[0] = VIEW_RECORDING_KEY;
-        buttonCount++;
+                if (KEYBOARD_LABELS) {
+                    sprintf(buttons[buttonCount].text, "  %sO: %sOpen suspended game  ",		yellowColorEscape, whiteColorEscape);
+                } else {
+                    strcpy(buttons[buttonCount].text, "  Open suspended game  ");
+                }
+                buttons[buttonCount].hotkey[0] = LOAD_SAVED_GAME_KEY;
+                buttonCount++;
+	    }
+	}
+        if(!noSaves) {
+           if (KEYBOARD_LABELS) {
+                sprintf(buttons[buttonCount].text, "  %sV: %sView saved recording  ",		yellowColorEscape, whiteColorEscape);
+           } else {
+                strcpy(buttons[buttonCount].text, "  View saved recording  ");
+           }
+            buttons[buttonCount].hotkey[0] = VIEW_RECORDING_KEY;
+            buttonCount++;
+	}
         sprintf(buttons[buttonCount].text, "    %s---", darkGrayColorEscape);
         buttons[buttonCount].flags &= ~B_ENABLED;
         buttonCount++;
@@ -323,6 +330,14 @@ short actionMenu(short x, boolean playingBack) {
         buttons[buttonCount].hotkey[0] = AGGRO_DISPLAY_KEY;
         takeActionOurselves[buttonCount] = true;
         buttonCount++;
+		if (KEYBOARD_LABELS) {
+			sprintf(buttons[buttonCount].text, "  %s[: %s%s low hitpoint warnings  ",	yellowColorEscape, whiteColorEscape, rogue.warningPauseMode ? "Disable" : "Enable");
+		} else {
+			sprintf(buttons[buttonCount].text, "  %s low hitpoint warnings  ",	rogue.warningPauseMode ? "Disable" : "Enable");
+		}
+		buttons[buttonCount].hotkey[0] = WARNING_PAUSE_KEY;
+		takeActionOurselves[buttonCount] = true;
+		buttonCount++;
         sprintf(buttons[buttonCount].text, "    %s---", darkGrayColorEscape);
         buttons[buttonCount].flags &= ~B_ENABLED;
         buttonCount++;
@@ -2293,6 +2308,7 @@ void nextBrogueEvent(rogueEvent *returnEvent, boolean textInput, boolean colorsD
 	rogueEvent recordingInput;
 	boolean repeatAgain;
 	short pauseDuration;
+	boolean interaction;
 
 	returnEvent->eventType = EVENT_ERROR;
 
@@ -2306,8 +2322,8 @@ void nextBrogueEvent(rogueEvent *returnEvent, boolean textInput, boolean colorsD
 				if (pauseDuration && pauseBrogue(pauseDuration)) {
 					// if the player did something during playback
 					nextBrogueEvent(&recordingInput, false, false, true);
-					executePlaybackInput(&recordingInput);
-					repeatAgain = !rogue.playbackPaused;
+					interaction = executePlaybackInput(&recordingInput);
+					repeatAgain = !rogue.playbackPaused && interaction;
 				}
 			}
 		} while ((repeatAgain || rogue.playbackOOS) && !rogue.gameHasEnded);
@@ -2486,6 +2502,16 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
                                  &teal, false);
 			}
 			break;
+	    case WARNING_PAUSE_KEY:
+	    	rogue.warningPauseMode = !rogue.warningPauseMode;
+	    	if (rogue.warningPauseMode) {
+                messageWithColor(KEYBOARD_LABELS ? "Low hitpoint warnings (paused) enabled. Press '[' again to disable." : "Low HP warnings (paused) activated.",
+                                 &teal, false);
+	    	} else {
+                messageWithColor(KEYBOARD_LABELS ? "Low hitpoint warnings (paused) disabled. Press '[' again to enable." : "Low HP warnings (paused) deactivated.",
+                                 &teal, false);
+	    	}
+	    	break;
 		case CALL_KEY:
 			call(NULL);
 			break;
@@ -2510,6 +2536,9 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
 			if (rogue.playbackMode) {
 				return;
 			}
+			if (noSaves) {
+				return;
+			}
 			confirmMessages();
 			if ((rogue.playerTurnNumber < 50 || confirm("End this game and view a recording?", false))
 				&& dialogChooseFile(path, RECORDING_SUFFIX, "View recording: ")) {
@@ -2526,6 +2555,9 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
 			if (rogue.playbackMode) {
 				return;
 			}
+			if (noSaves) {
+				return;
+			}
 			confirmMessages();
 			if ((rogue.playerTurnNumber < 50 || confirm("End this game and load a saved game?", false))
 				&& dialogChooseFile(path, GAME_SUFFIX, "Open saved game: ")) {
@@ -2540,6 +2572,9 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
 			break;
 		case SAVE_GAME_KEY:
 			if (rogue.playbackMode) {
+				return;
+			}
+			if (noSaves) {
 				return;
 			}
 			if (confirm("Suspend this game? (This feature is still in beta.)", false)) {
@@ -3697,6 +3732,7 @@ void printHelpScreen() {
         "",
 		"             \\  ****disable/enable color effects",
 		"             ]  ****display/hide stealth range",
+		"             [  ****enable/disable low HP warning",
 		"   <space/esc>  ****clear message or cancel command",
 		"",
 		"        -- press space or click to continue --"
@@ -4373,6 +4409,7 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
 		plotCharWithColor(monstChar, 0, y, &monstForeColor, &monstBackColor);
 		monsterName(monstName, monst, false);
 		upperCase(monstName);
+
 
     // Player-specific stuff
         if (monst == &player) {
