@@ -60,6 +60,7 @@
 
 #define DEBUGGING						0
 
+
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.
 #define ITEMS_ENABLED					(!DEBUGGING || 1)
@@ -368,6 +369,14 @@ enum eventTypes {
 	END_OF_RECORDING,
 	EVENT_ERROR,
 	NUMBER_OF_EVENT_TYPES, // unused
+};
+
+enum notificationEventTypes {
+	GAMEOVER_QUIT,
+	GAMEOVER_DEATH,
+	GAMEOVER_VICTORY,
+	GAMEOVER_SUPERVICTORY,
+	GAMEOVER_RECORDING
 };
 
 typedef struct rogueEvent {
@@ -1272,6 +1281,7 @@ enum tileFlags {
 #define RELABEL_KEY         'R'
 #define TRUE_COLORS_KEY		'\\'
 #define AGGRO_DISPLAY_KEY   ']'
+#define WARNING_PAUSE_KEY   '['
 #define DROP_KEY			'd'
 #define CALL_KEY			'c'
 #define QUIT_KEY			'Q'
@@ -2436,6 +2446,7 @@ typedef struct playerCharacter {
 	boolean eligibleToUseStairs;		// so the player uses stairs only when he steps onto them
 	boolean trueColorMode;				// whether lighting effects are disabled
     boolean displayAggroRangeMode;      // whether your stealth range is displayed
+    boolean warningPauseMode;			// whether to pause (MORE) when a hitpoint warning occurs
 	boolean quit;						// to skip the typical end-game theatrics when the player quits
 	unsigned long seed;					// the master seed for generating the entire dungeon
 	short RNG;							// which RNG are we currently using?
@@ -2838,6 +2849,7 @@ extern "C" {
 	void gameOver(char *killedBy, boolean useCustomPhrasing);
 //    void victory(boolean superVictory);
 	void victory(boolean superVictory, boolean hasAmulet);
+ 	void notifyEvent(short eventId, int data1, int data2, const char *str1, const char *str2);
 	void enableEasyMode();
 	int rand_range(int lowerBound, int upperBound);
 	unsigned long seedRandomGenerator(unsigned long seed);
@@ -2907,7 +2919,9 @@ extern "C" {
 	char nextKeyPress(boolean textInput);
 	void refreshSideBar(short focusX, short focusY, boolean focusedEntityMustGoFirst);
 	void printHelpScreen();
+  void printInstructionsScreen();
 	void printDiscoveriesScreen();
+  void printGameInfoScreen();
 	void printHighScores(boolean hiliteMostRecent);
 	void displayGrid(short **map);
 	void printSeed();
@@ -3286,6 +3300,8 @@ extern "C" {
 	void demoteMonsterFromLeadership(creature *monst);
 	void toggleMonsterDormancy(creature *monst);
 	void monsterDetails(char buf[], creature *monst);
+  void makeIdle(creature *monst);
+  void generateFellowAdventurer();
 	void makeMonsterDropItem(creature *monst);
 	void throwCommand(item *theItem);
     void relabel(item *theItem);
@@ -3297,6 +3313,7 @@ extern "C" {
 	void identify(item *theItem);
 	void updateIdentifiableItem(item *theItem);
 	void updateIdentifiableItems();
+  void magicMapCell(short x, short y);
 	void readScroll(item *theItem);
 	void updateRingBonuses();
 	void updatePlayerRegenerationDelay();
@@ -3323,6 +3340,8 @@ extern "C" {
 	void deleteItem(item *theItem);
 	void shuffleFlavors();
 	unsigned long itemValue(item *theItem);
+    void causeFear(const char *emitterName, boolean throughWalls, boolean ignoreAllies);
+    void debugWish(char *wishText);
 	short strLenWithoutEscapes(const char *str);
 	void combatMessage(char *theMsg, color *theColor);
 	void displayCombatText();
@@ -3363,11 +3382,12 @@ extern "C" {
 	void recordMouseClick(short x, short y, boolean controlKey, boolean shiftKey);
 	void OOSCheck(unsigned long x, short numberOfBytes);
 	void RNGCheck();
-	void executePlaybackInput(rogueEvent *recordingInput);
+	boolean executePlaybackInput(rogueEvent *recordingInput);
 	void getAvailableFilePath(char *filePath, const char *defaultPath, const char *suffix);
     boolean characterForbiddenInFilename(const char theChar);
 	void saveGame();
 	void saveRecording();
+	void saveRecordingNoPrompt();
 	void parseFile();
 	void RNGLog(char *message);
 

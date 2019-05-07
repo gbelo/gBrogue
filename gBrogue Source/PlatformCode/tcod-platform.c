@@ -632,13 +632,18 @@ static boolean modifier_held(int modifier) {
 	return 0;
 }
 
+static void notify_event(short eventId, int data1, int data2, const char *str1, const char *str2) {
+  //Unused
+}
+
 struct brogueConsole tcodConsole = {
 	gameLoop,
 	tcod_pauseForMilliseconds,
 	tcod_nextKeyOrMouseEvent,
 	tcod_plotChar,
 	tcod_remap,
-	modifier_held
+	modifier_held,
+	notify_event
 };
 
 #endif

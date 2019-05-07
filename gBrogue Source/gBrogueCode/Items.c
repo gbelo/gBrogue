@@ -1399,7 +1399,7 @@ void call(item *theItem) {
 // Portions of known items (a potion of "strength") will be in teal -- gsr
 //  BaseColor itself will be the color that the name reverts to outside of these colored portions.
 void itemName(item *theItem, char *root, boolean includeDetails, boolean includeArticle, color *baseColor) {
-	char buf[DCOLS * 5], pluralization[10], article[10] = "",
+	char buf[DCOLS * 5], pluralization[10], article[25] = "",
 	grayEscapeSequence[5], purpleEscapeSequence[5], yellowEscapeSequence[5], cyanEscapeSequence[5], baseEscapeSequence[5];
 	color tempColor;
 
@@ -6049,7 +6049,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                         {
                             // Moved incendiary dart handling to here
                             spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_DART_EXPLOSION], true, false);
-                            exposeCreatureToFire(monsterAtLoc(x, y));
+                            exposeCreatureToFire(monst);
                             return;
                         }
                         else if (theItem->kind == POISON_DART)

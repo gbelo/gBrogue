@@ -1,0 +1,88 @@
+
+SDL_FLAGS = `sdl-config --cflags` `sdl-config --libs`
+LIBTCODDIR=src/libtcod-1.5.2
+CFLAGS=-IgBrogueCode -IPlatformCode -Wall -Wno-parentheses ${DEFINES}
+RELEASENAME=brogue-1.7.4
+CC ?= gcc
+
+%.o : %.c Makefile gBrogueCode/Rogue.h gBrogueCode/IncludeGlobals.h
+	$(CC) $(CFLAGS) -o $@ -c $< 
+
+BROGUEFILES=gBrogueCode/Architect.o \
+	gBrogueCode/Combat.o \
+	gBrogueCode/Dijkstra.o \
+	gBrogueCode/Globals.o \
+	gBrogueCode/IO.o \
+	gBrogueCode/Items.o \
+	gBrogueCode/Light.o \
+	gBrogueCode/Monsters.o \
+	gBrogueCode/Buttons.o \
+	gBrogueCode/Movement.o \
+	gBrogueCode/Recordings.o \
+	gBrogueCode/RogueMain.o \
+	gBrogueCode/Random.o \
+	gBrogueCode/MainMenu.o \
+	gBrogueCode/Grid.o \
+	gBrogueCode/Time.o \
+	PlatformCode/main.o \
+	PlatformCode/platformdependent.o \
+	PlatformCode/curses-platform.o \
+	PlatformCode/tcod-platform.o \
+	PlatformCode/term.o \
+	PlatformCode/web-platform.o
+
+TCOD_DEF = -DBROGUE_TCOD -I$(LIBTCODDIR)/include
+TCOD_DEP = ${LIBTCODDIR}
+TCOD_LIB = -L. -L${LIBTCODDIR} ${SDL_FLAGS} -ltcod -Wl,-rpath,.
+
+CURSES_DEF = -DBROGUE_CURSES
+CURSES_LIB = -lncurses -lm
+
+WEB_DEF = -DBROGUE_WEB
+WEB_LIB = -lm
+
+tcod : DEPENDENCIES += ${TCOD_DEP}
+tcod : DEFINES += ${TCOD_DEF}
+tcod : LIBRARIES += ${TCOD_LIB}
+tcod : bin/brogue
+
+curses : DEFINES = ${CURSES_DEF}
+curses : LIBRARIES = ${CURSES_LIB}
+curses : bin/brogue
+
+web : DEFINES += ${WEB_DEF}
+web : LIBRARIES += ${WEB_LIB}
+web : bin/brogue
+
+.PHONY : clean curses tcod web tar
+
+bin/brogue : ${DEPENDENCIES} ${BROGUEFILES}
+	$(CC) -O2 -o bin/brogue ${BROGUEFILES} ${LIBRARIES} -Wl,-rpath,.
+
+clean : 
+	rm -f gBrogueCode/*.o PlatformCode/*.o bin/brogue
+
+${LIBTCODDIR} :
+	src/get-libtcod.sh
+
+tar : both
+	rm -f ${RELEASENAME}.tar.gz
+	tar --transform 's,^,${RELEASENAME}/,' -czf ${RELEASENAME}.tar.gz \
+	Makefile \
+	brogue \
+	$(wildcard *.sh) \
+	$(wildcard *.rtf) \
+	readme \
+	$(wildcard *.txt) \
+	bin/brogue \
+	bin/keymap \
+	bin/icon.bmp \
+	bin/brogue-icon.png \
+	$(wildcard bin/fonts/*.png) \
+	$(wildcard bin/*.so) \
+	$(wildcard src/*.sh) \
+	$(wildcard gBrogueCode/*.c) \
+	$(wildcard gBrogueCode/*.h) \
+	$(wildcard PlatformCode/*.c) \
+	$(wildcard PlatformCode/*.h)
+

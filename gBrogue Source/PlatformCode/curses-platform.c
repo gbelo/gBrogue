@@ -74,7 +74,7 @@ static void curses_plotChar(uchar ch,
 	case LOZENGE_CHAR: ch = 'o'; break;
 	case CROSS_PRODUCT_CHAR: ch = 'x'; break;
 
-	case STATUE_CHAR: ch = '5'; break;
+	  //	case STATUE_CHAR: ch = '5'; break; //same as MOLOCH_CHAR
 	case MOLOCH_CHAR: ch = '&'; break;
 	case UNICORN_CHAR: ch = 'U'; break;
 	case PET_DOG_CHAR: ch = 'q'; break;
@@ -217,13 +217,18 @@ static boolean modifier_held(int modifier) {
 	return 0;
 }
 
+static void notify_event(short eventId, int data1, int data2, const char *str1, const char *str2) {
+  //Unused
+}
+
 struct brogueConsole cursesConsole = {
 	gameLoop,
 	curses_pauseForMilliseconds,
 	curses_nextKeyOrMouseEvent,
 	curses_plotChar,
 	curses_remap,
-	modifier_held
+	modifier_held,
+	notify_event
 };
 #endif
 
